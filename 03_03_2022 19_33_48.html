@@ -1,0 +1,73 @@
+<!doctype html>
+<head>
+  <title>Real-Time HTML Editor++</title>
+  <meta charset="utf-8">
+  <style>
+    * { box-sizing: border-box }
+    body { font-family: Arial }
+    h1 { background: #EEF }
+    a { text-decoration: none }
+    a:hover { color: green }
+    textarea {
+      display: block;
+      width: 100%;
+      height: 300px;
+      padding: 0;
+    }
+    label {
+      display: inline-block;
+      width: calc(50% - 3px);
+    }
+  </style>
+</head>
+
+<h1>Bovino Code</h1>
+
+<label>
+Normal Text:
+<textarea id="normal" onkeyup="updateBovino(this.value)"></textarea>
+<span id="normalchars">0</span>
+</label>
+
+<label>
+Bovino Code:
+<textarea id="bovino" onkeyup="updateNormal(this.value)"></textarea>
+<span id="bovinochars">0</span>
+</label>
+
+<footer>By <a href="https://linktr.ee/rcpinto" target="_BLANK">Rafael Pinto</a>.</footer>
+
+<script>
+var txtNormal = document.getElementById('normal');
+var txtBovino = document.getElementById('bovino');
+var spanNormalChars = document.getElementById('normalchars');
+var spanBovinoChars = document.getElementById('bovinochars');
+function updateBovino(normal) {
+  txtBovino.value = normalToBovino(normal);
+  updateTotals();
+}
+function updateNormal(bovino) {
+  txtNormal.value = bovinoToNormal(bovino);
+  updateTotals();
+}
+function updateTotals() {
+  spanNormalChars.innerText = txtNormal.value.length;  
+  spanBovinoChars.innerText = txtBovino.value.length;  
+}
+function normalToBovino(normal) {
+  if (!normal) return '';
+  var bovino = 'M';
+  for (var i = 0; i < normal.length; i++) {
+    bovino += normal.charCodeAt(i).toString(2).padStart(8, '0').replace(/0/g, 'u').replace(/1/g, 'U');
+  }
+  return bovino;
+}
+function bovinoToNormal(bovino) {
+  if (!bovino) return '';
+  var normal = '';
+  for (var i = 1; i < bovino.length; i+=8) {
+    normal += String.fromCharCode(parseInt(bovino.slice(i, i+8).replace(/u/g, '0').replace(/U/g, '1'), 2));
+  }
+  return normal;
+}
+</script>
