@@ -1,0 +1,139 @@
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  font-family: Arial, Helvetica, sans-serif;
+	  font-size: xx-large;
+	  background-color: black;
+    }
+    canvas {
+      width: 100vmin;
+	  image-rendering: pixelated;
+	  visibility: hidden;
+    }
+	#result {
+		position: absolute;
+		padding: 16px;
+		border: 1px solid silver;
+		border-radius: 4px;
+		text-align: center;
+		background-color: white;
+		box-shadow: 1px 1px gray;
+		max-width: 50vmin;
+		display: none;
+	}
+	#result a {
+		display: none;
+	}
+	#result iframe {
+		display: block !important;
+		margin: auto;
+		margin-top: 8px !important;
+	}
+  </style>
+</head>
+<canvas></canvas>
+<div id="result">
+<span></span>
+<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="Achei o vagabundo do Paulo Guedes em ${time} segundos após ${tries} tentativas!" data-url="https://rafaelcp.github.io/guedes/" data-hashtags="OndeEstáPauloGuedes" data-related="rcpinto_" data-show-count="false">Compartilhar o Resultado</a>
+</div>
+<script src="seedrandom.min.js"></script>
+<script>
+'use strict'
+const canvas = document.getElementsByTagName('canvas')[0];
+const link = document.getElementsByTagName('a')[0];
+const resultado = document.getElementById('result');
+const result_text = document.querySelector('#result span');
+const SIZE = 270;
+const date = new Date();
+const seed = Math.floor(date.getTime() / 1000 / 60 / 60 / 24) - 19163;
+const rand = new Math.seedrandom(seed);
+const ctx = canvas.getContext('2d');
+const start = new Date();
+var tries = 0;
+var achou = false;
+ctx.imageSmoothingEnabled = false;
+canvas.width = canvas.height = SIZE;
+function drawBG() {
+	ctx.fillStyle = 'silver';
+	ctx.fillRect(0, 0, SIZE, SIZE);
+}
+function drawPerson(img) {
+	const x = Math.floor(rand() * (SIZE - img.width));
+	const y = Math.floor(rand() * (SIZE - img.height));
+	const pcanvas = document.createElement('canvas');
+	const pctx = pcanvas.getContext('2d');
+	pcanvas.width = img.width;
+	pcanvas.height = img.height;
+	if (rand() < 0.5) {
+		pctx.scale(-1, 1);
+		pctx.drawImage(img, -img.width, 0);
+	}
+	else {
+		pctx.drawImage(img, 0, 0);
+	}
+	ctx.drawImage(pcanvas, x, y);
+}
+function drawGuedes() {
+	const img = new Image();
+	img.onload = function () {
+		var gw = this.width;
+		var gh = this.height;
+		const gx = Math.floor(rand() * (SIZE - gw));
+		const gy = Math.floor(rand() * (SIZE - gh));
+		ctx.drawImage(img, gx, gy);
+		canvas.onclick = function(e) {
+			tries++;
+			const mx = e.offsetX / canvas.clientWidth * SIZE;
+			const my = e.offsetY / canvas.clientHeight * SIZE;
+			if (!achou && mx > gx && mx < gx + gw && my > gy && my < my + gy) {
+				achou = true;
+				const end = new Date();
+				const time = Math.floor((end.getTime() - start.getTime()) / 1000);
+				let text;
+				if (tries == 1) {
+					text = `Achei o vagabundo do Paulo Guedes em ${time} segundos após 1 tentativa! Jogo #${seed}.`;
+				}
+				else {
+					text = `Achei o vagabundo do Paulo Guedes em ${time} segundos após ${tries} tentativas! Jogo #${seed}.`;
+				}
+				result_text.innerText = text;
+				link.dataset.text = text;
+				resultado.style.display = 'block';
+				let script = document.createElement('script');
+				script.src = 'https://platform.twitter.com/widgets.js';
+				document.body.appendChild(script);
+			}
+		}
+	}
+	img.src = 'guedes.png';
+}
+function drawPeople(n_people=5, n=1000) {
+	var done = 0;
+	let imgs = [];
+	for (let i = 0; i < n_people; i++) {
+		imgs[i] = new Image();
+		imgs[i].src = 'person' + (i+1) + '.png';
+		imgs[i].onload = function() {
+			done++;
+			if (done == n_people) {
+				for (let i = 0; i < n; i++) {
+					drawPerson(imgs[Math.floor(rand() * n_people)]);
+				}
+				drawGuedes();
+			}
+		}
+	}
+}
+drawBG();
+drawPeople();
+setTimeout(function() { canvas.style.visibility = 'visible'; }, 1000);
+</script>
