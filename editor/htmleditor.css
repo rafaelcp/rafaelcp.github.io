@@ -1,0 +1,84 @@
+* { margin: 0; padding: 0 }
+html { height: 100% }
+body {
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	font-family: sans-serif;
+}
+textarea, iframe, .CodeMirror.cm-s-default {
+	width: 100%;
+	border: 0 none;
+	outline: 1px solid silver;
+}
+textarea, .CodeMirror.cm-s-default {
+	background: #EEE;
+	resize: vertical;
+	height: 50%;
+	position: relative;
+}
+iframe {
+	flex: 1;
+}
+.cm-matchhighlight {background-color: lightgreen}
+#autorundiv {
+	height: 20px;
+	line-height: 20px;
+	position: absolute;
+	top: 0;
+	right: 10px;
+	z-index: 9;
+	background: rgba(255, 255, 255, 0.5);
+}
+#download {
+	text-decoration: none;
+	background: rgb(0, 117, 255);
+	color: white;
+	padding: 2px;
+}
+#download:hover {
+	background: skyblue;
+}
+#download:active {
+	background: green;
+}
+#autorundiv label {
+	vertical-align: middle;
+	cursor: pointer;
+}
+#autorun {
+	position: relative;
+	top: 2px;
+}
+#autorundiv button {
+	background: rgb(0, 117, 255);
+	color: white;
+	border: none;
+	border-radius: 2px;
+	margin: 0px 2px;
+	padding: 2px;
+	display: none;
+	cursor: pointer;
+}
+#btvalidator { display: inline !important; padding: 0; height: 19px; line-height: 15px }
+#btvalidator span { color: lime }
+#autorundiv button:hover {
+	background: skyblue;
+}
+#autorundiv button:active {
+	background: green;
+}
+@media (orientation: landscape) {
+	body {
+		flex-direction: row;
+	}
+	textarea, iframe, .CodeMirror.cm-s-default {
+		width: 50%;
+		height: 100%;
+	}
+	textarea, .CodeMirror.cm-s-default {
+		resize: horizontal;
+	}
+}
