@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プロトオブジェクト上のセルフアテンションのニューロエボリューション</title>
+
+    <meta name="title" property="og:title" content="プロトオブジェクト上のセルフアテンションのニューロエボリューション">
+    <meta name="type" property="og:type" content="article">
+    <meta name="url" property="og:url" content="https://rafaelcp.github.io/neuroproto/">
+    <meta name="image" property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="description" property="og:description" content="プロトオブジェクト（共通の視覚的プロパティを共有する画像領域）は、ニューラルネットワークにおける長方形の画像パッチに基づく従来の注意機構に対する有望な代替手段を提供します。コントローラネットワークと並行してパッチベースのハードアテンションモジュールを進化させることで視覚的強化学習タスクにおいてSOTAの性能を達成できることが先行研究で示されていますが、本アプローチでは画像セグメンテーションを活用してより高次元の特徴を扱います。固定パッチではなくプロトオブジェクト上で操作を行うことで、表現の複雑さを大幅に削減します。各画像は通常のパッチよりも少ないプロトオブジェクトに分解され、各プロトオブジェクトはコンパクトな特徴ベクトルとして効率的に符号化できます。これにより、より豊かなセマンティック情報を処理する大幅に小型化されたセルフアテンションモジュールが可能になります。実験の結果、このプロトオブジェクトに基づくアプローチは、パッチベースの実装と同等以上の性能を達成しつつ、パラメータ数を62%削減し、学習時間を2.6倍短縮することが実証されました。">
+
+    <meta name="twitter:card" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:title" content="プロトオブジェクト上のセルフアテンションのニューロエボリューション">
+    <meta name="twitter:description" content="プロトオブジェクト（共通の視覚적プロパティを共有する画像領域）は、ニューラルネットワークにおける長方形の画像パッチに基づく従来の注意機構に対する有望な代替手段を提供します。コントローラネットワークと並行してパッチベースのハードアテンションモジュールを進化させることで視覚的強化学習タスクにおいてSOTAの性能を達成できることが先行研究で示されていますが、本アプローチでは画像セグメンテーションを活用してより高次元の特徴を扱います。固定パッチではなくプロトオブジェクト上で操作を行うことで、表現の複雑さを大幅に削減します。各画像は通常のパッチよりも少ないプロトオブジェクトに分解され、各プロトオブジェクトはコンパクトな特徴ベクトルとして効率的に符号化できます。これにより、より豊かなセマンティック情報を処理する大幅に小型化されたセルフアテンションモジュールが可能になります。実験の結果、このプロトオブジェクトに基づくアプローチは、パッチベースの実装と同等以上の性能を達成しつつ、パラメータ数を62%削減し、学習時間を2.6倍短縮することが実証されました。">
+
+    <style>
+        body {
+            font-family: serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+            color: #333;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: sans-serif;
+            color: #111;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        h2 {
+            font-size: 1.6em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.3em;
+        }
+
+        h3 {
+            font-size: 1.3em;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        p {
+            margin-bottom: 1em;
+            text-align: justify;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .authors-affiliations {
+            text-align: center;
+            margin-bottom: 2em;
+            font-family: sans-serif;
+        }
+
+        .author {
+            font-weight: bold;
+        }
+
+        .affiliation {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .email a {
+            font-size: 0.9em;
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .email a:hover {
+            text-decoration: underline;
+        }
+
+        .abstract {
+            margin-top: 2em;
+            margin-bottom: 2em;
+            padding: 1em;
+            background-color: #f9f9f9;
+            border-left: 3px solid #ccc;
+        }
+
+        .abstract h2 {
+            font-size: 1.4em;
+            border-bottom: none;
+            margin-top: 0;
+        }
+
+        figure {
+            margin: 2em auto;
+            text-align: center;
+            border: 1px solid #eee;
+            padding: 1em;
+            background-color: #fdfdfd;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5em auto;
+        }
+
+        figcaption {
+            font-size: 0.9em;
+            color: #555;
+            text-align: left;
+            margin-top: 0.5em;
+            font-family: sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2em 0;
+            font-family: sans-serif;
+            font-size: 0.9em;
+        }
+
+        caption {
+            caption-side: top;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            font-size: 1em;
+            color: #333;
+            text-align: left;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .equation {
+            text-align: center;
+            margin: 1.5em 0;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+
+        .references ol {
+            padding-left: 20px;
+            list-style: none;
+            counter-reset: ref-counter;
+        }
+
+        .references li {
+            margin-bottom: 0.8em;
+            counter-increment: ref-counter;
+            position: relative;
+            padding-left: 25px;
+        }
+        .references li::before {
+            content: "[" counter(ref-counter) "]";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #555;
+        }
+        .references li span.ref-content {
+            display: inline-block;
+            margin-left: 1em;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        code, pre {
+             font-family: monospace, monospace;
+             background-color: #f4f4f4;
+             padding: 1px 3px;
+             border-radius: 3px;
+        }
+
+        .acknowledgments {
+            font-size: 0.9em;
+            margin-top: 2em;
+        }
+
+        .header-arxiv-id {
+            font-family: sans-serif;
+            color: #555;
+            font-size: 0.9em;
+            margin-bottom: 2em;
+            text-align: left;
+        }
+        .header-arxiv-id a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .header-arxiv-id a:hover {
+            text-decoration: underline;
+        }
+
+        @media print {
+            body {
+                max-width: none;
+                margin: 1cm;
+                font-size: 10pt;
+            }
+            h1, h2, h3, h4 { page-break-after: avoid; }
+            figure, table { page-break-inside: avoid; }
+            .header-arxiv-id { display: none; }
+            a { color: inherit; text-decoration: none; }
+            .references li::before { color: inherit; }
+        }
+
+        #notebooklm {
+            display: flex;
+        }
+        #notebooklm div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-arxiv-id"><a href="https://arxiv.org/abs/2505.00186v1">arXiv:2505.00186v1</a> [cs.NE] 2025年4月30日
+    <br>DOI: <a href="https://doi.org/10.1145/3712256.3726451">10.1145/3712256.3726451</a> 2025年7月13日</div>
+
+    <h1>プロトオブジェクト上のセルフアテンションのニューロエボリューション</h1>
+
+    <div class="authors-affiliations">
+        <div class="top-info">
+            <div>
+                <span class="author">Rafael C. Pinto</span><br>
+                <span class="affiliation">リオグランデ・ド・スル連邦教育科学技術機関 (IFRS)</span><br>
+                <span class="affiliation">カノアス, ブラジル</span><br>
+                <span class="affiliation">リオグランデ・ド・スル連邦大学 (UFRGS)</span><br>
+                <span class="affiliation">ポルト・アレグレ, ブラジル</span><br>
+                <span class="email"><a href="mailto:rafael.pinto@canoas.ifrs.edu.br">rafael.pinto@canoas.ifrs.edu.br</a></span>
+            </div>
+            <div>
+                <span class="author">Anderson R. Tavares</span><br>
+                <span class="affiliation">リオグランデ・ド・スル連邦大学 (UFRGS)</span><br>
+                <span class="affiliation">ポルト・アレグレ, ブラジル</span><br>
+                <span class="email"><a href="mailto:artavares@inf.ufrgs.br">artavares@inf.ufrgs.br</a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="abstract">
+        <h2>概要 (Abstract)</h2>
+        <p>プロトオブジェクト（共通の視覚的プロパティを共有する画像領域）は、ニューラルネットワークにおける長方形の画像パッチに基づく従来の注意機構に対する有望な代替手段を提供します。コントローラネットワークと並行してパッチベース의ハードアテンションモジュールを進化させることで視覚的強化学習タスクにおいてSOTA（State-of-the-Art）の性能を達成できることが先行研究で示されていますが、本アプローチでは画像セグメンテーションを活用してより高次元の特徴を扱います。固定パッチではなくプロトオブジェクト上で操作を行うことで、表現の複雑さを大幅に削減します。各画像は通常のパッチよりも少ないプロトオブジェクトに分解され、各プロトオブジェクトはコンパクトな特徴ベクトルとして効率的に符号化できます。これにより、より豊かなセマンティック情報を処理する大幅に小型化されたセルフアテンションモジュールが可能になります。実験の結果、このプロトオブジェクトに基づくアプローチは、パッチベースの実装と同等以上の性能を達成しつつ、パラメータ数を62%削減し、学習時間を2.6倍短縮することが実証されました。</p>
+    </div>
+	
+    <div id="notebooklm">
+        <div>NotebookLM ポッドキャスト (英語)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects.mp3" controls></audio></div>
+        <div>NotebookLM ポッドキャスト (ポルトガル語)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects-ptbr.mp3" controls></audio></div>
+    </div>
+	
+    <figure>
+        <video controls src="proto.mp4" type="video/mp4"></video>
+        <figcaption><strong>図 1:</strong> 我々のアテンショナルエージェントは、サイズの固定された小さな画像パッチではなく、均一な領域全体に焦点を当てることができます。</figcaption>
+    </figure>
+
+    <section id="introduction">
+        <h2>1 はじめに</h2>
+        <p>視覚的注意機構（ビジュアルアテンション）は、高次元の知覚タスクにおける計算複雑性を軽減するための強力なソリューションとして浮上しています。視覚入力と制御ネットワークの間に情報のボトルネックを形成することで、これらの機構は複雑なシーンの効率的な処理を可能にします <a href="#ref14">[14]</a>。近年の研究では、ハードアテンションモジュールをLSTM <a href="#ref10">[10]</a> コントローラと共同で進化させることで、小さな画像パッチのみで動作するきわめて効率的なエージェントを構築できることが示されています <a href="#ref22">[22]</a>。この手法は、競合する手法よりも数桁小さいニューラルネットワークを実現しただけでなく、Car RacingやDoom Take Coverといった挑戦的な強化学習環境において最先端（SOTA）の結果を達成しました <a href="#ref3">[3]</a>。この成功は、アテンション層が無関係な入力領域をフィルタリングし、堅牢な汎化性能とノイズ耐性を提供しながらコントローラのタスクを単純化できることに起因しています。</p>
+        <p>本研究では、固定サイズで均一に配置されたパッチを、画像セグメンテーション <a href="#ref7">[7]</a> によって得られるプロトオブジェクト（局所的に均一な視覚的特徴のコヒーレントな領域 <a href="#ref6">[6]</a>）に置き換えることで、この研究領域を発展させます。この表現の転換には2つの大きな利点があります。第一に、ほとんどのシーンはパッチよりも少ないプロトオブジェクトに分解されるため、よりコンパクトな表現が提供されます。第二に、各プロトオブジェクトは形状、サイズ、色などのプロパティを捉えた小さな記述子ベクトルを通じて、より豊かなセマンティック情報を符号化します。</p>
+        <p>このプロトオブジェクトアプローチにより、大幅に合理化されたアーキテクチャが可能となります。セルフアテンションモジュールは、より高レベルの特徴を処理しながら大幅に小型化され、コントローラに対する選択性の向上とより良くフィルタリングされた情報をもたらし、コントローラ自体も簡素化できます。Car RacingおよびDoom Take Cover環境における実験結果 <a href="#ref3">[3]</a> は、この効率的なアーキテクチャがパラメータ数を62%削減し、学習速度を2.6倍向上させながら、パッチベースの実装と同等以上の性能を達成することを示しています。</p>
+    </section>
+
+    <section id="background">
+        <h2>2 背景</h2>
+        <p>人間の視覚的注意のモデル化は、過去35年間にわたり活発な研究分野となってきました。神経科学や心理学への理論的貢献に加え、コンピュータビジョンやロボティクスにおいて成功を収めた多くの異なるアテンションモデルが提案されてきました <a href="#ref2">[2]</a>。初期の計算モデルは主にボトムアップ型の顕著性（サリエンス）に基づく注意に焦点を当てていましたが、より最近のアプローチではトップダウンの影響やオブジェクトベースの選択機構を取り入れています。</p>
+        <p>生物の視覚システムは、効率的な人工視覚システムを設計するための重要な洞察を提供します。根本的な制約は神経資源が有限であることです。Kochら <a href="#ref11">[11]</a> は、網膜神経節細胞が代謝コストと情報伝送のバランスをとり、比較的低い発火率を使用しているにもかかわらず非常に効率的な符号化を達成していることを示しました。これは、すべての入力を均等に処理しようとするのではなく、戦略的な情報ボトルネックを形成する進化圧力が存在することを示唆しています。WaltherとKoch <a href="#ref28">[28]</a> は、そのようなボトルネックの1つがプロトオブジェクトレベルで発生し、完全なオブジェクト認識が行われる前に、エンハンス処理のためにシーンのコヒーレントな領域が選択されることを示しました。これにより、視覚システムは高い符号化効率を維持しながら、複雑なシーンを扱いやすい単位にシリアライズできます。</p>
+
+        <h3>2.1 視覚的注意機構の種類</h3>
+        <p>生物システムにおける視覚的注意は、主に3つのメカニズムを介して機能します。空間に基づく注意（Space-based attention）は視野の特定の位置に作用し、選択された空間座標での処理を強化するスポットライトとして注意を扱います。特徴に基づく注意（Feature-based attention）は、空間的位置に関係なく、視野全体で特定の特徴（色、向き、運動など）の処理を選択的に強化します。オブジェクトに基づく注意（Object-based attention）は、コヒーレントなオブジェクトを形成する知覚的にグループ化された要素に作用し、単なる空間位置や個別特徴ではなく、オブジェクト全体の表現を選択することを示唆しています [<a href="#ref5">5</a>, <a href="#ref25">25</a>, <a href="#ref27">27</a>]。</p>
+
+        <h3>2.2 セルフアテンション</h3>
+        <p>現代の計算アテンションにおける主要なメカニズムは、セルフアテンション層です。標準的な形式 <a href="#ref26">[26]</a> では、セルフアテンションはそれぞれ d<sub>in</sub> 次元の N 個の入力ベクトルのセットに対して作用し、学習された重み行列 W<sub>O</sub> および W<sub>K</sub> を介してそれらを線形変換し、クエリ（Q）行列およびキー（K）行列を取得します。</p>
+        <p class="equation">
+            S = softmax( QK<sup>T</sup> / √d<sub>k</sub> ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (1)
+        </p>
+        <p>ここで d<sub>k</sub> はキーベクトルの次元数です。アテンションスコア S は入力要素がどの程度関連しているかを示します。S はさらに、入力の線形変換でもある行列 V と組み合わされ、全体のコンテキストを考慮した各入力の表現を含む文脈表現 A = SV を形成します。</p>
+
+        <h3>2.3 プロトオブジェクトと情報ボトルネック</h3>
+        <p>プロトオブジェクトは、生の視覚的特徴と完全に認識されたオブジェクトの中間に位置する中間表現です [<a href="#ref19">19</a>, <a href="#ref28">28</a>]。これらは前注意処理（pre-attentive processing）段階で形成され、共通の視覚的プロパティを共有する視野のコヒーレントな領域を表します。 these structures は、完全なオブジェクト認識が発生する前のアテンションの候補として機能し <a href="#ref16">[16]</a>、視覚システムが処理リソースの優先順位を効率的に設定できるようにします。</p>
+        <p>視覚処理における情報ボトルネックは、タスクに関連する情報を保持しながら、高次元の視覚入力をより扱いやすい表現に圧縮する役割を果たします [<a href="#ref11">11</a>, <a href="#ref23">23</a>]。これらのボトルネックは、初期の視覚的特徴からオブジェクト認識まで、処理のさまざまなレベルで発生する可能性があり、視覚処理に必要な計算リソースを管理する上で重要な役割を果たします <a href="#ref29">[29]</a>。プロトオブジェクトの形成自体が自然な情報ボトルネックを表しており、行動に関連する情報を維持しながら視覚シーンの複雑さを軽減します <a href="#ref28">[28]</a>。</p>
+    </section>
+
+    <section id="related-work">
+        <h2>3 関連研究</h2>
+        <p>本アプローチは、視覚的注意、強化学習、およびディープラーニングにおける複数の研究領域に基づいて構築・拡張されています。ここでは、視覚処理の効率化と注意機構の課題に対処するアプローチに焦点を当て、本貢献の背景となる最も関連性の高い先行研究をレビューします。</p>
+
+        <h3>3.1 自己解釈可能なエージェント</h3>
+        <p>Tangらによる最近の研究 <a href="#ref22">[22]</a> では、強化学習におけるハードアテンション機構の利用が探求されました。彼らの手法は視覚入力を7x7のパッチに分割し、変更されたセルフアテンション機構を適用して処理のために上位k個のパッチのみを選択します（図2を参照）。これにより情報ボトルネックが作成され、モデルは他の入力を無視しながら最も関連性の高い入力に集中せざるを得なくなります。視覚ベースの強化学習タスクに適用した場合、この手法により、エージェントは従来の方式よりも大幅に少ないパラメータで、より優れた性能、解釈可能性、計算効率を達成できました。本手法は、パッチの代わりにプロトオブジェクトを使用し、トークンの数とその次元数を削減しつつ、それらに高レベルの情報を付加する点で主に異なります。</p>
+
+        <figure>
+            <video src="patches-video_best.npz_ep1.mp4" controls></video>
+            <figcaption><strong>図 2:</strong> エージェントは現在のフレームからパッチを抽出し、ハードアテンション機構によって上位k個（白でハイライト）を選択します。選択されたパッチを可視化することで、学習された戦略をより良く理解できるようになり、デバッグも容易になります。</figcaption>
+        </figure>
+
+        <h3>3.2 プロトオブジェクトに基づくアプローチ</h3>
+        <p>Orabonaら <a href="#ref16">[16]</a> は、視覚的注意の基本単位としてのプロトオブジェクトの有効性を実証しました。彼らの研究は、中間表現としてプロトオブジェクトを使用することで、シーン内の潜在的なオブジェクトに自然に対応し、意味のある視覚的特徴を維持しながら効率的な処理が可能になることを示しました。</p>
+
+        <p>ブロブ（色領域）からのより高レベルな情報を入力として利用するアイデアは、Blob-PROSTに関するLiangら <a href="#ref12">[12]</a> の研究でさらに探求されました。彼らのアプローチは、カラーブロブに基づく視覚的特徴が、大幅に少ないパラメータでありながらDQN <a href="#ref15">[15]</a> と競争力のある性能を達成できることを示しました。核心となる洞察は、ゲーム画面を「ブロブ」（多くの場合ゲームオブジェクトに対応する同じ色の画素の連続領域）の観点から表現することでした。これは、同一色の画素に限定されない私たちのプロトオブジェクト利用の特殊なケースと言えます。この表現は、ブロブ間の位置および相対オフセット特徴と組み合わされ、空間的および時間的関係の両方を捉えました。しかし、彼らの表現は1億を超えるバイナリ特徴で構成されていたのに対し、私たちの手法は個別に対応可能な単一プロトオブジェクトのコンパクトな表現に基づいています。</p>
+
+        <h3>3.3 オブジェクトに基づく強化学習</h3>
+        <p>プロトオブジェクトに基づくアプローチが中間表現に焦点を当てているのに対し、一部の研究者は本格的なオブジェクトを扱う方向に進んでいます。WoofとChen <a href="#ref30">[30]</a> は、エンドツーエンドのビデオゲームプレイではなく、高レベルオブジェクト（ゲーム画面上の識別可能なエンティティなど）の表現を実験しました。しかし、彼らはオブジェクトが事前に入力されていると仮定しており、ゲームエンジンや特定のオブジェクト検出器へのアクセスを必要とします。</p>
+
+        <p>より堅牢なアプローチ <a href="#ref1">[1]</a> では、オブジェクトレベルの表現を直接操作することで、強化学習タスクにおけるサンプル効率が劇的に向上することが示されました。彼らの手法は、まず画像をプリミティブなセグメントに過剰分割（oversegmentation）し、そのダイナミクスをモデル化してから、同様のダイナミクスを持つセグメントを結合することにより、教師なしで画素から簡潔なオブジェクト表現を学習します。彼らの手法は、重要なイベントはオブジェクトが相互作用するときに発生する傾向があるという洞察を活用し、これを利用してオブジェクトの接触を含む状態へと探索を誘導します。彼らのアプローチは印象的な結果を達成していますが（従来のDeep RL手法よりも最大10,000倍速く学習し、場合によっては人間の学習速度を上回る）、オブジェクト検出と追跡のために重大な計算オーバーヘッドを必要とします。これが、処理効率と表現力のバランスを提供するプロトオブジェクトアプローチの探求を後押ししています。</p>
+    </section>
+
+    <section id="method">
+        <h2>4 プロトオブジェクトに基づくアテンショナルエージェント</h2>
+        <p>本研究は、コンピュータビジョン、ディープラーニング、進化計算における複数の研究方向性を発展させ、それらを結びつけるものです。視覚的注意の生物学的モデル、効率的なニューラルアーキテクチャ、および古典的なコンピュータビジョン技術からの洞察を組み合わせ、各手法の強みを活かしたハイブリッドシステムを構築します。生の画素や任意のパッチではなく、プロトオブジェクトに対してハードアテンションメカニズムを適用します。この手法は、Kochら <a href="#ref11">[11]</a> が生物システムで観察したような情報ボトルネックを実装しつつ、[<a href="#ref16">16</a>, <a href="#ref19">19</a>] で説明されている意味のあるプロトオブジェクト上で動作します。処理のために最も関連性の高いプロトオブジェクトのみを選択することで、従来のアプローチよりもセマンティックに意味のあるレベルで情報ボトルネックを作成します。</p>
+
+        <p>上位k個のプロトオブジェクトの離散的な選択とコントローラへの座標の転送は、勾配ベースの手法にとっては困難ですが進化型アプローチには自然な非微分操作を作成するため、この組み合わせはニューロエボリューション（神経進化）に非常に適しています。さらに、モデルに視覚入力のどの部分を処理するかを明示的に選択させることで、直接的な解釈可能性が得られます。モデルが決定において重要とみなすプロトオブジェクトを正確に可視化でき、従来のディープラーニングアプローチでは欠けがちな意思決定プロセスへの洞察が提供されます。</p>
+
+        <h3>4.1 実装</h3>
+        <p>本手法は主に5つのステージ（畳み込み、量子化、セグメンテーション、アテンション、制御）で構成されており、以下に説明します。</p>
+
+        <h4>4.1.1 畳み込み</h4>
+        <p>畳み込みステージは、元の画像チャンネルをシフト、スケーリング、フィルタリング、および/または混合し、次のステージのための前処理された表現を提供することを目的とします。特に私たちの実験では、3つの1x1フィルタを持つ単一の畳み込み層を使用します。3つのフィルタの選択は、残差接続（residual connection）との互換性のために必要です。同じ画像サイズを維持する限り、より多くの畳み込み層を追加することも可能です。この場合、3つのフィルタを持つ最終層を追加するだけで、次元数を画像内のチャンネル数と同じ数まで減らすことができます。その後、元の画像を畳み込み出力に加算して残差接続 <a href="#ref9">[9]</a> を形成します。その機能は次のステージで明確になります。</p>
+
+        <h4>4.1.2 量子化</h4>
+        <p>量子化は、次のステージで処理される情報量を減らすことを目的とします。私たちの実験では、チャンネルあたり1ビットを使用して畳み込み出力の単純な一様量子化を行います（より複雑なタスクでは増やしてもよく、進化させることも可能です）。結果として、最大8つの異なる色を持つ画像が得られ、それぞれが異なる種類のセグメントを表します。単純な固定量子化であることに加え、直前の畳み込み層との組み合わせにより、適応的なセグメンテーションおよび量子化機構が実現されることに注意してください。</p>
+
+        <p>このステージは畳み込みとシナジーがあります。元の画像チャンネルのシフト、スケーリング、混合により、それらを異なる量子化ビンに配置できます。しかし、適切なセグメンテーションを見つけるために必要な進化適応度曲面には不連続なジャンプが存在し、進化アルゴリズムがそれを解明するのに時間がかかる可能性があるため、前のステージの残差接続を使用して、元の画像の色に対する自明なセグメンテーションから進化をキックスタートさせます。したがって、畳み込みの目的は、必要に応じてセグメンテーションを自明なものから変化させることです。</p>
+
+        <h4>4.1.3 セグメンテーション</h4>
+        <p>セグメンテーションは、プロトオブジェクト、つまり前のステージから受け取ったセマンティックに類似した画素領域の記述子を作成することを目的とします。本研究では、色連結領域による画像ラベル付けを適用します [<a href="#ref7">7</a>, <a href="#ref20">20</a>]。抽出された各領域から一連の属性を取得でき、d<sub>in</sub> 個の特徴が得られます（幅または高さが1画素の領域はノイズとして処理され無視されます）。</p>
+
+        <p>徹底的な実験の結果、d<sub>in</sub> = 11 個の特徴のセットを最終的に選択しました。すなわち、量子化セグメントの色（R, G, B）、重心（X, Y）、画素単位の総面積、バウンディングボックスの幅、バウンディングボックスの高さ、バウンディングボックスの面積、アスペクト比、およびエクステント（バウンディングボックス面積に対する領域面積の比率）です。これらはすべて得られた領域から簡単かつ効率的に計算でき、次のステージがより情報に基づいた決定を下すのに役立ちます。向き（画素座標間の相関）も有用である可能性がありますが、モデルに実行時のオーバーヘッドが加わりすぎるため除外されました。すべての値は-1から1の間に正規化され、アスペクト比も対数変換されて1と-1が極端な比率に対応し、0が等辺を意味するようになります。</p>
+        <p class="equation">
+             NormAspectRatio = 2 * log(aspectRatio) / log(max(imageWidth, imageHeight)) - 1
+        </p>
+
+        <h4>4.1.4 アテンション</h4>
+        <p>アテンションモジュールは、セグメンテーションステージで特定されたプロトオブジェクト間の関係をモデル化することを目的としています。N個のプロトオブジェクトの特徴は、アテンションの用語で言うN個の d<sub>in</sub> 次元トークンのセットとしてモデルのアテンション層に入力されます <a href="#ref26">[26]</a>。アテンション層はこれらのトークンを2つの d<sub>q</sub> 次元ベクトル Q および K に埋め込みます。ただし、私たちの実装には追加の工夫があります。線形変換の前後にパラメトリック整流線形ユニット（PReLU）層を追加しています。PReLUはReLU活性化の一般化であり、負の部分の傾きが各層またはニューロン（私たちの場合は後者）に対して適応的です（PReLU(x) = max(ax, x)）。わずか15個の追加パラメータで、単一のPReLUニューロンがXOR問題を解決できることが示されているため <a href="#ref17">[17]</a>、アテンション層がより複雑な関係をモデル化できるようになります。私たちのケースでは、a が負のときに中間値（グレーの色など）の選択を可能にし（関数を非単調にします）、これは純粋な線形層では不可能です。代わりに従来のセルフアテンションの層を増やすこともできますが、パラメータ数と実行時間を低く抑えるため、本研究ではよりシンプルなPReLUソリューションを選択しました。</p>
+
+        <p>通常のセルフアテンション手順を進めると、式1によってアテンション行列が計算され、行ごとの総和によって重要度ベクトルが得られます。従来のセルフアテンションで行われるV行列によるトークンの通常の混合を行う代わりに、得られた行ごとの総和に対して単に上位k個のプロトオブジェクト選択を実行します。</p>
+
+        <p>アテンション計算はトークン数 N に対して二次漸近時間複雑度を持つことに留意してください。パッチの代わりにプロトオブジェクトを使用することでトークン数を劇的に削減することで、アテンションモジュールの処理が大幅に高速化されます。</p>
+
+        <p>実験では極端に詰め、k = 1 に設定しました（単一のプロトオブジェクトの座標がコントローラに渡されます）。当社のアテンションモジュールはオリジナルよりも表現力が高く、プロトオブジェクトにはより高レベルの情報が含まれているため、コントローラが決定を下すには単一の適切に選択されたプロトオブジェクトで十分です（選択が優れているほどコントローラの負担が減ります）。また、一度に1つの視覚項目に焦点を当てるため、生物学的にもより妥当です <a href="#ref4">[4]</a>。</p>
+
+        <h4>4.1.5 制御</h4>
+        <p>最後に、制御ステージは環境内で実行するアクションを選択します。実装では、選択されたプロトオブジェクトからの各特徴ベクトルに伝達関数 f(n) が適用され、結果が連結されてLSTM <a href="#ref10">[10]</a> コントローラへの入力として供給されます。このコントローラは時間的関連付けを学習し、制御出力を生成する役割を果たします。</p>
+
+        <p>私たちのケースでは、f(n) はプロトオブジェクトの重心座標のみを返します。選択された各プロトオブジェクトのより多くのプロパティをコントローラに供給するためにより精巧な伝達関数を使用することもできますが、私たちの問題には重心で十分でした。これは、アテンションモジュールと制御モジュールの共同進化によって暗黙の「合意」が生まれるためです。常に同じ種類のプロトオブジェクト（芝生、コースなど）を選択することにより、コントローラがそれがどれかを推測する必要がなくなります。アテンションが毎回異なる種類のプロトオブジェクトに焦点を当てていた場合、それらが画面の特定領域に一貫して表示され位置によって区別可能（画面下部に常にあるヘッドアップディスプレイなど）でない限り、座標だけでそれらを区別することは不可能です。また、アテンションモジュールが一貫して同じ種類のプロトオブジェクトを同じランキング順位（例えば芝生が1位、コースが2位など）に配置する場合にもコントローラによって区別できますが、これは学習すべき追加の複雑さとなります。</p>
+
+        <h3>4.2 概要</h3>
+        <p>ハイパーパラメータの選択と画像パッチに基づく先行研究 <a href="#ref22">[22]</a> との違いの要約を表1に示します。また、各モデルで得られた学習可能パラメータの数も示されており、コンパクトなアテンション層と k = 1 のより小さなボトルネックにより、モデル全体が大幅に（62%）小さくなっていることがわかります。プロセス全体は図3で確認できます。このモデルは非微分可能ですが、CMA-ES <a href="#ref8">[8]</a> などの微分フリーな最適化手法を介して学習可能です。</p>
+
+        <table>
+            <caption><strong>表 1:</strong> パッチベースモデル <a href="#ref22">[22]</a> とプロトオブジェクトベースモデル（提案手法）におけるハイパーパラメータおよび学習可能パラメータ数の比較。後者は学習可能パラメータ数を62%削減しています。</caption>
+            <thead>
+                <tr>
+                    <th>モデルのハイパーパラメータ</th>
+                    <th>パッチ <a href="#ref22">[22]</a></th>
+                    <th>プロトオブジェクト（提案手法）</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>アテンション入力サイズ (d<sub>in</sub>)</td><td>147</td><td>11</td></tr>
+                <tr><td>埋め込みサイズ (d)</td><td>4</td><td>2</td></tr>
+                <tr><td>K</td><td>10</td><td>1</td></tr>
+                <tr><td>f(n) 次元数</td><td>2</td><td>2</td></tr>
+                <tr><td>LSTM 入力サイズ</td><td>20</td><td>2</td></tr>
+                <tr><td>LSTM ニューロン数</td><td>16</td><td>16</td></tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <th>学習可能パラメータ数</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+             <tbody>
+                <tr><td>畳み込み</td><td>0</td><td>12</td></tr>
+                <tr><td>アテンション</td><td>1184</td><td>63</td></tr>
+                <tr><td>LSTM</td><td>2432</td><td>1280</td></tr>
+                <tr><td>出力</td><td>51</td><td>51</td></tr>
+                <tr><td><strong>合計</strong></td><td><strong>3667</strong></td><td><strong>1406</strong></td></tr>
+            </tbody>
+        </table>
+
+        <figure>
+            <img src="flowchart.svg" loading="lazy" alt="完全なプロセスのフローチャート">
+            <figcaption><strong>図 3:</strong> 完全なプロセスのフローチャート。実験では、H = W = 96、F = 11（セグメント特徴の数）、d<sub>q</sub> = 2、M = 2（各トークンからx, y座標のみを使用）、k = 1、および O = 3（両環境の出力数）です。画像サイズを保持し、最後の層に残差接続と一致する3つのフィルタがある限り、任意の数の畳み込み層を使用できます。ここでは3つの1x1フィルタからなる1つの層を使用しています。量子化はチャンネルあたり1ビット（8色）に設定されています。PはPReLU活性化関数です。緑色の要素は <a href="#ref22">[22]</a> に対して新規に追加された部分です。</figcaption>
+        </figure>
+    </section>
+
+    <section id="experiments">
+        <h2>5 実験と結果</h2>
+        <p>提案手法を <a href="#ref22">[22]</a> のパッチベースの手法と比較するため、<a href="#ref22">[22]</a> と同じ環境（CarRacing および Doom-TakeCover）<a href="#ref3">[3]</a> でテストを行います。両方について、128の解の個体群を持つCMA-ESを1000世代実行し、毎世代8つのシードでモデルを評価します。シードは世代番号と反復番号に基づいています。100世代ごとに400個の新しいシードでモデルをテストし、平均と分散を抽出して95%信頼区間を生成します。統計的有意性は両側マン・ホイットニーのU検定 <a href="#ref13">[13]</a> から取得されます。<a href="#ref22">[22]</a> における元の実験は、それぞれ16個のシードと256個の解の個体群で2000世代実行されたため、直接比較はできないことに注意してください。ハードウェアの制限により、これらの各ハイパーパラメータを半分にし、公平な比較のためにこの新しいセットアップで元の実験を再度実施しました。</p>
+        <p>実験は次のハードウェアセットアップで実行されました：AMD Ryzen 5950X CPU、128GB DDR4 3200 RAM、Nvidia RTX 3090 GPU。トレーニングは32スレッドに並列化され、各評価は単一スレッドに制限されました。パッチベースのソリューションはGPUを活用しましたが、マルチラベル連結成分の解析とラベル付けがGPUに適していなかったため、本手法はCPU用に最適化されました。</p>
+
+        <h3>5.1 Car Racing</h3>
+        <p>これは、ランダムに生成されたコースを備えた俯瞰型のレーシング環境です（図1および2を参照）。視覚的に十分にシンプルであるため、提案手法の畳み込みおよび量子化ステージをスキップすることも可能ですが、手法の汎用性を検証するためにとにかく実行します。報酬はフレームごとに-0.1、コースから大きく外れた場合は-100（終了の原因にもなります）、訪問したトラックタイルごとに+1000/Nです（Nはトラック内で訪問したタイルの総数。タイルはわずかに異なる灰色の影として表示されます）。900ポイント以上で解決とみなされます。これにより、コントローラが迅速かつ正確であることが奨励されます。3つの連続アクションがあります：ステアリング（-1が左全開、+1が右全開）、アクセル、ブレーキ。この環境のバージョンV2が利用可能ですが¹、Pygame ² を使用しているため低速です。OpenGLを使用することで2倍高速なV0を使用し、さらに2倍の高速化をもたらす独自の最適化を実装しています。新しいAPI <a href="#ref24">[24]</a> との互換性、および優れたハードウェア/ソフトウェア互換性を除けば、両バージョン間に有意な違いはありません。</p>
+
+        <p>提案手法はサンプル効率が高く、トレーニング全体を通じて平均スコアが優れており、トレーニング後に910.39という有意に優れた（p = 1.1e-22）スコアを達成しました（図4）。さらに表2が示すように、フレームあたりのトークン数はパッチベースのソリューションのわずか2%で、調整可能パラメータは62%少ない状態で行われました。そしてCPU上で動作しているにもかかわらず、GPU上で動作したパッチベースの手法と比較して2.7倍高速に学習しました。</p>
+        <p><small>¹<a href="https://gymnasium.farama.org/environments/box2d/car_racing/" target="_blank" rel="noopener noreferrer">https://gymnasium.farama.org/environments/box2d/car_racing/</a></small><br>
+        <small>²<a href="https://www.pygame.org" target="_blank" rel="noopener noreferrer">https://www.pygame.org</a></small></p>
+
+        <figure>
+            <img src="learning_curves_comparison_carracing.png" loading="lazy" alt="各表示世代におけるトレーニングサンプルコース外の400回のテストランにわたるCar Racing環境での学習曲線の比較">
+            <figcaption><strong>図 4:</strong> 各表示世代におけるトレーニングサンプルコース外の400回のテストランにわたるCar Racing環境での学習曲線の比較。提案するプロトオブジェクト手法は、<a href="#ref22">[22]</a> のパッチベースの手法と比較して、1000世代後に有意に優れた結果を達成しています。両者とも1000世代でピークに達しました。</figcaption>
+        </figure>
+
+        <figure>
+            <img src="evolution.png" loading="lazy" alt="5つの関連する時点におけるセグメンテーションの進化。基本となるアテンション戦略（小さめの芝生領域に焦点を当てる。白でハイライトされ、重心は黒、その他の重心はピンク）はプロセスの初期段階で学習されますが、セグメンテーションは最後まで進化し続けます">
+            <figcaption><strong>図 5:</strong> 5つの関連する時点におけるセグメンテーションの進化。基本となるアテンション戦略（小さめの芝生領域に焦点を当てる。白でハイライトされ、重心は黒、その他の重心はピンク）はプロセスの初期段階で学習されますが、セグメンテーションは最後まで進化し続けます。左上：リサイズ後・セグメンテーション前の生画像。中央上（100世代）：元の色からの自明なセグメンテーションが最初の数百年世代の間維持されます。右上（300世代）：コースを下のヘッドアップディスプレイ（HUD）から分離することを学習し、ABSセンサーの一部を識別します。左下（800世代）：コースとHUDのセグメンテーションを入れ替え、車を可視化し、赤色のコーナーマーカーを識別し、ジャイロスコープインジケータを非表示にします。また、コーナーの白いマーキングをスコアおよび速度インジケータから識別し、ABSセンサーを再び結合します。中央下（900世代）：コースセグメントを識別します。右下（1000世代）：コースのきめ細かなセグメンテーションを諦め、スコアのいくつかの画素における極めて小さな無関係な変化を除き、以前のセグメンテーション戦略に戻ります。</figcaption>
+        </figure>
+		
+        <p>図5に示すように、この実験の興味深い側面はセグメンテーションとアテンションの進化を観察することです。解はタスクの元の色に対する自明な量子化から始まりますが、コースが暗いため、画面下部の黒いヘッドアップディスプレイ（HUD）と結合してしまいます。それにもかかわらず、通常は車が曲がるべき方向を指し示しているため、小さな芝生領域に集中する方法をすでに知っています。300世代でコースをHUDから分離することを学び、800世代で車と赤色のコーナーマーカーをコースから分離します。車は役に立ちませんが（常に同じ場所にあり、他の実験ではコースと結合されていました）、赤色のマーカーは隣接する芝生領域に対して（クエリとして）「投票」することで、正しい旋回方向を強化できます。900世代でコースタイルをセグメント化することを学びますが、最終解ではそれを破棄します。処理ステップに分解された最終解は図6で確認できます。</p>
+
+		<figure>
+			<video src="video_carracing_proto-objects_iter_1000.mp4" controls width="100%"></video>
+			<figcaption><strong>図 6:</strong> Car Racing環境における処理ステージ。左上：96x96にリサイズされた生画像。右上：1x1畳み込み + 残差。左下：量子化。右下：k=1のアテンション。
+			</figcaption>
+		</figure>
+
+        <h3>5.2 Doom Take Cover</h3>
+        <p>このタスクはゲームDoomに基づいており、前のタスクよりも視覚的に複雑でかなり多くの色を含んでいます（図8の左上を参照）。そのため、膨大な数のセグメント防ぐために畳み込みと量子化のステップが厳密に必要となります。長方形の部屋で実施されます。エージェントは壁に沿ってスポーンし、モンスターは反対側の壁に沿って絶えずランダムにスポーンします。モンスターはエージェントに向かって火の玉を撃ち続け、エージェントは生き残るためにそれらを避けなければなりません。エージェントは生存しているチック（tic）ごとに1報酬ポイントを獲得し、左に移動、右に移動、または静止の3つの離散アクションを持ちます。</p>
+
+        <figure>
+            <img src="learning_curves_comparison_takecover.png" loading="lazy" alt="各表示世代におけるトレーニングサンプルシード外の400回のテストランにわたるDoom Take Cover環境での学習曲線の比較">
+            <figcaption><strong>図 7:</strong> 各表示世代におけるトレーニングサンプルシード外の400回のテストランにわたるDoom Take Cover環境での学習曲線の比較。k = 1での提案手法はサンプル効率がやや低かったものの、1000世代後に700世代でピークパフォーマンスを達成した <a href="#ref22">[22]</a> と同様のパフォーマンスを達成しました（最良解間で p = 0.414）。しかし、k = 10（パッチベースのセットアップと同じ）とし、本文で詳述するさらなる調整を行うことで、提案解は優れたサンプル効率を示し、700世代で有意に高い（p = 2.8e−5）パフォーマンス（1193スコア）を達成しました。</figcaption>
+        </figure>
+
+        <figure>
+            <video src="video_iter_1000.npz_ep1.mp4" controls width="100%"></video>
+            <figcaption><strong>図 8:</strong> Doom Take Cover環境における処理ステージ。左上：96x96にリサイズされた生画像。右上：1x1畳み込み + 残差。左下：量子化。右下：アテンション。この解は量子化ステージ以降、火の玉を完全に無視していることに注意してください。</figcaption>
+        </figure>
+
+        <p>学習曲線を図7に示します。提案アプローチはサンプル効率がやや低く、パッチベースモデルのパフォーマンスに到達するまでに（p = 0.414）より多くの世代を必要としました。また、d<sub>q</sub> = 4、k = 10（パッチベースのセットアップと同じ）および 3x3 畳み込み（2671パラメータ）でも実験を行ったところ、このソリューションはサンプル効率が向上し、55時間のトレーニングで1193スコアという有意に高い（p = 2.8e-5）パフォーマンスを達成しました。パフォーマンスの低下は k = 1 に起因すると推測されます。つまり、LSTMが画面上の複数の関心プロトオブジェクトに対応するのにより困難な作業を強いられ、一部を完全に逃したり、弾道が存在しないときにアクティブになる壁のプロトオブジェクトを破棄することを学習したりする必要があるためです。</p>
+
+        <table>
+             <caption><strong>表 2:</strong> 結果の比較。フレームあたりのトークン数は通常のパッチベースモデルでは固定ですが、プロトオブジェクトベースモデルでは可変です。提案手法は現在CPU用に最適化されています。トークン数のセクションではnはフレーム数を指し、スコアでは実行回数に相当します。</caption>
+             <thead>
+                 <tr>
+                     <th></th>
+                     <th>パッチ <a href="#ref22">[22]</a></th>
+                     <th>プロトオブジェクト（提案手法）</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 <tr><td colspan="3"><strong>最良解のトークン数および95%信頼区間 (n=800)</strong></td></tr>
+                 <tr><td>Car Racing</td><td>529</td><td>12.6 ± 0.26</td></tr>
+                 <tr><td>Doom Take Cover</td><td>529</td><td>10.7 ± 0.73</td></tr>
+                 <tr><td colspan="3"><strong>1000イテレーション後の最高スコアおよび95%信頼区間 (n=400)</strong></td></tr>
+                 <tr><td>Car Racing</td><td>888.69 ± 5.84</td><td>910.39 ± 1.28</td></tr>
+                 <tr><td>Doom Take Cover</td><td>959.27 ± 58.85</td><td>930.68 ± 57.19 (k = 1)<br>1192.82 ± 75.26 (k = 10)</td></tr>
+                 <tr><td colspan="3"><strong>学習時間</strong></td></tr>
+                 <tr><td>Car Racing</td><td>97時間 (GPU)</td><td>36.5時間 (CPU)</td></tr>
+                 <tr><td>Doom Take Cover</td><td>85.5時間 (GPU)</td><td>33時間 (k = 1, CPU)<br>55時間 (k = 10, CPU)</td></tr>
+             </tbody>
+        </table>
+
+        <p>表2は、この環境でも抽出されたプロトオブジェクトの数が少なかったことを示しており、意思決定に必要な情報を保持しながら、さまざまなドメインの視覚的複雑さを軽減および均一化する上で前処理ステップが有効であることを示しています。学習時間は k = 1 で 2.6 倍高速、k = 10 で 1.6 倍高速でした。</p>
+        <p>Doom環境における主要な処理ステージを図7に示します：画像のリサイズ、1x1畳み込み、カラー量子化、およびアテンション（k = 1）。驚くべきことに、進化させたエージェントは飛んでくる火の玉のような一見重要な要素を無視するという、驚くほどミニマリストな戦略を採用します。代わりに、リズム感のある左右の移動パターンを実行しながら、画面の一番右にいるモンスターだけに焦点を当てます。この戦略は、火の玉と壁の両方にアテンションを向けるパッチベースモデルの性能と同等です。単純なアプローチとの同等性は、パッチベースモデルのLSTMも主に周期的な移動に依存しており、飛翔体の座標を無視している可能性を示唆しています。モンスターの飛翔体はエージェントの現在位置を標的にするため、連続的な移動は飛来する火の具体的な位置に関係なく堅牢な回避技術として機能するため、この戦略は有効です。ただし、k = 10 のエージェントは火の玉に対してより反応的であるように見えます。</p>
+    </section>
+
+    <section id="conclusion">
+        <h2>6 結論と今後の課題</h2>
+        <p>視覚タスクにおいて、生の画素や画像パッチではなくプロトオブジェクト上で動作する、ボトルネックアテンションベースのエージェント向けの新しい表現を提示しました。古典的なコンピュータビジョン手法によって得られたこれらの前注意的なプリミティブオブジェクトを扱うことで、先行研究と比較してアテンションを向けるトークン数とその次元数、および学習時間を劇的に削減しながら、同等以上の性能を達成しました。このハイブリッドアプローチの成功は、このようなモデルを訓練するための進化手法の主な利点の1つを浮き彫りにしています。それは、勾配ベースの最適化の要件に制約されることなく、微分可能コンポーネントと非微分可能コンポーネントを組み合わせる自由度です。それにもかかわらず、提案手法の完全微分可能なバージョンを開発することは、サンプル効率を大幅に向上させる可能性があるため、今後の課題として魅力的な方向性であり続けます。</p>
+
+        <p>実験により、ボトルネックアテンションモデルは進化中に局所解（ローカルマキシマ）に陥りやすいことが明らかになりました。アプローチが一度確立されると、コントローラが現在の注意機構に特化適応するため、デュアルモジュールアーキテクチャ（アテンションと制御）において新しいアテンション戦略を発見することが困難になります。アテンションモジュールに重大な変更を加えると、この繊細なバランスが崩れるリスクがあります。CMA-ESはこのアーキテクチャに対して貪欲（greedy）すぎる可能性があり、差分進化 <a href="#ref21">[21]</a> などの代替手法が、複数のアテンション戦略を並列進化させることでより適しているのではないかと推測しています。</p>
+
+        <p>アテンション層を強化することにより、単一のプロトオブジェクトの座標をコントローラに送信するだけで有効なポリシーを生成するのに十分であることを示しました。これは、LSTMがフレーム間で内部状態表現を維持および更新し、保存または破棄する情報を決定できるため機能します。このアプローチは、個々の場所やオブジェクト間で焦点が必然的に移動する生物学的な眼球運動とよく一致しています <a href="#ref4">[4]</a>。しかし、この単純化された情報フローは、画面上に複数の関連エンティティがある場合に学習時間が長くなるという代償を伴います。アテンションモジュールがそれらすべてに対応する必要があり、コントローラが高度なメモリ管理戦略を開発する必要があるためです。可能性のある解決策の1つは、メモリと制御を切り離すことであり、おそらく最近アテンションを向けた座標に対してアテンション機構を実装し、コントローラ用の固定サイズ埋め込み <a href="#ref18">[18]</a> を生成することです。これはさらに拡張して、ベクターデータベースからの適応的なストレージと取得を含めることもできます。</p>
+
+        <p>本研究から、今後の研究に向けたいくつかの有望な方向性が浮かび上がります。コントローラからのフィードバック信号がアテンションを調整し、アクティブなトップダウン戦略を可能にする可能性があります。これには、コントローラが着信信号を解釈するのを助けるために、アテンションモジュールからの情報フローを充実させることが必要になります。マルチヘッドアテンションはもう1つの自然な拡張を表します。追加の畳み込み層と処理の深さ（利用可能な場合）およびモーション情報を組み込むことで、このアプローチは完全なオブジェクト認識にスケールアップする可能性があります。セルフアテンション機構により、領域をより高レベルのエンティティに自律的にグループ化できる一方、クロスアテンションにより、フレーム間でのオブジェクト追跡が容易になる可能性があります。</p>
+
+        <p>最後に、極めて重要な次のステップは、現実世界の画像で提案手法を検証し、畳み込みおよび量子化ステージでの複雑さの増加が必要か、あるいはそのようなシナリオではパッチベースのアプローチの方が効果的であるかを判断することです。この領域での成功は、より効率的なロボットおよび自動運転車システムにつながり、処理ユニットあたりの高度な知能を可能にしながら計算要件を軽減できます。</p>
+    </section>
+
+    <section id="acknowledgments" class="acknowledgments">
+        <h2>謝辞</h2>
+        <p>著者らは、資金援助に対してFAPERGS（Notice 10/2021 – ARD/ARC）に感謝いたします。本研究は、リオグランデ・ド・スル連邦教育科学技術機関（IFRS）の支援も受けました。</p>
+    </section>
+
+    <section id="references" class="references">
+        <h2>参考文献</h2>
+        <ol>
+            <li id="ref1"><span class="ref-content">William Agnew and Pedro Domingos. 2018. Unsupervised Object-Level Deep Reinforcement Learning. Deep Reinforcement Learning Workshop (NIPS 2018).</span></li>
+            <li id="ref2"><span class="ref-content">Ali Borji and Laurent Itti. 2012. State-of-the-art in visual attention modeling. IEEE transactions on pattern analysis and machine intelligence 35, 1 (2012), 185-207.</span></li>
+            <li id="ref3"><span class="ref-content">Greg Brockman, Vicki Cheung, Ludwig Pettersson, Jonas Schneider, John Schulman, Jie Tang, and Wojciech Zaremba. 2016. OpenAI Gym. <a href="https://arxiv.org/abs/1606.01540" target="_blank" rel="noopener noreferrer">arXiv:1606.01540</a> [cs.LG]</span></li>
+            <li id="ref4"><span class="ref-content">Marisa Carrasco. 2011. Visual attention: The past 25 years. Vision Research 51, 13 (2011), 1484-1525. <a href="https://doi.org/10.1016/j.visres.2011.04.012" target="_blank" rel="noopener noreferrer">doi:10.1016/j.visres.2011.04.012</a> Vision Research 50th Anniversary Issue: Part 2.</span></li>
+            <li id="ref5"><span class="ref-content">Zhe Chen. 2012. Object-based attention: A tutorial review. Attention, Perception, &amp; Psychophysics 74 (2012), 784 - 802. <a href="https://doi.org/10.3758/s13414-012-0322-z" target="_blank" rel="noopener noreferrer">doi:10.3758/s13414-012-0322-z</a></span></li>
+            <li id="ref6"><span class="ref-content">Leif H. Finkel and Paul Sajda. 1992. Proto-objects: an intermediate-level visual representation, In Optical Society of America Annual Meeting. Optical Society of America Annual Meeting -, -, FO1. <a href="https://doi.org/10.1364/OAM.1992.FO1" target="_blank" rel="noopener noreferrer">doi:10.1364/OAM.1992.FO1</a></span></li>
+            <li id="ref7"><span class="ref-content">Christophe Fiorio and Jens Gustedt. 1996. Two linear time union-find strategies for image processing. Theoretical Computer Science 154, 2 (1996), 165-181.</span></li>
+            <li id="ref8"><span class="ref-content">Nikolaus Hansen. 2006. The CMA Evolution Strategy: A Comparing Review. Springer Berlin Heidelberg, Berlin, Heidelberg, 75-102. <a href="https://doi.org/10.1007/3-540-32494-1_4" target="_blank" rel="noopener noreferrer">doi:10.1007/3-540-32494-1_4</a></span></li>
+            <li id="ref9"><span class="ref-content">Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2016. Deep Residual Learning for Image Recognition. In 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR). IEEE Computer Society, Los Alamitos, CA, USA, 770-778. <a href="https://doi.org/10.1109/CVPR.2016.90" target="_blank" rel="noopener noreferrer">doi:10.1109/CVPR.2016.90</a></span></li>
+            <li id="ref10"><span class="ref-content">Sepp Hochreiter and Jürgen Schmidhuber. 1997. Long short-term memory. Neural computation 9, 8 (1997), 1735-1780.</span></li>
+            <li id="ref11"><span class="ref-content">Kristin Koch, Judith McLean, Ronen Segev, Michael A. Freed, Michael J. Berry, Vijay Balasubramanian, and Peter Sterling. 2006. How Much the Eye Tells the Brain. Current Biology 16, 14 (2006), 1428-1434. <a href="https://doi.org/10.1016/j.cub.2006.05.056" target="_blank" rel="noopener noreferrer">doi:10.1016/j.cub.2006.05.056</a></span></li>
+            <li id="ref12"><span class="ref-content">Yitao Liang, Marlos C. Machado, Erik Talvitie, and Michael Bowling. 2016. State of the Art Control of Atari Games Using Shallow Reinforcement Learning. In Proceedings of the 2016 International Conference on Autonomous Agents &amp; Multiagent Systems (Singapore, Singapore) (AAMAS '16). International Foundation for Autonomous Agents and Multiagent Systems, Richland, SC, 485-493.</span></li>
+            <li id="ref13"><span class="ref-content">H. B. Mann and D. R. Whitney. 1947. On a Test of Whether one of Two Random Variables is Stochastically Larger than the Other. The Annals of Mathematical Statistics 18, 1 (1947), 50-60. <a href="https://doi.org/10.1214/aoms/1177730491" target="_blank" rel="noopener noreferrer">doi:10.1214/aoms/1177730491</a></span></li>
+            <li id="ref14"><span class="ref-content">Volodymyr Mnih, Nicolas Heess, Alex Graves, and Koray Kavukcuoglu. 2014. Recurrent models of visual attention. In Proceedings of the 28th International Conference on Neural Information Processing Systems - Volume 2 (Montreal, Canada) (NIPS'14). MIT Press, Cambridge, MA, USA, 2204-2212.</span></li>
+            <li id="ref15"><span class="ref-content">Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis Antonoglou, Daan Wierstra, and Martin Riedmiller. 2013. Playing Atari with Deep Reinforcement Learning. <a href="https://arxiv.org/abs/1312.5602" target="_blank" rel="noopener noreferrer">arXiv:1312.5602</a> [cs.LG]</span></li>
+            <li id="ref16"><span class="ref-content">Francesco Orabona, Giorgio Metta, and Giulio Sandini. 2007. A Proto-object Based Visual Attention Model. In Attention in Cognitive Systems. Theories and Systems from an Interdisciplinary Viewpoint, Lucas Paletta and Erich Rome (Eds.). Springer Berlin Heidelberg, Berlin, Heidelberg, 198-215.</span></li>
+            <li id="ref17"><span class="ref-content">Rafael C. Pinto and Anderson R. Tavares. 2024. PReLU: Yet Another Single-Layer Solution to the XOR Problem. <a href="https://arxiv.org/abs/2409.10821" target="_blank" rel="noopener noreferrer">arXiv:2409.10821</a> [cs.NE]</span></li>
+            <li id="ref18"><span class="ref-content">Nils Reimers and Iryna Gurevych. 2019. Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. <a href="https://arxiv.org/abs/1908.10084" target="_blank" rel="noopener noreferrer">arXiv:1908.10084</a> [cs.CL]</span></li>
+            <li id="ref19"><span class="ref-content">Ronald A Rensink. 2000. The dynamic representation of scenes. Visual cognition 7, 1-3 (2000), 17-42.</span></li>
+            <li id="ref20"><span class="ref-content">William Silversmith. 2025. connected-components-3d: Connected Components on Discrete and Continuous Multilabel 3D &amp; 2D Images. GitHub. <a href="https://github.com/seung-lab/connected-components-3d" target="_blank" rel="noopener noreferrer">https://github.com/seung-lab/connected-components-3d</a></span></li>
+            <li id="ref21"><span class="ref-content">Rainer Storn and Kenneth V. Price. 1997. Differential Evolution - A Simple and Efficient Heuristic for global Optimization over Continuous Spaces. Journal of Global Optimization 11 (1997), 341-359. <a href="https://api.semanticscholar.org/CorpusID:5297867" target="_blank" rel="noopener noreferrer">https://api.semanticscholar.org/CorpusID:5297867</a></span></li>
+            <li id="ref22"><span class="ref-content">Yujin Tang, Duong Nguyen, and David Ha. 2020. Neuroevolution of self-interpretable agents. In Proceedings of the 2020 Genetic and Evolutionary Computation Conference (Cancún, Mexico) (GECCO '20). Association for Computing Machinery, New York, NY, USA, 414-424. <a href="https://doi.org/10.1145/3377930.3389847" target="_blank" rel="noopener noreferrer">doi:10.1145/3377930.3389847</a></span></li>
+            <li id="ref23"><span class="ref-content">Naftali Tishby, Fernando C. Pereira, and William Bialek. 2000. The information bottleneck method. <a href="https://arxiv.org/abs/physics/0004057" target="_blank" rel="noopener noreferrer">arXiv:physics/0004057</a> [physics.data-an]</span></li>
+            <li id="ref24"><span class="ref-content">Mark Towers, Ariel Kwiatkowski, Jordan Terry, John U. Balis, Gianluca De Cola, Tristan Deleu, Manuel Goulão, Andreas Kallinteris, Markus Krimmel, Arjun KG, Rodrigo Perez-Vicente, Andrea Pierré, Sander Schulhoff, Jun Jet Tai, Hannah Tan, and Omar G. Younis. 2024. Gymnasium: A Standard Interface for Reinforcement Learning Environments. <a href="https://arxiv.org/abs/2407.17032" target="_blank" rel="noopener noreferrer">arXiv:2407.17032</a> [cs.LG]</span></li>
+            <li id="ref25"><span class="ref-content">Stefan Treue and Julio C. Martínez Trujillo. 1999. Feature-based attention influences motion processing gain in macaque visual cortex. Nature 399 (1999), 575-579. <a href="https://api.semanticscholar.org/CorpusID:4424973" target="_blank" rel="noopener noreferrer">https://api.semanticscholar.org/CorpusID:4424973</a></span></li>
+            <li id="ref26"><span class="ref-content">Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. Attention is all you need. In Proceedings of the 31st International Conference on Neural Information Processing Systems (Long Beach, California, USA) (NIPS'17). Curran Associates Inc., Red Hook, NY, USA, 6000-6010.</span></li>
+            <li id="ref27"><span class="ref-content">Shaun P. Vecera and Martha J. Farah. 1994. Does visual attention select objects or locations? Journal of experimental psychology. General 123 2 (1994), 146-60. <a href="https://doi.org/10.1037//0096-3445.123.2.146" target="_blank" rel="noopener noreferrer">doi:10.1037//0096-3445.123.2.146</a></span></li>
+            <li id="ref28"><span class="ref-content">Dirk Walther and Christof Koch. 2006. Modeling attention to salient proto-objects. Neural Networks 19, 9 (2006), 1395-1407. <a href="https://doi.org/10.1016/j.neunet.2006.10.001" target="_blank" rel="noopener noreferrer">doi:10.1016/j.neunet.2006.10.001</a> Brain and Attention.</span></li>
+            <li id="ref29"><span class="ref-content">Jeremy M Wolfe. 1994. Guided search 2.0 a revised model of visual search. Psychonomic bulletin &amp; review 1 (1994), 202-238.</span></li>
+            <li id="ref30"><span class="ref-content">William Woof and Ke Chen. 2018. Learning to Play General Video-Games via an Object Embedding Network. In 2018 IEEE Conference on Computational Intelligence and Games (CIG). IEEE, Maastricht, Netherlands, 1-8. <a href="https://doi.org/10.1109/CIG.2018.8490438" target="_blank" rel="noopener noreferrer">doi:10.1109/CIG.2018.8490438</a></span></li>
+        </ol>
+    </section>
+
+</body>
+</html>
