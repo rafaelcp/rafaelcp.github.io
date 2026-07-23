@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于原型物体的自注意力神经演化</title>
+
+    <meta name="title" property="og:title" content="基于原型物体的自注意力神经演化">
+    <meta name="type" property="og:type" content="article">
+    <meta name="url" property="og:url" content="https://rafaelcp.github.io/neuroproto/">
+    <meta name="image" property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="description" property="og:description" content="原型物体（Proto-objects）——即共享公共视觉特征的图像区域——为神经网络中基于矩形图像块的传统注意力机制提供了一种极具前景的替代方案。尽管先前的研究表明，将基于图像块的硬注意力模块与控制器网络共同演化可以在视觉强化学习任务中达到最先进的性能，但我们的方法利用图像分割来处理更高层次的特征。通过对原型物体而非固定图像块进行操作，我们显著降低了表示复杂度：每张图像分解出的原型物体数量少于常规图像块，且每个原型物体都可以高效编码为紧凑的特征向量。这使得一个大幅缩小的自注意力模块能够处理更丰富的语义信息。我们的实验表明，这种基于原型物体的方法在减少 62% 参数量和 2.6 倍训练时间的条件下，达到或超越了基于图像块实现的最先进性能。">
+
+    <meta name="twitter:card" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:title" content="基于原型物体的自注意力神经演化">
+    <meta name="twitter:description" content="原型物体（Proto-objects）——即共享公共视觉特征的图像区域——为神经网络中基于矩形图像块的传统注意力机制提供了一种极具前景的替代方案。尽管先前的研究表明，将基于图像块的硬注意力模块与控制器网络共同演化可以在视觉强化学习任务中达到最先进的性能，但我们的方法利用图像分割来处理更高层次的特征。通过对原型物体而非固定图像块进行操作，我们显著降低了表示复杂度：每张图像分解出的原型物体数量少于常规图像块，且每个原型物体都可以高效编码为紧凑的特征向量。这使得一个大幅缩小的自注意力模块能够处理更丰富的语义信息。我们的实验表明，这种基于原型物体的方法在减少 62% 参数量和 2.6 倍训练时间的条件下，达到或超越了基于图像块实现的最先进性能。">
+
+    <style>
+        body {
+            font-family: serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+            color: #333;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: sans-serif;
+            color: #111;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        h2 {
+            font-size: 1.6em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.3em;
+        }
+
+        h3 {
+            font-size: 1.3em;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        p {
+            margin-bottom: 1em;
+            text-align: justify;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .authors-affiliations {
+            text-align: center;
+            margin-bottom: 2em;
+            font-family: sans-serif;
+        }
+
+        .author {
+            font-weight: bold;
+        }
+
+        .affiliation {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .email a {
+            font-size: 0.9em;
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .email a:hover {
+            text-decoration: underline;
+        }
+
+        .abstract {
+            margin-top: 2em;
+            margin-bottom: 2em;
+            padding: 1em;
+            background-color: #f9f9f9;
+            border-left: 3px solid #ccc;
+        }
+
+        .abstract h2 {
+            font-size: 1.4em;
+            border-bottom: none;
+            margin-top: 0;
+        }
+
+        figure {
+            margin: 2em auto;
+            text-align: center;
+            border: 1px solid #eee;
+            padding: 1em;
+            background-color: #fdfdfd;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5em auto;
+        }
+
+        figcaption {
+            font-size: 0.9em;
+            color: #555;
+            text-align: left;
+            margin-top: 0.5em;
+            font-family: sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2em 0;
+            font-family: sans-serif;
+            font-size: 0.9em;
+        }
+
+        caption {
+            caption-side: top;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            font-size: 1em;
+            color: #333;
+            text-align: left;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .equation {
+            text-align: center;
+            margin: 1.5em 0;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+
+        .references ol {
+            padding-left: 20px;
+            list-style: none;
+            counter-reset: ref-counter;
+        }
+
+        .references li {
+            margin-bottom: 0.8em;
+            counter-increment: ref-counter;
+            position: relative;
+            padding-left: 25px;
+        }
+        .references li::before {
+            content: "[" counter(ref-counter) "]";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #555;
+        }
+        .references li span.ref-content {
+            display: inline-block;
+            margin-left: 1em;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        code, pre {
+             font-family: monospace, monospace;
+             background-color: #f4f4f4;
+             padding: 1px 3px;
+             border-radius: 3px;
+        }
+
+        .acknowledgments {
+            font-size: 0.9em;
+            margin-top: 2em;
+        }
+
+        .header-arxiv-id {
+            font-family: sans-serif;
+            color: #555;
+            font-size: 0.9em;
+            margin-bottom: 2em;
+            text-align: left;
+        }
+        .header-arxiv-id a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .header-arxiv-id a:hover {
+            text-decoration: underline;
+        }
+
+        @media print {
+            body {
+                max-width: none;
+                margin: 1cm;
+                font-size: 10pt;
+            }
+            h1, h2, h3, h4 { page-break-after: avoid; }
+            figure, table { page-break-inside: avoid; }
+            .header-arxiv-id { display: none; }
+            a { color: inherit; text-decoration: none; }
+            .references li::before { color: inherit; }
+        }
+
+        #notebooklm {
+            display: flex;
+        }
+        #notebooklm div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-arxiv-id"><a href="https://arxiv.org/abs/2505.00186v1">arXiv:2505.00186v1</a> [cs.NE] 2025年4月30日
+    <br>DOI: <a href="https://doi.org/10.1145/3712256.3726451">10.1145/3712256.3726451</a> 2025年7月13日</div>
+
+    <h1>基于原型物体的自注意力神经演化</h1>
+
+    <div class="authors-affiliations">
+        <div class="top-info">
+            <div>
+                <span class="author">Rafael C. Pinto</span><br>
+                <span class="affiliation">南里奥格兰德联邦教育、科学与技术学院 (IFRS)</span><br>
+                <span class="affiliation">卡诺阿斯，巴西</span><br>
+                <span class="affiliation">南里奥格兰德联邦大学 (UFRGS)</span><br>
+                <span class="affiliation">阿雷格里港，巴西</span><br>
+                <span class="email"><a href="mailto:rafael.pinto@canoas.ifrs.edu.br">rafael.pinto@canoas.ifrs.edu.br</a></span>
+            </div>
+            <div>
+                <span class="author">Anderson R. Tavares</span><br>
+                <span class="affiliation">南里奥格兰德联邦大学 (UFRGS)</span><br>
+                <span class="affiliation">阿雷格里港，巴西</span><br>
+                <span class="email"><a href="mailto:artavares@inf.ufrgs.br">artavares@inf.ufrgs.br</a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="abstract">
+        <h2>摘要</h2>
+        <p>原型物体（Proto-objects）——即共享公共视觉特征的图像区域——为神经网络中基于矩形图像块（Patches）的传统注意力机制提供了一种极具前景的替代方案。尽管先前的研究表明，将基于图像块的硬注意力模块与控制器网络共同演化可以在视觉强化学习任务中达到最先进的性能，但我们的方法利用图像分割来处理更高层次的特征。通过对原型物体而非固定图像块进行操作，我们显著降低了表示复杂度：每张图像分解出的原型物体数量少于常规图像块，且每个原型物体都可以高效编码为紧凑的特征向量。这使得一个大幅缩小的自注意力模块能够处理更丰富的语义信息。我们的实验表明，这种基于原型物体的方法在减少 62% 参数量和 2.6 倍训练时间的条件下，达到或超越了基于图像块实现的最先进性能。</p>
+    </div>
+	
+    <div id="notebooklm">
+        <div>NotebookLM 播客 (英文)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects.mp3" controls></audio></div>
+        <div>NotebookLM 播客 (葡语)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects-ptbr.mp3" controls></audio></div>
+    </div>
+	
+    <figure>
+        <video controls src="proto.mp4" type="video/mp4"></video>
+        <figcaption><strong>图 1：</strong> 我们的注意力智能体能够专注于整个均匀区域，而非小尺寸的固定图像块。</figcaption>
+    </figure>
+
+    <section id="introduction">
+        <h2>1 引言</h2>
+        <p>视觉注意力机制已成为降低高维感知任务中计算复杂度的强大解决方案。通过在视觉输入与控制网络之间构建信息瓶颈，这些机制实现了对复杂场景的高效处理 <a href="#ref14">[14]</a>。最近的研究表明，联合演化一个硬注意力模块与 LSTM <a href="#ref10">[10]</a> 控制器，可以产生仅依赖小型图像块运行的高效智能体 <a href="#ref22">[22]</a>。该方法不仅使神经网络的规模比竞争方法小了几个数量级，而且在 Car Racing 和 Doom Take Cover 等具有挑战性的强化学习环境中取得了最先进（SOTA）的结果 <a href="#ref3">[3]</a>。其成功源于注意力层过滤无关输入区域的能力，这在提供健壮的泛化性和抗噪能力的同时简化了控制器的任务。</p>
+        <p>我们通过用原型物体（局部均匀视觉特征的高聚区域 <a href="#ref6">[6]</a>，通过图像分割获取 <a href="#ref7">[7]</a>）替代固定尺寸、均匀分布的图像块，推进了这一领域的研究。这种表示形式的转变带来了两个关键优势：首先，它们提供了更紧凑的表示，因为大多数场景分解出的原型物体数量少于图像块；其次，每个原型物体通过捕捉形状、尺寸和颜色等属性的小型描述符向量来编码更丰富的语义信息。</p>
+        <p>这种原型物体方法构建了一个显著精简的架构。自注意力模块在处理更高层次特征的同时变得大幅缩小，从而为控制器提供更好的选择和过滤效果更佳的信息，控制器本身也可以得到简化。我们在 Car Racing 和 Doom Take Cover 环境 <a href="#ref3">[3]</a> 中的实验结果表明，这种更高效的架构在参数量减少 62%、训练速度提升 2.6 倍的情况下，达到或超越了基于图像块实现的性能。</p>
+    </section>
+
+    <section id="background">
+        <h2>2 背景知识</h2>
+        <p>在过去的 35 年里，人类视觉注意力建模一直是一个活跃的研究领域。人们提出了许多不同的注意力模型，它们除了对神经科学和心理学做出理论贡献外，还在计算机视觉和机器人技术中展示了成功的应用 <a href="#ref2">[2]</a>。早期的计算模型主要关注自下而上、基于显著性的注意力，而更近期的做法则融入了自上而下的影响和基于物体的选择机制。</p>
+        <p>生物视觉系统为设计高效的人工视觉系统提供了关键启示。一个根本性的约束是神经资源是有限的——Koch 等人 <a href="#ref11">[11]</a> 证明视网膜神经节细胞在代谢成本与信息传输之间寻求平衡，尽管使用相对较低的发放率，但实现了极高效的编码。这表明了一种走向战略性信息瓶颈的演化压力，而不是试图平等地处理所有输入。Walther 和 Koch <a href="#ref28">[28]</a> 表明，其中一个瓶颈发生在原型物体层级，在该层级，场景中的连贯区域在发生完整物体识别之前被选中以进行增强处理。这使得视觉系统能够将复杂场景序列化为易于管理的块，同时保持高度的编码效率。</p>
+
+        <h3>2.1 视觉注意力机制的类型</h3>
+        <p>生物系统中的视觉注意力通过三种主要机制发挥作用。基于空间的注意力作用于视觉中的特定位置，将注意力视为在一个选定的空间坐标上增强处理的聚光灯。基于特征的注意力跨越整个视觉域选择性地增强对特定特征（如颜色、方向或运动）的处理，而无论其空间位置如何。基于物体的注意力作用于感知上分组形成连贯物体的元素，这表明注意力选择的是整个物体的表示，而不仅仅是空间位置或单个特征 [<a href="#ref5">5</a>, <a href="#ref25">25</a>, <a href="#ref27">27</a>]。</p>
+
+        <h3>2.2 自注意力</h3>
+        <p>现代计算注意力中的一个关键机制是自注意力层。在其标准形式中 <a href="#ref26">[26]</a>，自注意力作用于一组 N 个输入向量（每个向量维度为 d<sub>in</sub>），通过可学习的权重矩阵 W<sub>O</sub> 和 W<sub>K</sub> 对它们进行线性变换，以获得查询（Q）矩阵和键（K）矩阵：</p>
+        <p class="equation">
+            S = softmax( QK<sup>T</sup> / √d<sub>k</sub> ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (1)
+        </p>
+        <p>其中 d<sub>k</sub> 是键向量的维度。注意力得分 S 展示了输入元素之间的关联程度。S 进一步与矩阵 V（也是输入的线性变换）结合，形成上下文表示 A = SV，其向量包含考虑了整体上下文的每个输入的表示。</p>
+
+        <h3>2.3 原型物体与信息瓶颈</h3>
+        <p>原型物体是原始视觉特征与被充分识别的物体之间的一种中间表示 [<a href="#ref19">19</a>, <a href="#ref28">28</a>]。它们在前注意力处理阶段形成，代表视觉视野中共享公共视觉特征的连贯区域。这些结构在完整的物体识别发生之前充当注意力的潜在候选对象 <a href="#ref16">[16]</a>，允许视觉系统高效地确定处理资源的优先级。</p>
+        <p>视觉处理中的信息瓶颈旨在将高维视觉输入压缩为更易于管理的表示，同时保留与任务相关的信息 [<a href="#ref11">11</a>, <a href="#ref23">23</a>]。这些瓶颈可以发生在处理的各个层级，从早期视觉特征到物体识别，并在管理视觉处理所需的计算资源方面发挥着至关重要的作用 <a href="#ref29">[29]</a>。原型物体本身的形成就代表了一种自然的信息瓶颈，因为它降低了视觉场景的复杂度，同时保留了与行为相关的信息 <a href="#ref28">[28]</a>。</p>
+    </section>
+
+    <section id="related-work">
+        <h2>3 相关工作</h2>
+        <p>我们的方法建立在视觉注意力、强化学习和深度学习的若干研究方向之上并进行了扩展。在此，我们回顾了与我们的贡献最相关的先前工作，特别是针对解决高效视觉处理和注意力机制挑战的方法。</p>
+
+        <h3>3.1 可自我解释的智能体</h3>
+        <p>Tang 等人最近的工作 <a href="#ref22">[22]</a> 探索了在强化学习中使用硬注意力机制。其方法将视觉输入划分为 7x7 的图像块，并应用改进的自注意力机制仅选择前 k 个图像块进行处理（参见图 2）。这造成了一个信息瓶颈，迫使模型关注最相关的输入而忽略其他输入。当应用于基于视觉的强化学习任务时，这种方法使智能体能够以远少于传统方法的参数量获得更好的性能、可解释性和计算效率。我们的方法主要区别在于使用原型物体代替图像块，减少了 Token 的数量及其维度，同时为其添加了更高层次的信息。</p>
+
+        <figure>
+            <video src="patches-video_best.npz_ep1.mp4" controls></video>
+            <figcaption><strong>图 2：</strong> 智能体从当前帧提取图像块，并通过硬注意力机制选择前 k 个（以白色高亮显示）。通过可视化所选的图像块，可以更好地了解所学策略，同时也便于调试。</figcaption>
+        </figure>
+
+        <h3>3.2 基于原型物体的方法</h3>
+        <p>Orabona 等人 <a href="#ref16">[16]</a> 证明了原型物体作为视觉注意力基本单元的有效性。他们的工作表明，使用原型物体作为中间表示自然对应于场景中的潜在对象，允许在保持有意义的视觉特征的同时进行高效处理。</p>
+        <p>Liang 等人 <a href="#ref12">[12]</a> 在其关于 Blob-PROST（空间和时间上的成对相对偏移）的工作中进一步探索了使用来自色块的高层信息作为输入的想法。他们的方法证明，基于颜色块的视觉特征可以取得与 DQN 相当的性能 <a href="#ref15">[15]</a>，同时使用的参数要少得多。其核心见解是用“色块（blobs）”（即通常对应于游戏物体的同色像素连通区域）来表示游戏画面。这是我们使用原型物体的特例，因为我们的原型物体不局限于同色像素。这种表示与色块之间的位置和相对偏移特征相结合，捕获了空间和时间关系。然而，他们的表示由超过 1 亿个二进制特征组成，而我们的方法基于单个原型物体的紧凑表示，可以被单独关注。</p>
+
+        <h3>3.3 基于物体的强化学习</h3>
+        <p>虽然原型物体方法专注于中间表示，但一些研究人员更进一步朝处理完整的对象迈进。Woof 和 Chen <a href="#ref30">[30]</a> 实验了高层物体（例如游戏画面中可识别的实体）的表示，而不是端到端的视频游戏游玩。但是，他们假设物体是预先给出的，这需要访问游戏引擎或特定的物体检测器。</p>
+        <p>一种更健壮的方法 <a href="#ref1">[1]</a> 表明，直接对物体级表示进行操作可以极大地提高强化学习任务中的样本效率。他们的方法通过首先将图像过度分割为原始片段、建模其动态，然后将具有相似动态的片段结合起来，在没有监督的情况下从像素中学习简洁的物体表示。他们的方法利用了重要事件往往发生在物体相互作用时的见解，以此引导探索朝向涉及物体接触的状态。虽然他们的方法取得了令人印象深刻的结果——学习速度比传统深度强化学习方法快高达 10,000 倍，在某些情况下甚至超过人类的学习速度——但它需要显著的物体检测和跟踪计算开销。这促使了对原型物体方法的探索，该方法在处理效率和表示能力之间取得了平衡。</p>
+    </section>
+
+    <section id="method">
+        <h2>4 基于原型物体的注意力智能体</h2>
+        <p>我们的工作建立在计算机视觉、深度学习和演化计算的多个研究方向之上，并将它们联系起来。我们结合了来自生物视觉注意力模型、高效神经网络架构和经典计算机视觉技术的见解，构建了一个结合每种方法优势的混合系统。我们将硬注意力机制应用于原型物体，而非原始像素或任意图像块。这种方法实现了类似于 Koch 等人 <a href="#ref11">[11]</a> 在生物系统中观察到的信息瓶颈，同时作用于 [<a href="#ref16">16</a>, <a href="#ref19">19</a>] 所描述的具有语义意义的原型物体上。通过仅选择最相关的原型物体进行处理，我们在比先前方法更具语义意义的层级上创建了信息瓶颈。</p>
+        <p>这种结合特别适合神经演化，因为前 k 个原型物体的离散选择以及将坐标传输给控制器构成了不可微的操作，这对基于梯度的算法极具挑战，但对演化方法却很自然。此外，通过迫使模型明确选择要处理的视觉输入的哪些部分，我们获得了直接的可解释性——我们可以确切地可视化模型认为对其决策重要的原型物体，为其决策过程提供洞察，而这在传统深度学习方法中往往是缺失的。</p>
+
+        <h3>4.1 实现细节</h3>
+        <p>我们的方法包含 5 个主要阶段：卷积、量化、分割、注意力和控制，下文将进行详述。</p>
+
+        <h4>4.1.1 卷积</h4>
+        <p>卷积阶段旨在对原始图像通道进行平移、缩放、滤波和/或混合，为后续阶段提供预处理后的表示。特别是，在我们的实验中，我们使用带有 3 个 1x1 过滤器的单层卷积层。选择 3 个过滤器是为了与残差连接兼容。只要保持相同的图像尺寸，就可以添加更多卷积层。在这种情况下，添加一个带有 3 个过滤器的最终层足以将维度数量降低到与图像通道数相同的数值。在此之后，我们将原始图像加到卷积输出上，形成残差连接 <a href="#ref9">[9]</a>，其作用将在下一阶段变得清晰。</p>
+
+        <h4>4.1.2 量化</h4>
+        <p>量化旨在减少后续阶段要处理的信息量。在我们的实验中，我们使用每通道 1 比特对卷积输出进行简单的均匀量化（对于更复杂的任务可以更多，甚至可以进行演化）。结果，我们获得了一张最多包含 8 种不同颜色的图像，每种颜色代表不同类型的分割块。请注意，除了它是一个简单的固定量化之外，它与之前的卷积层相结合，产生了一种自适应分割和量化机制。</p>
+
+        <p>该阶段与卷积存在协同作用：原始图像通道的平移、缩放和混合可能会将它们放入不同的量化区间中。但是，由于寻找合适分割所需的演化适应度曲面上存在不连续的跃迁（这可能需要演化算法花一些时间来解决），我们使用上一阶段的残差连接作为手段，从原始图像颜色上的平凡分割开始启动演化。因此，卷积的目的是将分割改变为不同于平凡分割的状态（如有必要）。</p>
+
+        <h4>4.1.3 分割</h4>
+        <p>分割旨在创建原型物体，即接收自先前阶段的语义相似像素区域的描述符。在这项工作中，我们应用通过颜色连通区域进行图像标记的方法 [<a href="#ref7">7</a>, <a href="#ref20">20</a>]。从每个提取的区域中，可以获得一组属性，产生 d<sub>in</sub> 个特征（宽度或高度为 1 像素的区域被视为噪声并被忽略）。</p>
+        <p>经过深入实验，我们最终确定了一套 d<sub>in</sub> = 11 个特征，即：量化分割块颜色 (R, G, B)、质心 (X, Y)、以像素为单位的总面积、外接矩形宽度、外接矩形高度、外接矩形面积、宽高比和范围（区域面积除以外接矩形面积）。所有这些都可以从获得的区域中轻松且高效地计算出来，并帮助下一阶段做出更明智的决策。方向（像素坐标之间的相关性）也可能有用，但它给我们的模型带来了过多的运行时开销，因此被排除在外。所有值都规范化在 -1 和 1 之间，宽高比也进行了对数变换，使得 1 和 -1 对应极端的比例，而 0 意味着边长相等：</p>
+        <p class="equation">
+             NormAspectRatio = 2 * log(aspectRatio) / log(max(imageWidth, imageHeight)) - 1
+        </p>
+
+        <h4>4.1.4 注意力</h4>
+        <p>注意力模块旨在对分割阶段识别出的原型物体之间的关系进行建模。N 个原型物体的特征作为一组 N 个 d<sub>in</sub> 维度的 Token（在注意力术语中 <a href="#ref26">[26]</a>）输入到我们模型的注意力层。注意力层将这些 Token 嵌入到两个 d<sub>q</sub> 维度的向量 Q 和 K 中。然而，在我们的实现中有一个额外的改进：我们在线性变换之前和之后添加了一个参数化修正线性单元（PReLU）层。PReLU 是 ReLU 激活函数的泛化，其中负半轴的斜率对于每个层或神经元是自适应的（PReLU(x) = max(ax, x)，在我们的情况下是后者）。仅用 15 个额外的参数，这使我们的注意力层能够建模更复杂的关系统，因为单个 PReLU 神经元已被证明可以解决 XOR 问题 <a href="#ref17">[17]</a>。在我们的例子中，当 a 为负数时（使函数非单调），它允许选择中段值（如灰色），这在纯线性层中是不可能的。可以改用更多层的传统自注意力，但我们在本工作中选择了更简单的 PReLU 解决方案，以保持参数量和运行时开销处于较低水平。</p>
+
+        <p>按照常规的自注意力流程，通过公式 1 计算注意力矩阵，然后通过按行求和获得重要性向量。我们没有采用传统自注意力中通过 V 矩阵对 Token 进行混合的方式，而是直接对产生的行求和结果执行前 k 个原型物体的选择。</p>
+        <p>我们指出，在 Token 数量 N 上，注意力计算具有二次渐近时间复杂度。通过使用原型物体代替图像块来大幅减少 Token 数量，使得我们的注意力模块运行速度快得多。</p>
+
+        <p>在我们的实验中，我们走向了极限并将 k 设置为 1（仅将单个原型物体的坐标传递给控制器，下文详述）。这是可能的，因为我们的注意力模块比原始模块表达能力更强，且原型物体包含更高层次的信息，使得单个精选的原型物体就足以让控制器做出决策（更好的选择意味着控制器的工作量更少）。这也更具生物学合理性，因为我们一次只专注于单个视觉项目 <a href="#ref4">[4]</a>。</p>
+
+        <h4>4.1.5 控制</h4>
+        <p>最后，控制阶段选择要在环境中执行的操作。在我们的实现中，转移函数 f(n) 应用于所选原型物体的每个特征向量，结果被拼接并作为输入供给 LSTM <a href="#ref10">[10]</a> 控制器，该控制器负责学习时间关联并生成控制输出。</p>
+
+        <p>在我们的例子中，f(n) 仅返回原型物体质心的坐标。可以使用更复杂的转移函数来为控制器提供每个所选原型物体的更多属性，但质心对我们的问题来说已经足够了。这是可能的，因为注意力模块和控制模块的联合演化导致了一种隐式“契约”：通过始终选择相同类型的原型物体（草地、跑道等……），控制器无需猜测它是哪种。如果注意力每次都关注不同类型的原型物体，仅凭坐标将无法区分它们，除非它们一致出现在屏幕的特定区域，从而可以通过位置进行区分（例如始终在屏幕底部的抬头显示）。如果注意力模块始终将相同类型的原型物体排在相同的排名位置（例如草地第一，跑道第二），控制器也可以区分它们，但这是需要学习的额外复杂性。</p>
+
+        <h3>4.2 概述</h3>
+        <p>表 1 显示了我们的超参数选择与先前基于图像块的工作 <a href="#ref22">[22]</a> 之间的差异摘要，以及每个模型中得出的可学习参数数量，表明由于紧凑的注意力层和更小的瓶颈（k = 1），我们的模型总体上显著变小（减少 62%）。完整过程如图 3 所示。尽管该模型不可微，但可以通过无导数优化方法（如 CMA-ES <a href="#ref8">[8]</a>）进行学习。</p>
+
+        <table>
+            <caption><strong>表 1：</strong> 基于图像块的模型 <a href="#ref22">[22]</a> 与基于原型物体的模型（本文）的超参数及可学习参数量对比。后者使用的可学习参数减少了 62%。</caption>
+            <thead>
+                <tr>
+                    <th>模型超参数</th>
+                    <th>图像块 <a href="#ref22">[22]</a></th>
+                    <th>原型物体（本文）</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>注意力输入尺寸 (d<sub>in</sub>)</td><td>147</td><td>11</td></tr>
+                <tr><td>嵌入尺寸 (d)</td><td>4</td><td>2</td></tr>
+                <tr><td>K</td><td>10</td><td>1</td></tr>
+                <tr><td>f(n) 维度</td><td>2</td><td>2</td></tr>
+                <tr><td>LSTM 输入尺寸</td><td>20</td><td>2</td></tr>
+                <tr><td>LSTM 神经元数量</td><td>16</td><td>16</td></tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <th>可学习参数数量</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+             <tbody>
+                <tr><td>卷积</td><td>0</td><td>12</td></tr>
+                <tr><td>注意力</td><td>1184</td><td>63</td></tr>
+                <tr><td>LSTM</td><td>2432</td><td>1280</td></tr>
+                <tr><td>输出</td><td>51</td><td>51</td></tr>
+                <tr><td><strong>总计</strong></td><td><strong>3667</strong></td><td><strong>1406</strong></td></tr>
+            </tbody>
+        </table>
+
+        <figure>
+            <img src="flowchart.svg" loading="lazy" alt="我们完整流程的流程图">
+            <figcaption><strong>图 3：</strong> 我们完整流程的流程图。在我们的实验中，H = W = 96，F = 11（分割特征数量），d<sub>q</sub> = 2，M = 2（我们仅使用每个 Token 的 x, y 坐标），k = 1 且 O = 3（两个环境的输出数量）。可以使用任意数量的卷积层，只要保持图像尺寸且最后一层包含 3 个过滤器以匹配残差连接即可。我们使用了一层 3 个 1x1 过滤器。我们的量化设置为每通道 1 比特（8 种颜色）。P 为 PReLU 激活函数。绿色元素为相对于 <a href="#ref22">[22]</a> 的新增部分。</figcaption>
+        </figure>
+    </section>
+
+    <section id="experiments">
+        <h2>5 实验与结果</h2>
+        <p>为了将我们的方法与 <a href="#ref22">[22]</a> 的基于图像块的方法进行对比，我们在与 <a href="#ref22">[22]</a> 相同的环境中对其进行了测试：CarRacing 和 Doom-TakeCover <a href="#ref3">[3]</a>。对于两者，我们运行了种群规模为 128 个解的 CMA-ES 算法，演化 1000 代，并在每一代使用 8 个种子评估模型。种子基于代数和重复次数。我们每 100 代在 400 个新种子（样本外）上测试模型，提取均值和方差以生成 95% 的置信区间。统计显著性通过双侧 Mann-Whitney U 检验获得 <a href="#ref13">[13]</a>。请注意，<a href="#ref22">[22]</a> 中的原始实验运行了 2000 代，每次使用 16 个种子和 256 个解的种群，因此无法直接对比。由于硬件限制，我们将这些超参数各减半，并在这种新设置下重新进行了原始实验，以便进行公平对比。</p>
+        <p>我们的实验运行在以下硬件配置上：AMD Ryzen 5950X CPU、128GB DDR4 3200 RAM 和 Nvidia RTX 3090 GPU。训练在 32 个线程上并行化，将每次评估限制为单个线程。基于图像块的解决方案利用了 GPU，但我们的方法针对 CPU 进行了优化，因为多标签连通分量分析和标记不适合 GPU。</p>
+
+        <h3>5.1 Car Racing</h3>
+        <p>这是一个顶视角赛车环境，具有随机生成的跑道（如图 1 和 2 所示）。它的视觉简单到足以跳过我们方法的卷积和量化阶段，但我们仍然执行了这些阶段，以验证通用性。每帧的奖励为 -0.1，偏离跑道太远扣 100 分（这也会导致终止），访问跑道的每个图块奖励 +1000/N，其中 N 是跑道中访问的图块总数（图块呈现为微小差异的灰色阴影），得分在 900 分以上被视为解决。这激励控制器保持快速和精准。有 3 个连续动作：转向（-1 为全左，+1 为全右）、油门和刹车。该环境有一个 V2 版本¹，但它使用 Pygame ²，速度较慢。我们使用 V0 版本，通过使用 OpenGL 速度快了 2 倍，并且我们实现了自己的优化，进一步带来了 2 倍的加速。除兼容新 API <a href="#ref24">[24]</a> 以及更好的软硬件兼容性外，两个版本之间没有显著差异。</p>
+
+        <p>我们的方法样本效率更高，在整个训练过程中平均得分更高，并在训练后取得了显著更好（p = 1.1e-22）的 910.39 的得分（图 4）。此外，如表 2 所示，它达到这一效果时，每帧仅使用了基于图像块的解的 2% 的 Token 数量，且可调参数减少了 62%。尽管在 CPU 上运行，但相比于在 GPU 上运行的基于图像块的方法，其训练速度快了 2.7 倍。</p>
+        <p><small>¹<a href="https://gymnasium.farama.org/environments/box2d/car_racing/" target="_blank" rel="noopener noreferrer">https://gymnasium.farama.org/environments/box2d/car_racing/</a></small><br>
+        <small>²<a href="https://www.pygame.org" target="_blank" rel="noopener noreferrer">https://www.pygame.org</a></small></p>
+
+        <figure>
+            <img src="learning_curves_comparison_carracing.png" loading="lazy" alt="Car Racing 环境中每个显示代数在训练样本跑道之外的 400 次测试运行中的学习曲线对比">
+            <figcaption><strong>图 4：</strong> 在 Car Racing 环境中，在训练样本跑道之外的 400 次测试运行中各个显示代数的学习曲线对比。在 1000 代后，我们的原型物体方法取得了显著优于 <a href="#ref22">[22]</a> 基于图像块的方法的结果。两者均在 1000 代时达到峰值。</figcaption>
+        </figure>
+
+        <figure>
+            <img src="evolution.png" loading="lazy" alt="5 个关键时间点的分割演化过程。基本注意力策略早在该过程中就被学到，而分割持续演化直至结束">
+            <figcaption><strong>图 5：</strong> 5 个关键时间点的分割演化过程。基本的注意力策略（专注于较小的草地区域，以白色高亮显示且质心为黑色；其他质心为粉色）在早期阶段就被学到，而分割过程则持续演化直到最后。左上：调整尺寸后且分割前的原始图像。中上（100 代）：前几百代保持从原始颜色衍生出的平凡分割。右上（300 代）：学会将跑道与下方的抬头显示（HUD）分开，并区分出部分 ABS 传感器。左下（800 代）：交换了跑道和 HUD 的分割，使赛车可见，区分出红色弯道标记并隐藏了陀螺仪指示器。同时还将弯道白色标记与得分和速度指示器区分开，并再次合并了 ABS 传感器。中下（900 代）：区分跑道图块。右下（1000 代）：放弃了跑道的精细分割，退回到先前的分割策略，得分中的某些像素仅发生了极其微小的改变。</figcaption>
+        </figure>
+		
+        <p>这个实验的一个有趣方面是观察分割和注意力的演化过程，如图 5 所示。解决方案始于任务原始颜色上的平凡量化，但由于跑道颜色较深，它与屏幕底部的黑色抬头显示（HUD）合并在了一起。尽管如此，它已经知道如何专注于较小的草地区域，因为这通常指向赛车必须转向的方向。在 300 代时，它学会了将跑道与 HUD 分开；而在 800 代时，它将赛车和红色弯道标记与跑道分离开来。虽然赛车是没有用的（它总是处于同一个位置，甚至在其他实验中与跑道合并），但红色标记可以通过对其相邻的草地区域进行“投票”（作为 Query）来巩固正确的转向边。在 900 代时，它学会了分割跑道图块，但在最终解中丢弃了这一策略。分解为各个处理步骤的最终解决方案如图 6 所示。</p>
+
+		<figure>
+			<video src="video_carracing_proto-objects_iter_1000.mp4" controls width="100%"></video>
+			<figcaption><strong>图 6：</strong> Car Racing 环境中的处理阶段。左上：调整为 96x96 的原始图像。右上：1x1 卷积 + 残差。左下：量化。右下：k=1 的注意力。
+			</figcaption>
+		</figure>
+
+        <h3>5.2 Doom Take Cover</h3>
+        <p>任务基于游戏《毁灭战士》（Doom），该游戏在视觉上比前一个任务更复杂，颜色也多得多（参见图 8 左上），这使得卷积和量化步骤变得严格必要，以防止出现大量的分割块。它发生在一个矩形房间里。智能体沿着墙壁生成，怪物沿着对面的墙壁随机且持续地生成。它们不断向智能体发射火球，智能体必须躲避它们以生存。智能体存活的每个 tick 获得 1 分奖励，并有 3 个离散动作：向左移动、向右移动或保持不动。</p>
+
+        <figure>
+            <img src="learning_curves_comparison_takecover.png" loading="lazy" alt="Doom Take Cover 环境中每个显示代数在训练样本种子之外的 400 次测试运行中的学习曲线对比">
+            <figcaption><strong>图 7：</strong> 在 Doom Take Cover 环境中，在训练样本种子之外的 400 次测试运行中各个显示代数的学习曲线对比。在 k = 1 时，我们的方法在样本效率上稍低，但在 1000 代后取得了与 <a href="#ref22">[22]</a> 相似的性能（最佳解之间 p = 0.414，后者在 700 代时达到峰值）。然而，在 k = 10（与基于图像块的设置相同）及正文中详述的进一步调整下，我们的解具有更好的样本效率，并取得了显著更高（p = 2.8e−5）的性能（在 700 代时得分 1193）。</figcaption>
+        </figure>
+
+        <figure>
+            <video src="video_iter_1000.npz_ep1.mp4" controls width="100%"></video>
+            <figcaption><strong>图 8：</strong> Doom Take Cover 环境中的处理阶段。左上：调整为 96x96 的原始图像。右上：1x1 卷积 + 残差。左下：量化。右下：注意力。请注意，该解自量化阶段起就完全忽略了火球。</figcaption>
+        </figure>
+
+        <p>学习曲线如图 7 所示。我们观察到我们的方法样本效率略低，需要更多代数才能达到基于图像块的模型性能（p = 0.414）。我们还尝试了 d<sub>q</sub> = 4、k = 10（与基于图像块的设置相同）和 3x3 卷积（2671 个参数），该解决方案具有更好的样本效率，并在 55 小时的训练中取得了显著更高（p = 2.8e-5）的性能，得分达到了 1193 分。我们假设性能下降归因于 k = 1，这意味着 LSTM 需要付出更大的努力才能跟上屏幕上的多个感兴趣的原型物体，甚至完全遗漏其中的一些，同时还要学会丢弃在屏幕上没有投射物时激活的墙壁原型物体。</p>
+
+        <table>
+             <caption><strong>表 2：</strong> 结果对比。每帧 Token 数量在常规基于图像块的模型中是固定的，但在我们的基于原型物体的模型中是可变的。我们的方法目前针对 CPU 进行了优化。在 Token 数量部分，n 指帧数，而在得分部分指运行次数。</caption>
+             <thead>
+                 <tr>
+                     <th></th>
+                     <th>图像块 <a href="#ref22">[22]</a></th>
+                     <th>原型物体（本文）</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 <tr><td colspan="3"><strong>最佳解的 Token 数量及 95% 置信区间 (n=800)</strong></td></tr>
+                 <tr><td>Car Racing</td><td>529</td><td>12.6 ± 0.26</td></tr>
+                 <tr><td>Doom Take Cover</td><td>529</td><td>10.7 ± 0.73</td></tr>
+                 <tr><td colspan="3"><strong>1000 次迭代后的最佳得分及 95% 置信区间 (n=400)</strong></td></tr>
+                 <tr><td>Car Racing</td><td>888.69 ± 5.84</td><td>910.39 ± 1.28</td></tr>
+                 <tr><td>Doom Take Cover</td><td>959.27 ± 58.85</td><td>930.68 ± 57.19 (k = 1)<br>1192.82 ± 75.26 (k = 10)</td></tr>
+                 <tr><td colspan="3"><strong>训练时间</strong></td></tr>
+                 <tr><td>Car Racing</td><td>97h (GPU)</td><td>36.5h (CPU)</td></tr>
+                 <tr><td>Doom Take Cover</td><td>85.5h (GPU)</td><td>33h (k = 1, CPU)<br>55h (k = 10, CPU)</td></tr>
+             </tbody>
+        </table>
+
+        <p>表 2 还显示，该环境中提取的原型物体数量也很少，表明我们的预处理步骤有效地减少并统一了不同领域的视觉复杂度，同时保留了决策所需的必要信息。对于 k = 1，训练速度快了 2.6 倍；对于 k = 10，训练速度快了 1.6 倍。</p>
+        <p>Doom 环境中的关键处理阶段如图 7 所示：图像尺寸调整、1x1 卷积、颜色量化和注意力（k = 1）。令人瞩目的是，演化出的智能体采用了一种令人惊讶的极简策略，忽略了像飞来的火球这样看似关键的元素。相反，它完全专注于屏幕最右侧的怪物，同时执行有节奏的左右移动模式。尽管基于图像块的模型兼顾了火球和墙壁，但这种策略达到了与基于图像块的模型相同的性能。与我们简单方法的等效性表明，基于图像块模型的 LSTM 可能也主要依赖于周期性移动，并忽略了投射物坐标。这种策略被证明是有效的，因为怪物的投射物瞄准的是智能体的当前位置——因此，持续移动是一种稳健的规避技术，而无论飞来火球的具体位置如何。然而，我们的 k = 10 智能体似乎对火球更具反应性。</p>
+    </section>
+
+    <section id="conclusion">
+        <h2>6 结论与未来工作</h2>
+        <p>我们提出了一种用于视觉任务中基于瓶颈注意力的智能体的新表示，该表示作用于原型物体而非原始像素或图像块。通过处理这些通过经典计算机视觉方法获取的前注意力原始物体，我们在大幅减少需要关注的 Token 数量及其维度的同时，取得了与先前解决方案相当或更优的性能，训练时间也大大缩短。这种混合方法的成功凸显了演化方法训练此类模型的主要优势之一：结合可微和不可微组件的自由度，而不受基于导数的优化方法的限制。然而，开发我们解决方案的完全可微版本仍然是未来工作的一个有吸引力的方向，因为这可以大幅提高样本效率。</p>
+
+        <p>我们的实验表明，瓶颈注意力模型在演化过程中容易陷入局部极值。双模块架构（注意力和控制）使得一旦某种方法建立起来，就很难发现新的注意力策略，因为控制器会专门适应当前的注意力机制。注意力模块的任何重大改变都有破坏这种微妙平衡的风险。我们假设 CMA-ES 对于这种架构可能过于贪婪，而像差分演化 <a href="#ref21">[21]</a> 这样的替代方案可能更合适，因为它允许并行演化多种注意力策略。</p>
+
+        <p>我们证明，通过增强注意力层，仅将单个原型物体的坐标发送给控制器就足以生成有效的策略。这是可行的，因为 LSTM 可以跨帧维持和更新内部状态表示，决定保留或丢弃哪些信息。这种方法与生物眼动高度一致，在生物眼动中，焦点必然会在各个位置或物体之间转移 <a href="#ref4">[4]</a>。然而，这种简化的信息流是以在屏幕上有多个相关实体时需要更长的学习时间为代价的，因为注意力模块必须关注所有实体，而控制器必须开发复杂的内存管理策略。一种潜在的解决方案是将内存和控制解耦，可能是通过在最近关注的坐标上实现注意力机制，为控制器生成固定尺寸的嵌入 <a href="#ref18">[18]</a>。这可以进一步扩展到包含向量数据库的自适应存储和检索。</p>
+
+        <p>这项工作引申出了未来研究的几个有前景的方向。来自控制器的反馈信号可以调制注意力，实现自上而下的主动策略。这将需要丰富来自注意力模块的信息流，以帮助控制器解释接收到的信号。多头注意力代表了另一个自然的扩展。通过融入额外的卷积层和处理深度（可用时）及运动信息，该方法有可能扩展到完整的物体识别。自注意力机制可能实现区域向更高层次实体的自主分组，而交叉注意力可以促进跨帧的物体跟踪。</p>
+
+        <p>最后，至关紧要的下一步是在真实世界图像上验证我们的方法，并确定在卷积和量化阶段增加复杂度是否必要，或者在这些场景中基于图像块的方法是否被证明更有效。这一领域的成功可能会带来更高效率的机器人和自动驾驶汽车系统，降低计算需求，同时提升每个处理单元的智能化水平。</p>
+    </section>
+
+    <section id="acknowledgments" class="acknowledgments">
+        <h2>致谢</h2>
+        <p>作者感谢 FAPERGS（Notice 10/2021 – ARD/ARC）资金支持。本研究还得到了南里奥格兰德联邦教育、科学与技术学院（IFRS）的支持。</p>
+    </section>
+
+    <section id="references" class="references">
+        <h2>参考文献</h2>
+        <ol>
+            <li id="ref1"><span class="ref-content">William Agnew and Pedro Domingos. 2018. Unsupervised Object-Level Deep Reinforcement Learning. Deep Reinforcement Learning Workshop (NIPS 2018).</span></li>
+            <li id="ref2"><span class="ref-content">Ali Borji and Laurent Itti. 2012. State-of-the-art in visual attention modeling. IEEE transactions on pattern analysis and machine intelligence 35, 1 (2012), 185-207.</span></li>
+            <li id="ref3"><span class="ref-content">Greg Brockman, Vicki Cheung, Ludwig Pettersson, Jonas Schneider, John Schulman, Jie Tang, and Wojciech Zaremba. 2016. OpenAI Gym. <a href="https://arxiv.org/abs/1606.01540" target="_blank" rel="noopener noreferrer">arXiv:1606.01540</a> [cs.LG]</span></li>
+            <li id="ref4"><span class="ref-content">Marisa Carrasco. 2011. Visual attention: The past 25 years. Vision Research 51, 13 (2011), 1484-1525. <a href="https://doi.org/10.1016/j.visres.2011.04.012" target="_blank" rel="noopener noreferrer">doi:10.1016/j.visres.2011.04.012</a> Vision Research 50th Anniversary Issue: Part 2.</span></li>
+            <li id="ref5"><span class="ref-content">Zhe Chen. 2012. Object-based attention: A tutorial review. Attention, Perception, &amp; Psychophysics 74 (2012), 784 - 802. <a href="https://doi.org/10.3758/s13414-012-0322-z" target="_blank" rel="noopener noreferrer">doi:10.3758/s13414-012-0322-z</a></span></li>
+            <li id="ref6"><span class="ref-content">Leif H. Finkel and Paul Sajda. 1992. Proto-objects: an intermediate-level visual representation, In Optical Society of America Annual Meeting. Optical Society of America Annual Meeting -, -, FO1. <a href="https://doi.org/10.1364/OAM.1992.FO1" target="_blank" rel="noopener noreferrer">doi:10.1364/OAM.1992.FO1</a></span></li>
+            <li id="ref7"><span class="ref-content">Christophe Fiorio and Jens Gustedt. 1996. Two linear time union-find strategies for image processing. Theoretical Computer Science 154, 2 (1996), 165-181.</span></li>
+            <li id="ref8"><span class="ref-content">Nikolaus Hansen. 2006. The CMA Evolution Strategy: A Comparing Review. Springer Berlin Heidelberg, Berlin, Heidelberg, 75-102. <a href="https://doi.org/10.1007/3-540-32494-1_4" target="_blank" rel="noopener noreferrer">doi:10.1007/3-540-32494-1_4</a></span></li>
+            <li id="ref9"><span class="ref-content">Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2016. Deep Residual Learning for Image Recognition. In 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR). IEEE Computer Society, Los Alamitos, CA, USA, 770-778. <a href="https://doi.org/10.1109/CVPR.2016.90" target="_blank" rel="noopener noreferrer">doi:10.1109/CVPR.2016.90</a></span></li>
+            <li id="ref10"><span class="ref-content">Sepp Hochreiter and Jürgen Schmidhuber. 1997. Long short-term memory. Neural computation 9, 8 (1997), 1735-1780.</span></li>
+            <li id="ref11"><span class="ref-content">Kristin Koch, Judith McLean, Ronen Segev, Michael A. Freed, Michael J. Berry, Vijay Balasubramanian, and Peter Sterling. 2006. How Much the Eye Tells the Brain. Current Biology 16, 14 (2006), 1428-1434. <a href="https://doi.org/10.1016/j.cub.2006.05.056" target="_blank" rel="noopener noreferrer">doi:10.1016/j.cub.2006.05.056</a></span></li>
+            <li id="ref12"><span class="ref-content">Yitao Liang, Marlos C. Machado, Erik Talvitie, and Michael Bowling. 2016. State of the Art Control of Atari Games Using Shallow Reinforcement Learning. In Proceedings of the 2016 International Conference on Autonomous Agents &amp; Multiagent Systems (Singapore, Singapore) (AAMAS '16). International Foundation for Autonomous Agents and Multiagent Systems, Richland, SC, 485-493.</span></li>
+            <li id="ref13"><span class="ref-content">H. B. Mann and D. R. Whitney. 1947. On a Test of Whether one of Two Random Variables is Stochastically Larger than the Other. The Annals of Mathematical Statistics 18, 1 (1947), 50-60. <a href="https://doi.org/10.1214/aoms/1177730491" target="_blank" rel="noopener noreferrer">doi:10.1214/aoms/1177730491</a></span></li>
+            <li id="ref14"><span class="ref-content">Volodymyr Mnih, Nicolas Heess, Alex Graves, and Koray Kavukcuoglu. 2014. Recurrent models of visual attention. In Proceedings of the 28th International Conference on Neural Information Processing Systems - Volume 2 (Montreal, Canada) (NIPS'14). MIT Press, Cambridge, MA, USA, 2204-2212.</span></li>
+            <li id="ref15"><span class="ref-content">Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis Antonoglou, Daan Wierstra, and Martin Riedmiller. 2013. Playing Atari with Deep Reinforcement Learning. <a href="https://arxiv.org/abs/1312.5602" target="_blank" rel="noopener noreferrer">arXiv:1312.5602</a> [cs.LG]</span></li>
+            <li id="ref16"><span class="ref-content">Francesco Orabona, Giorgio Metta, and Giulio Sandini. 2007. A Proto-object Based Visual Attention Model. In Attention in Cognitive Systems. Theories and Systems from an Interdisciplinary Viewpoint, Lucas Paletta and Erich Rome (Eds.). Springer Berlin Heidelberg, Berlin, Heidelberg, 198-215.</span></li>
+            <li id="ref17"><span class="ref-content">Rafael C. Pinto and Anderson R. Tavares. 2024. PReLU: Yet Another Single-Layer Solution to the XOR Problem. <a href="https://arxiv.org/abs/2409.10821" target="_blank" rel="noopener noreferrer">arXiv:2409.10821</a> [cs.NE]</span></li>
+            <li id="ref18"><span class="ref-content">Nils Reimers and Iryna Gurevych. 2019. Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. <a href="https://arxiv.org/abs/1908.10084" target="_blank" rel="noopener noreferrer">arXiv:1908.10084</a> [cs.CL]</span></li>
+            <li id="ref19"><span class="ref-content">Ronald A Rensink. 2000. The dynamic representation of scenes. Visual cognition 7, 1-3 (2000), 17-42.</span></li>
+            <li id="ref20"><span class="ref-content">William Silversmith. 2025. connected-components-3d: Connected Components on Discrete and Continuous Multilabel 3D &amp; 2D Images. GitHub. <a href="https://github.com/seung-lab/connected-components-3d" target="_blank" rel="noopener noreferrer">https://github.com/seung-lab/connected-components-3d</a></span></li>
+            <li id="ref21"><span class="ref-content">Rainer Storn and Kenneth V. Price. 1997. Differential Evolution - A Simple and Efficient Heuristic for global Optimization over Continuous Spaces. Journal of Global Optimization 11 (1997), 341-359. <a href="https://api.semanticscholar.org/CorpusID:5297867" target="_blank" rel="noopener noreferrer">https://api.semanticscholar.org/CorpusID:5297867</a></span></li>
+            <li id="ref22"><span class="ref-content">Yujin Tang, Duong Nguyen, and David Ha. 2020. Neuroevolution of self-interpretable agents. In Proceedings of the 2020 Genetic and Evolutionary Computation Conference (Cancún, Mexico) (GECCO '20). Association for Computing Machinery, New York, NY, USA, 414-424. <a href="https://doi.org/10.1145/3377930.3389847" target="_blank" rel="noopener noreferrer">doi:10.1145/3377930.3389847</a></span></li>
+            <li id="ref23"><span class="ref-content">Naftali Tishby, Fernando C. Pereira, and William Bialek. 2000. The information bottleneck method. <a href="https://arxiv.org/abs/physics/0004057" target="_blank" rel="noopener noreferrer">arXiv:physics/0004057</a> [physics.data-an]</span></li>
+            <li id="ref24"><span class="ref-content">Mark Towers, Ariel Kwiatkowski, Jordan Terry, John U. Balis, Gianluca De Cola, Tristan Deleu, Manuel Goulão, Andreas Kallinteris, Markus Krimmel, Arjun KG, Rodrigo Perez-Vicente, Andrea Pierré, Sander Schulhoff, Jun Jet Tai, Hannah Tan, and Omar G. Younis. 2024. Gymnasium: A Standard Interface for Reinforcement Learning Environments. <a href="https://arxiv.org/abs/2407.17032" target="_blank" rel="noopener noreferrer">arXiv:2407.17032</a> [cs.LG]</span></li>
+            <li id="ref25"><span class="ref-content">Stefan Treue and Julio C. Martínez Trujillo. 1999. Feature-based attention influences motion processing gain in macaque visual cortex. Nature 399 (1999), 575-579. <a href="https://api.semanticscholar.org/CorpusID:4424973" target="_blank" rel="noopener noreferrer">https://api.semanticscholar.org/CorpusID:4424973</a></span></li>
+            <li id="ref26"><span class="ref-content">Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. Attention is all you need. In Proceedings of the 31st International Conference on Neural Information Processing Systems (Long Beach, California, USA) (NIPS'17). Curran Associates Inc., Red Hook, NY, USA, 6000-6010.</span></li>
+            <li id="ref27"><span class="ref-content">Shaun P. Vecera and Martha J. Farah. 1994. Does visual attention select objects or locations? Journal of experimental psychology. General 123 2 (1994), 146-60. <a href="https://doi.org/10.1037//0096-3445.123.2.146" target="_blank" rel="noopener noreferrer">doi:10.1037//0096-3445.123.2.146</a></span></li>
+            <li id="ref28"><span class="ref-content">Dirk Walther and Christof Koch. 2006. Modeling attention to salient proto-objects. Neural Networks 19, 9 (2006), 1395-1407. <a href="https://doi.org/10.1016/j.neunet.2006.10.001" target="_blank" rel="noopener noreferrer">doi:10.1016/j.neunet.2006.10.001</a> Brain and Attention.</span></li>
+            <li id="ref29"><span class="ref-content">Jeremy M Wolfe. 1994. Guided search 2.0 a revised model of visual search. Psychonomic bulletin &amp; review 1 (1994), 202-238.</span></li>
+            <li id="ref30"><span class="ref-content">William Woof and Ke Chen. 2018. Learning to Play General Video-Games via an Object Embedding Network. In 2018 IEEE Conference on Computational Intelligence and Games (CIG). IEEE, Maastricht, Netherlands, 1-8. <a href="https://doi.org/10.1109/CIG.2018.8490438" target="_blank" rel="noopener noreferrer">doi:10.1109/CIG.2018.8490438</a></span></li>
+        </ol>
+    </section>
+
+</body>
+</html>
