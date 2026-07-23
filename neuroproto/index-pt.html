@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuroevolução de Autoatenção sobre Proto-objetos</title>
+
+    <meta name="title" property="og:title" content="Neuroevolução de Autoatenção sobre Proto-objetos">
+    <meta name="type" property="og:type" content="article">
+    <meta name="url" property="og:url" content="https://rafaelcp.github.io/neuroproto/">
+    <meta name="image" property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="description" property="og:description" content="Proto-objetos – regiões da imagem que compartilham propriedades visuais comuns – oferecem uma alternativa promissora aos mecanismos de atenção tradicionais baseados em patches retangulares de imagem em redes neurais. Embora trabalhos anteriores tenham demonstrado que evoluir um módulo de atenção dura baseado em patches juntamente com uma rede controladora poderia alcançar desempenho no estado da arte em tarefas de aprendizado por reforço visual, nossa abordagem aproveita a segmentação de imagens para trabalhar com características de nível mais alto. Ao operar sobre proto-objetos em vez de patches fixos, reduzimos significativamente a complexidade de representação: cada imagem se decompõe em menos proto-objetos do que patches regulares, e cada proto-objeto pode ser eficientemente codificado como um vetor compacto de características. Isso permite um módulo de autoatenção substancialmente menor que processa informações semânticas mais ricas. Nossos experimentos demonstram que essa abordagem baseada em proto-objetos iguala ou supera o desempenho no estado da arte de implementações baseadas em patches com 62% menos parâmetros e 2,6 vezes menos tempo de treinamento.">
+
+    <meta name="twitter:card" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:title" content="Neuroevolução de Autoatenção sobre Proto-objetos">
+    <meta name="twitter:description" content="Proto-objetos – regiões da imagem que compartilham propriedades visuais comuns – oferecem uma alternativa promissora aos mecanismos de atenção tradicionais baseados em patches retangulares de imagem em redes neurais. Embora trabalhos anteriores tenham demonstrado que evoluir um módulo de atenção dura baseado em patches juntamente com uma rede controladora poderia alcançar desempenho no estado da arte em tarefas de aprendizado por reforço visual, nossa abordagem aproveita a segmentação de imagens para trabalhar com características de nível mais alto. Ao operar sobre proto-objetos em vez de patches fixos, reduzimos significativamente a complexidade de representação: cada imagem se decompõe em menos proto-objetos do que patches regulares, e cada proto-objeto pode ser eficientemente codificado como um vetor compacto de características. Isso permite um módulo de autoatenção substancialmente menor que processa informações semânticas mais ricas. Nossos experimentos demonstram que essa abordagem baseada em proto-objetos iguala ou supera o desempenho no estado da arte de implementações baseadas em patches com 62% menos parâmetros e 2,6 vezes menos tempo de treinamento.">
+
+    <style>
+        body {
+            font-family: serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+            color: #333;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: sans-serif;
+            color: #111;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        h2 {
+            font-size: 1.6em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.3em;
+        }
+
+        h3 {
+            font-size: 1.3em;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        p {
+            margin-bottom: 1em;
+            text-align: justify;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .authors-affiliations {
+            text-align: center;
+            margin-bottom: 2em;
+            font-family: sans-serif;
+        }
+
+        .author {
+            font-weight: bold;
+        }
+
+        .affiliation {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .email a {
+            font-size: 0.9em;
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .email a:hover {
+            text-decoration: underline;
+        }
+
+        .abstract {
+            margin-top: 2em;
+            margin-bottom: 2em;
+            padding: 1em;
+            background-color: #f9f9f9;
+            border-left: 3px solid #ccc;
+        }
+
+        .abstract h2 {
+            font-size: 1.4em;
+            border-bottom: none;
+            margin-top: 0;
+        }
+
+        figure {
+            margin: 2em auto;
+            text-align: center;
+            border: 1px solid #eee;
+            padding: 1em;
+            background-color: #fdfdfd;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5em auto;
+        }
+
+        figcaption {
+            font-size: 0.9em;
+            color: #555;
+            text-align: left;
+            margin-top: 0.5em;
+            font-family: sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2em 0;
+            font-family: sans-serif;
+            font-size: 0.9em;
+        }
+
+        caption {
+            caption-side: top;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            font-size: 1em;
+            color: #333;
+            text-align: left;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .equation {
+            text-align: center;
+            margin: 1.5em 0;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+
+        .references ol {
+            padding-left: 20px;
+            list-style: none;
+            counter-reset: ref-counter;
+        }
+
+        .references li {
+            margin-bottom: 0.8em;
+            counter-increment: ref-counter;
+            position: relative;
+            padding-left: 25px;
+        }
+        .references li::before {
+            content: "[" counter(ref-counter) "]";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #555;
+        }
+        .references li span.ref-content {
+            display: inline-block;
+            margin-left: 1em;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        code, pre {
+             font-family: monospace, monospace;
+             background-color: #f4f4f4;
+             padding: 1px 3px;
+             border-radius: 3px;
+        }
+
+        .acknowledgments {
+            font-size: 0.9em;
+            margin-top: 2em;
+        }
+
+        .header-arxiv-id {
+            font-family: sans-serif;
+            color: #555;
+            font-size: 0.9em;
+            margin-bottom: 2em;
+            text-align: left;
+        }
+        .header-arxiv-id a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .header-arxiv-id a:hover {
+            text-decoration: underline;
+        }
+
+        @media print {
+            body {
+                max-width: none;
+                margin: 1cm;
+                font-size: 10pt;
+            }
+            h1, h2, h3, h4 { page-break-after: avoid; }
+            figure, table { page-break-inside: avoid; }
+            .header-arxiv-id { display: none; }
+            a { color: inherit; text-decoration: none; }
+            .references li::before { color: inherit; }
+        }
+
+        #notebooklm {
+            display: flex;
+        }
+        #notebooklm div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-arxiv-id"><a href="https://arxiv.org/abs/2505.00186v1">arXiv:2505.00186v1</a> [cs.NE] 30 de abril de 2025
+    <br>DOI: <a href="https://doi.org/10.1145/3712256.3726451">10.1145/3712256.3726451</a> 13 de julho de 2025</div>
+
+    <h1>Neuroevolução de Autoatenção sobre Proto-objetos</h1>
+
+    <div class="authors-affiliations">
+        <div class="top-info">
+            <div>
+                <span class="author">Rafael C. Pinto</span><br>
+                <span class="affiliation">Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Sul (IFRS)</span><br>
+                <span class="affiliation">Canoas, Brasil</span><br>
+                <span class="affiliation">Universidade Federal do Rio Grande do Sul (UFRGS)</span><br>
+                <span class="affiliation">Porto Alegre, Brasil</span><br>
+                <span class="email"><a href="mailto:rafael.pinto@canoas.ifrs.edu.br">rafael.pinto@canoas.ifrs.edu.br</a></span>
+            </div>
+            <div>
+                <span class="author">Anderson R. Tavares</span><br>
+                <span class="affiliation">Universidade Federal do Rio Grande do Sul (UFRGS)</span><br>
+                <span class="affiliation">Porto Alegre, Brasil</span><br>
+                <span class="email"><a href="mailto:artavares@inf.ufrgs.br">artavares@inf.ufrgs.br</a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="abstract">
+        <h2>Resumo</h2>
+        <p>Proto-objetos – regiões da imagem que compartilham propriedades visuais comuns – oferecem uma alternativa promissora aos mecanismos de atenção tradicionais baseados em patches retangulares de imagem em redes neurais. Embora trabalhos anteriores tenham demonstrado que evoluir um módulo de atenção dura baseado em patches juntamente com uma rede controladora poderia alcançar desempenho no estado da arte em tarefas de aprendizado por reforço visual, nossa abordagem aproveita a segmentação de imagens para trabalhar com características de nível mais alto. Ao operar sobre proto-objetos em vez de patches fixos, reduzimos significativamente a complexidade de representação: cada imagem se decompõe em menos proto-objetos do que patches regulares, e cada proto-objeto pode ser eficientemente codificado como um vetor compacto de características. Isso permite um módulo de autoatenção substancialmente menor que processa informações semânticas mais ricas. Nossos experimentos demonstram que essa abordagem baseada em proto-objetos iguala ou supera o desempenho no estado da arte de implementações baseadas em patches com 62% menos parâmetros e 2,6 vezes menos tempo de treinamento.</p>
+    </div>
+	
+    <div id="notebooklm">
+        <div>NotebookLM Podcast (EN)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects.mp3" controls></audio></div>
+        <div>NotebookLM Podcast (PT-BR)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects-ptbr.mp3" controls></audio></div>
+    </div>
+	
+    <figure>
+        <video controls src="proto.mp4" type="video/mp4"></video>
+        <figcaption><strong>Figura 1:</strong> Nosso agente atencional é capaz de focar em regiões uniformes inteiras em vez de pequenos patches de imagem de tamanho fixo.</figcaption>
+    </figure>
+
+    <section id="introduction">
+        <h2>1 Introdução</h2>
+        <p>Os mecanismos de atenção visual emergiram como uma solução poderosa para reduzir a complexidade computacional em tarefas de percepção de alta dimensão. Ao criar um gargalo de informação entre as entradas visuais e as redes de controle, esses mecanismos permitem o processamento eficiente de cenas complexas <a href="#ref14">[14]</a>. Trabalhos recentes demonstraram que evoluir um módulo de atenção dura conjuntamente com um controlador LSTM <a href="#ref10">[10]</a> pode produzir agentes notavelmente eficientes que operam exclusivamente em pequenos patches de imagem <a href="#ref22">[22]</a>. Essa abordagem não apenas gerou redes neurais ordens de grandeza menores do que os métodos concorrentes, mas também alcançou resultados no estado da arte em ambientes desafiadores de Aprendizado por Reforço, como Car Racing e Doom Take Cover <a href="#ref3">[3]</a>. O sucesso decorre da capacidade da camada de atenção de filtrar regiões de entrada irrelevantes, simplificando a tarefa do controlador e fornecendo generalização robusta e resistência ao ruído.</p>
+        <p>Avançamos nessa linha de pesquisa substituindo patches de tamanho fixo e distribuídos uniformemente por proto-objetos – regiões coerentes de características visuais localmente uniformes <a href="#ref6">[6]</a> – obtidos por meio de segmentação de imagem <a href="#ref7">[7]</a>. Essa mudança na representação oferece duas vantagens principais. Primeiro, eles fornecem uma representação mais compacta, já que a maioria das cenas se decompõe em menos proto-objetos do que em patches. Segundo, cada proto-objeto codifica informações semânticas mais ricas por meio de um pequeno vetor descritor que captura propriedades como forma, tamanho e cor.</p>
+        <p>Essa abordagem baseada em proto-objetos permite uma arquitetura significativamente simplificada. O módulo de autoatenção torna-se substancialmente menor ao processar características de nível mais alto, levando a uma seleção aprimorada e a informações melhor filtradas para o controlador, que também pode ser simplificado. Nossos resultados nos ambientes Car Racing e Doom Take Cover <a href="#ref3">[3]</a> demonstram que essa arquitetura mais eficiente iguala ou supera o desempenho de implementações baseadas em patches, reduzindo a contagem de parâmetros em 62% com um treinamento 2,6 vezes mais rápido.</p>
+    </section>
+
+    <section id="background">
+        <h2>2 Fundamentação Teórica</h2>
+        <p>A modelagem da atenção visual humana tem sido uma área de pesquisa ativa nos últimos 35 anos. Muitos modelos diferentes de atenção foram propostos, os quais, além de fornecerem contribuições teóricas para a neurociência e a psicologia, demonstraram aplicações bem-sucedidas em visão computacional e robótica <a href="#ref2">[2]</a>. Os primeiros modelos computacionais focavam primariamente em atenção ascendente (bottom-up), baseada em saliência, enquanto abordagens mais recentes incorporaram influências descendentes (top-down) e mecanismos de seleção baseados em objetos.</p>
+        <p>O sistema visual biológico fornece insights fundamentais para o projeto de sistemas de visão artificial eficientes. Uma restrição fundamental é que os recursos neurais são limitados – Koch et al. <a href="#ref11">[11]</a> demonstraram que as células ganglionares da retina equilibram os custos metabólicos em relação à transmissão de informações, alcançando uma codificação altamente eficiente apesar de usarem taxas de disparo relativamente baixas. Isso sugere uma pressão evolutiva em direção a gargalos estratégicos de informação, em vez de tentar processar todas as entradas igualmente. Walther e Koch <a href="#ref28">[28]</a> mostraram que um desses gargalos ocorre no nível dos proto-objetos, onde regiões coerentes da cena são selecionadas para processamento aprimorado antes que ocorra o reconhecimento completo do objeto. Isso permite que o sistema visual serialize cenas complexas em blocos gerenciáveis, mantendo uma alta eficiência de codificação.</p>
+
+        <h3>2.1 Tipos de Mecanismos de Atenção Visual</h3>
+        <p>A atenção visual em sistemas biológicos opera por meio de três mecanismos primários. A atenção baseada no espaço opera em locais específicos do campo visual, tratando a atenção como um holofote que aprimora o processamento em coordenadas espaciais selecionadas. A atenção baseada em características aprimora seletivamente o processamento de características específicas (como cor, orientação ou movimento) em todo o campo visual, independentemente da localização espacial. A atenção baseada em objetos opera em elementos agrupados perceptivamente que formam objetos coerentes, sugerindo que a atenção seleciona representações inteiras de objetos em vez de apenas localizações espaciais ou características individuais [<a href="#ref5">5</a>, <a href="#ref25">25</a>, <a href="#ref27">27</a>].</p>
+
+        <h3>2.2 Autoatenção</h3>
+        <p>Um mecanismo-chave na atenção computacional moderna é a camada de autoatenção. Em sua forma padrão <a href="#ref26">[26]</a>, a autoatenção opera em um conjunto de N vetores de entrada, cada um de dimensão d<sub>in</sub>, transformando-os linearmente por meio de matrizes de pesos aprendidas W<sub>O</sub> e W<sub>K</sub> para obter as matrizes de Consulta (Query - Q) e Chave (Key - K):</p>
+        <p class="equation">
+            S = softmax( QK<sup>T</sup> / √d<sub>k</sub> ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (1)
+        </p>
+        <p>onde d<sub>k</sub> é a dimensão dos vetores chave. As pontuações de atenção S mostram o quão relacionados estão os elementos de entrada. S é posteriormente combinado com uma matriz V, que também é uma transformação linear da entrada, para formar a representação contextual A = SV, cujos vetores contêm a representação de cada entrada considerando o contexto geral.</p>
+
+        <h3>2.3 Proto-objetos e Gargalos de Informação</h3>
+        <p>Proto-objetos são uma representação intermediária entre características visuais brutas e objetos totalmente reconhecidos [<a href="#ref19">19</a>, <a href="#ref28">28</a>]. Eles são formados durante o processamento pré-atencional e representam regiões coerentes do campo visual que compartilham propriedades visuais comuns. Essas estruturas servem como candidatas potenciais para a atenção antes que ocorra o reconhecimento completo do objeto <a href="#ref16">[16]</a>, permitindo que o sistema visual prioritize com eficiência os recursos de processamento.</p>
+        <p>Gargalos de informação no processamento visual servem para comprimir a entrada visual de alta dimensão em representações mais gerenciáveis, preservando informações relevantes para a tarefa [<a href="#ref11">11</a>, <a href="#ref23">23</a>]. Esses gargalos podem ocorrer em vários níveis de processamento, desde características visuais iniciais até o reconhecimento de objetos, e desempenham um papel crucial no gerenciamento dos recursos computacionais necessários para o processamento visual <a href="#ref29">[29]</a>. A própria formação de proto-objetos representa um gargalo natural de informação, pois reduz a complexidade da cena visual enquanto mantém informações comportamentalmente relevantes <a href="#ref28">[28]</a>.</p>
+    </section>
+
+    <section id="related-work">
+        <h2>3 Trabalhos Relacionados</h2>
+        <p>Nossa abordagem se baseia e estende várias linhas de pesquisa em atenção visual, aprendizado por reforço e aprendizado profundo. Aqui revisamos os trabalhos anteriores mais relevantes que fundamentam e contextualizam nossa contribuição, focando particularmente em abordagens que enfrentam os desafios de processamento visual eficiente e mecanismos de atenção.</p>
+
+        <h3>3.1 Agentes Autointerpretáveis</h3>
+        <p>Trabalhos recentes de Tang et al. <a href="#ref22">[22]</a> exploraram o uso de mecanismos de atenção dura no aprendizado por reforço. A abordagem deles divide a entrada visual em patches de 7x7 e aplica um mecanismo de autoatenção modificado para selecionar apenas os top-k patches para processamento (veja a Fig. 2). Isso cria um gargalo de informação que força o modelo a focar nas entradas mais relevantes enquanto ignora as outras. Quando aplicada a tarefas de aprendizado por reforço baseadas em visão, essa abordagem permitiu que os agentes alcançassem melhor desempenho, interpretabilidade e eficiência computacional com muito menos parâmetros do que as abordagens convencionais. Nosso método difere principalmente ao usar proto-objetos em vez de patches, reduzindo o número de tokens e sua dimensionalidade, ao mesmo tempo que adiciona informações de nível mais alto a eles.</p>
+
+        <figure>
+            <video src="patches-video_best.npz_ep1.mp4" controls></video>
+            <figcaption><strong>Figura 2:</strong> O agente extrai patches do quadro atual e seleciona os top-k (destacados em branco) por um mecanismo de atenção dura. Ao visualizar os patches selecionados, é possível ter uma ideia melhor da estratégia aprendida, além de facilitar a depuração.</figcaption>
+        </figure>
+
+        <h3>3.2 Abordagens Baseadas em Proto-objetos</h3>
+        <p>Orabona et al. <a href="#ref16">[16]</a> demonstraram a eficácia dos proto-objetos como as unidades básicas da atenção visual. Seu trabalho mostrou que o uso de proto-objetos como uma representação intermediária corresponde naturalmente a objetos potenciais na cena, permitindo um processamento eficiente e mantendo características visuais significativas.</p>
+        <p>A ideia de usar informações de nível mais alto a partir de "blobs" (manchas) como entrada foi explorada detalhadamente por Liang et al. <a href="#ref12">[12]</a> em seu trabalho sobre Blob-PROST (Deslocamentos Relativos Par a Par no Espaço e no Tempo). A abordagem deles demonstrou que características visuais baseadas em blobs de cores poderiam alcançar um desempenho competitivo com o DQN <a href="#ref15">[15]</a> usando muito menos parâmetros. A ideia central era representar as telas do jogo em termos de "blobs" – regiões contíguas de pixels da mesma cor que frequentemente correspondem a objetos do jogo. Este é um caso especial do nosso uso de proto-objetos, que não estão restritos a pixels da mesma cor. Essa representação foi combinada com posições e características de deslocamento relativo entre os blobs, capturando relações espaciais e temporais. No entanto, a representação deles consistia em mais de 100 milhões de características binárias, enquanto a nossa é baseada em representações compactas de proto-objetos individuais que podem ser atendidos individualmente.</p>
+
+        <h3>3.3 Aprendizado por Reforço Baseado em Objetos</h3>
+        <p>Enquanto as abordagens baseadas em proto-objetos se concentram em representações intermediárias, alguns pesquisadores avançaram no sentido de trabalhar com objetos completos. Woof e Chen <a href="#ref30">[30]</a> experimentaram com representações de objetos de alto nível (por exemplo, entidades identificáveis em uma tela de jogo) em vez de jogos de videogame de ponta a ponta. No entanto, eles assumem que os objetos são dados previamente, o que requer acesso ao motor do jogo ou a detectores de objetos específicos.</p>
+        <p>Uma abordagem mais robusta <a href="#ref1">[1]</a> demonstrou que operar diretamente em representações no nível do objeto pode melhorar dramaticamente a eficiência de amostragem em tarefas de aprendizado por reforço. A abordagem deles aprende uma representação sucinta do objeto a partir de pixels sem supervisão, primeiro supersegmentando imagens em segmentos primitivos, modelando sua dinâmica e, em seguida, combinando segmentos quando eles possuem dinâmicas semelhantes. O método deles aproveita o insight de que eventos importantes tendem a ocorrer quando os objetos interagem, usando isso para guiar a exploração em direção a estados que envolvem contatos entre objetos. Embora a abordagem deles alcance resultados impressionantes – aprendendo até 10.000 vezes mais rápido do que os métodos convencionais de RL profundo e até superando a aprendizagem humana em alguns casos – ela requer uma sobrecarga computacional significativa para detecção e rastreamento de objetos. Isso motiva a exploração de abordagens de proto-objetos, que fornecem um equilíbrio entre eficiência de processamento e poder de representação.</p>
+    </section>
+
+    <section id="method">
+        <h2>4 Agente Atencional Baseado em Proto-objetos</h2>
+        <p>Nosso trabalho se baseia e conecta várias direções de pesquisa em visão computacional, aprendizado profundo e computação evolucionária. Combinamos insights de modelos biológicos de atenção visual, arquiteturas neurais eficientes e técnicas clássicas de visão computacional para criar um sistema híbrido que aproveita os pontos fortes de cada abordagem. Aplicamos mecanismos de atenção dura a proto-objetos em vez de pixels brutos ou patches arbitrários. Essa abordagem implementa um gargalo de informação semelhante ao que Koch et al. <a href="#ref11">[11]</a> observaram em sistemas biológicos, enquanto opera sobre proto-objetos semanticamente significativos descritos por [<a href="#ref16">16</a>, <a href="#ref19">19</a>]. Ao selecionar apenas os proto-objetos mais relevantes para o processamento, criamos um gargalo de informação em um nível semanticamente mais significativo do que as abordagens anteriores.</p>
+        <p>Essa combinação é particularmente bem adequada para a neuroevolução, pois a seleção discreta dos top-k proto-objetos e a transferência de coordenadas para o controlador criam operações não diferenciáveis que são desafiadoras para métodos baseados em gradiente, mas naturais para abordagens evolutivas. Adicionalmente, ao forçar o modelo a ser explicitamente seletivo sobre quais partes da entrada visual ele processa, ganhamos interpretabilidade direta – podemos visualizar exatamente quais proto-objetos o modelo considera importantes para suas decisões, fornecendo insights sobre seu processo de tomada de decisão que frequentemente faltam nas abordagens tradicionais de aprendizado profundo.</p>
+
+        <h3>4.1 Implementação</h3>
+        <p>Nosso método consiste em 5 estágios principais: convolução, quantização, segmentação, atenção e controle, descritos a seguir.</p>
+
+        <h4>4.1.1 Convolução</h4>
+        <p>O estágio de convolução visa deslocar, reescalar, filtrar e/ou misturar os canais de imagem originais, fornecendo uma representação pré-processada para os próximos estágios. Particularmente, em nossos experimentos, usamos uma única camada convolucional com 3 filtros 1x1. A escolha de 3 filtros é necessária para compatibilidade com a conexão residual. É possível adicionar mais camadas convolucionais desde que mantenham o mesmo tamanho de imagem. Nesse caso, adicionar uma camada final com 3 filtros é suficiente para trazer o número de dimensões de volta ao mesmo número de canais da imagem. Depois disso, somamos a imagem original à saída da convolução, formando uma conexão residual <a href="#ref9">[9]</a>, cuja função ficará clara no próximo estágio.</p>
+
+        <h4>4.1.2 Quantização</h4>
+        <p>A quantização visa reduzir a quantidade de informação a ser processada nos estágios seguintes. Em nossos experimentos, realizamos uma quantização uniforme simples da saída da convolução usando 1 bit por canal (poderia ser mais para tarefas mais complexas e poderia até ser evoluído). Como resultado, obtemos uma imagem com no máximo 8 cores distintas, cada uma representando um tipo diferente de segmento. Note que, além de ser uma quantização fixa simples, sua combinação com a camada convolucional anterior resulta em um mecanismo de segmentação e quantização adaptativo.</p>
+
+        <p>Esse estágio possui sinergia com as convoluções: o deslocamento, o reescalonamento e a mistura dos canais originais da imagem podem colocá-los em diferentes intervalos de quantização. Mas como existem saltos desformatados na superfície de aptidão evolutiva necessários para encontrar uma segmentação apropriada, o que pode levar algum tempo para o algoritmo evolutivo resolver, usamos a conexão residual do estágio anterior como um meio de dar um pontapé inicial na evolução a partir de uma segmentação trivial sobre as cores originais da imagem. Assim, o propósito da convolução é alterar a segmentação para longe da trivial (se necessário).</p>
+
+        <h4>4.1.3 Segmentação</h4>
+        <p>A segmentação visa criar os proto-objetos, isto é, descritores para regiões de pixels semanticamente semelhantes recebidos dos estágios anteriores. Neste trabalho, aplicamos a rotulagem de imagens por regiões conectadas por cor [<a href="#ref7">7</a>, <a href="#ref20">20</a>]. De cada região extraída, um conjunto de atributos pode ser obtido, resultando em d<sub>in</sub> características (regiões com 1 pixel de largura ou altura são tratadas como ruído e ignoradas).</p>
+        <p>Após minuciosa experimentação, chegamos a um conjunto de d<sub>in</sub> = 11 características, a saber: cor do segmento quantizado (R, G, B), centro de massa (X, Y), área total em pixels, largura da caixa delimitadora, altura da caixa delimitadora, área da caixa delimitadora, proporção (aspect ratio) e extensão (área da caixa delimitadora dividida pela área da região). Tudo isso pode ser facilmente e eficientemente computado a partir das regiões obtidas, ajudando o próximo estágio a tomar decisões mais informadas. A orientação (correlação entre as coordenadas dos pixels) também poderia ser útil, mas adicionou muito custo de tempo de execução ao nosso modelo e foi deixada de fora. Todos os valores são normalizados entre -1 e 1, e a proporção é transformada em escala logarítmica para que 1 e -1 correspondam a proporções extremas, enquanto 0 significa lados iguais:</p>
+        <p class="equation">
+             NormAspectRatio = 2 * log(aspectRatio) / log(max(imageWidth, imageHeight)) - 1
+        </p>
+
+        <h4>4.1.4 Atenção</h4>
+        <p>O módulo de atenção visa modelar relações entre os proto-objetos identificados no estágio de segmentação. As características dos N proto-objetos são alimentadas na camada de atenção do nosso modelo como um conjunto de N tokens de dimensão d<sub>in</sub>, no jargão de atenção <a href="#ref26">[26]</a>. A camada de atenção projeta esses tokens em dois vetores Q e K de dimensão d<sub>q</sub>. Há, no entanto, um toque adicional em nossa implementação: adicionamos uma camada de Unidade Linear Retificada Paramétrica (PReLU) antes e depois das transformações lineares. PReLU é uma generalização da ativação ReLU, onde a inclinação da parte negativa é adaptativa (PReLU(x) = max(ax, x)) para cada camada ou neurônio (este último no nosso caso). Por apenas 15 parâmetros adicionais, isso permite que nossa camada de atenção modele relações mais complexas, já que um único neurônio PReLU demonstrou resolver o problema do XOR <a href="#ref17">[17]</a>. Em nosso caso, permite a seleção de valores intermediários (como cores cinza) quando a é negativo (tornando a função não monotônica), o que não é possível com camadas lineares puras. Em vez disso, poderiam ser usadas mais camadas de autoatenção tradicional, mas optamos pela solução PReLU mais simples neste trabalho para manter o número de parâmetros e o tempo de execução baixos.</p>
+
+        <p>Prosseguindo com o procedimento habitual de autoatenção, uma matriz de atenção é calculada pela Eq. 1, e em seguida, um vetor de importância é obtido por soma ao longo das linhas. Em vez da mistura habitual de tokens com uma matriz V realizada na autoatenção tradicional, simplesmente realizamos a seleção dos top-k proto-objetos sobre a soma resultante das linhas.</p>
+        <p>Ressaltamos que o cálculo da atenção possui complexidade de tempo assintótica quadrática no número de tokens N. Reduzir drasticamente o número de tokens usando proto-objetos em vez de patches torna nosso módulo de atenção muito mais rápido.</p>
+
+        <p>Em nossos experimentos, fomos ao extremo e definimos k = 1 (as coordenadas de um único proto-objeto são passadas para o controlador, descrito a seguir). Isso é possível porque nosso módulo de atenção é mais expressivo que o original e os proto-objetos contêm informações de nível mais alto, tornando um único proto-objeto bem selecionado suficiente para que o controlador tome suas decisões (melhor seleção significa menos trabalho para o controlador). Também é mais biologicamente plausível, pois focamos em um único item visual por vez <a href="#ref4">[4]</a>.</p>
+
+        <h4>4.1.5 Controle</h4>
+        <p>Finalmente, o estágio de controle seleciona uma ação a ser executada no ambiente. Em nossa implementação, uma função de transferência f(n) é aplicada a cada vetor de características dos proto-objetos selecionados, e os resultados são concatenados e alimentados como entrada para um controlador LSTM <a href="#ref10">[10]</a>, que é responsável por aprender associações temporais e produzir a saída de controle.</p>
+
+        <p>Em nosso caso, f(n) apenas retorna as coordenadas do centro de massa do proto-objeto. Funções de transferência mais elaboradas poderiam ser usadas para alimentar o controlador com mais propriedades de cada proto-objeto selecionado, mas o centro de massa foi suficiente para os nossos problemas. Isso é possível porque a evolução conjunta dos módulos de atenção e controle resulta em um "acordo" implícito: ao selecionar sempre o mesmo tipo de proto-objeto (grama, pista, etc...), não há necessidade de o controlador adivinhar de qual tipo se trata. Se a atenção focasse em tipos diferentes de proto-objetos a cada vez, não seria possível distingui-los apenas por suas coordenadas, a menos que aparecessem consistentemente em regiões específicas da tela, sendo distinguíveis pela posição (como a tela de exibição Head-Up sempre na parte inferior da tela). Eles também poderiam ser distinguidos pelo controlador se o módulo de atenção colocasse consistentemente os mesmos tipos de proto-objetos nas mesmas posições do ranking (por exemplo, grama em primeiro, pista em segundo), mas essa é uma complexidade adicional a ser aprendida.</p>
+
+        <h3>4.2 Visão Geral</h3>
+        <p>Um resumo das diferenças entre nossas escolhas de hiperparâmetros e o trabalho anterior baseado em patches de imagem <a href="#ref22">[22]</a> é mostrado na Tabela 1, bem como o número resultante de parâmetros treinaveis em cada modelo, mostrando que nosso modelo é significativamente (62%) menor no total, devido à sua camada de atenção compacta e ao gargalo menor com k = 1. O processo completo pode ser visto na Fig. 3. Embora este modelo seja não diferenciável, ele é treinável via métodos de otimização sem derivadas, como o CMA-ES <a href="#ref8">[8]</a>.</p>
+
+        <table>
+            <caption><strong>Tabela 1:</strong> Comparação de hiperparâmetros e número de parâmetros treináveis no modelo baseado em patches <a href="#ref22">[22]</a> e no modelo baseado em proto-objetos (nosso). Este último utiliza 62% menos parâmetros treináveis.</caption>
+            <thead>
+                <tr>
+                    <th>Hiperparâmetros do Modelo</th>
+                    <th>Patches <a href="#ref22">[22]</a></th>
+                    <th>Proto-objetos (Nosso)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Tamanho da Entrada da Atenção (d<sub>in</sub>)</td><td>147</td><td>11</td></tr>
+                <tr><td>Tamanho da Incorporação/Embedding (d)</td><td>4</td><td>2</td></tr>
+                <tr><td>K</td><td>10</td><td>1</td></tr>
+                <tr><td>Dimensão de f(n)</td><td>2</td><td>2</td></tr>
+                <tr><td>Tamanho da Entrada da LSTM</td><td>20</td><td>2</td></tr>
+                <tr><td>Nº de Neurônios da LSTM</td><td>16</td><td>16</td></tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <th>Número de Parâmetros Treináveis</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+             <tbody>
+                <tr><td>Convolução</td><td>0</td><td>12</td></tr>
+                <tr><td>Atenção</td><td>1184</td><td>63</td></tr>
+                <tr><td>LSTM</td><td>2432</td><td>1280</td></tr>
+                <tr><td>Saída</td><td>51</td><td>51</td></tr>
+                <tr><td><strong>Total</strong></td><td><strong>3667</strong></td><td><strong>1406</strong></td></tr>
+            </tbody>
+        </table>
+
+        <figure>
+            <img src="flowchart.svg" loading="lazy" alt="Fluxograma do nosso processo completo">
+            <figcaption><strong>Figura 3:</strong> Fluxograma do nosso processo completo. Em nossos experimentos, H = W = 96, F = 11 (número de características dos segmentos), d<sub>q</sub> = 2, M = 2 (usamos apenas as coordenadas x, y de cada token), k = 1 e O = 3 (número de saídas para ambos os ambientes). Qualquer número de camadas convolucionais pode ser usado, desde que preservem o tamanho da imagem e a última tenha 3 filtros para corresponder à conexão residual. Usamos uma camada de 3 filtros 1x1. Nossa quantização está configurada para 1 bit por canal (8 cores). P é a função de ativação PReLU. Elementos em verde são novos em relação a <a href="#ref22">[22]</a>.</figcaption>
+        </figure>
+    </section>
+
+    <section id="experiments">
+        <h2>5 Experimentos e Resultados</h2>
+        <p>Para comparar nossa abordagem com a baseada em patches de <a href="#ref22">[22]</a>, nós a testamos nos mesmos ambientes de <a href="#ref22">[22]</a>: CarRacing e Doom-TakeCover <a href="#ref3">[3]</a>. Para ambos, executamos o CMA-ES com uma população de 128 soluções por 1000 gerações e avaliamos os modelos em 8 sementes (seeds) a cada geração. As sementes são baseadas nos números de geração e repetição. Testamos os modelos a cada 100 gerações em 400 novas sementes e extraímos médias e variâncias para produzir intervalos de confiança de 95%. A significância estatística foi obtida a partir do teste U de Mann-Whitney bicaudal <a href="#ref13">[13]</a>. Observe que os experimentos originais em <a href="#ref22">[22]</a> rodaram por 2000 gerações com 16 sementes cada e uma população de 256 soluções, portanto não são diretamente comparáveis. Reduzimos pela metade cada um desses hiperparâmetros devido a limitações de hardware e executamos os experimentos originais novamente nessa nova configuração para uma comparação justa.</p>
+        <p>Nossos experimentos foram executados na seguinte configuração de hardware: CPU AMD Ryzen 5950X, 128GB RAM DDR4 3200 e GPU Nvidia RTX 3090. O treinamento foi paralelizado em 32 threads, limitando cada avaliação a uma única thread. A solução baseada em patches aproveitou a GPU, mas nosso método foi otimizado para CPU, pois a análise e rotulagem de componentes conectados multirrótulo não se adaptaram bem à GPU.</p>
+
+        <h3>5.1 Car Racing</h3>
+        <p>Este é um ambiente de corrida visto de cima com pistas geradas aleatoriamente (como visto nas Figs. 1 e 2). É visualmente simples o suficiente para ignorar os estágios de convolução e quantização da nossa abordagem, mas nós os executamos da mesma forma para verificar a generalidade do método. A recompensa é de -0.1 a cada quadro, -100 por sair muito da pista (o que também causa o término da execução), e +1000/N para cada bloco de pista visitado, onde N é o número total de blocos visitados na pista (os blocos são visíveis como tons ligeiramente distintos de cinza), e o ambiente é considerado resolvido acima de 900 pontos. Isso incentiva o controlador a ser rápido e preciso. Existem 3 ações contínuas: esterçamento (-1 é esquerda total, +1 é direita total), aceleração e frenagem. Existe uma versão V2 deste ambiente disponível ¹, mas ela usa Pygame ², que é lento. Usamos a V0, que é duas vezes mais rápida por usar OpenGL, e implementamos nossas próprias otimizações que adicionam uma aceleração adicional de 2x. Não há diferenças significativas entre as duas versões, exceto pela compatibilidade com a nova API <a href="#ref24">[24]</a> e melhor compatibilidade de hardware e software.</p>
+
+        <p>Nosso método foi mais eficiente em termos de amostragem, com pontuação média superior ao longo de todo o treinamento, e alcançou uma pontuação significativamente melhor (p = 1.1e-22) de 910.39 após o treinamento (Fig. 4). Além disso, como mostra a Tabela 2, ele fez isso usando apenas 2% do número de tokens por quadro em comparação com a solução baseada em patches e 62% menos parâmetros ajustáveis. E apesar de rodar na CPU, ele treinou 2,7 vezes mais rápido em relação ao método baseado em patches, que rodou na GPU.</p>
+        <p><small>¹<a href="https://gymnasium.farama.org/environments/box2d/car_racing/" target="_blank" rel="noopener noreferrer">https://gymnasium.farama.org/environments/box2d/car_racing/</a></small><br>
+        <small>²<a href="https://www.pygame.org" target="_blank" rel="noopener noreferrer">https://www.pygame.org</a></small></p>
+
+        <figure>
+            <img src="learning_curves_comparison_carracing.png" loading="lazy" alt="Comparação da curva de aprendizado no ambiente Car Racing ao longo de 400 execuções de teste fora das pistas de amostragem de treinamento para cada geração exibida">
+            <figcaption><strong>Figura 4:</strong> Comparação da curva de aprendizado no ambiente Car Racing ao longo de 400 execuções de teste fora das pistas de amostragem de treinamento para cada geração mostrada. Nosso método de proto-objetos alcança resultados significativamente melhores após 1000 gerações em relação ao método baseado em patches de <a href="#ref22">[22]</a>. Ambos atingiram o pico em 1000 gerações.</figcaption>
+        </figure>
+
+        <figure>
+            <img src="evolution.png" loading="lazy" alt="Evolução da segmentação em 5 pontos relevantes no tempo. A estratégia básica de atenção (foco na região de grama menor, destacada em branco com centroide em preto; outros centroides em rosa) é aprendida cedo no processo, enquanto a segmentação continua evoluindo até o final">
+            <figcaption><strong>Figura 5:</strong> Evolução da segmentação em 5 pontos relevantes no tempo. A estratégia básica de atenção (foco na região menor de grama, destacada em branco com centroide em preto; outros centroides em rosa) é aprendida no início do processo, enquanto a segmentação continua evoluindo até o final. Superior Esquerdo: Imagem bruta após redimensionamento e antes da segmentação. Superior Centro (100 gerações): A segmentação trivial a partir das cores originais é mantida durante as primeiras centenas de gerações. Superior Direito (300 gerações): Aprende a separar a pista da exibição Head-Up (HUD) abaixo e diferencia alguns dos sensores ABS. Inferior Esquerdo (800 gerações): Troca as segmentações da pista e do HUD, tornando o carro visível, diferenciando os marcadores vermelhos de curva e ocultando os indicadores do giroscópio. Também diferencia as marcações brancas de curva do indicador de pontuação e velocidade, e funde os sensores ABS novamente. Inferior Centro (900 gerações): Diferencia os segmentos da pista. Inferior Direito (1000 gerações): Desiste da segmentação detalhada da pista e retorna à estratégia de segmentação anterior, com mudanças muito pequenas e irrelevantes em alguns pixels da pontuação.</figcaption>
+        </figure>
+		
+        <p>Um aspecto interessante deste experimento é observar a evolução da segmentação e da atenção, como mostra a Fig. 5. A solução começa com a quantização trivial sobre as cores originais da tarefa, mas como a pista é escura, ela acaba se fundindo com a exibição Head-Up (HUD) preta na parte inferior da tela. No entanto, ela já sabe como focar na região menor de grama, pois ela geralmente aponta para a direção em que o carro deve virar. Em 300 gerações, ela aprende a separar a pista do HUD, enquanto em 800 gerações ela separa o carro e os marcadores vermelhos de curva da pista. Embora o carro seja inútil (ele está sempre no mesmo lugar e até foi fundido com a pista em outros experimentos), os marcadores vermelhos podem reforçar o lado correto da curva "votando" (como consultas) em sua região de grama adjacente. Em 900 gerações, aprende a segmentar os blocos da pista, mas descarta isso na solução final. A solução final decomposta em suas etapas de processamento pode ser vista na Fig. 6.</p>
+
+		<figure>
+			<video src="video_carracing_proto-objects_iter_1000.mp4" controls width="100%"></video>
+			<figcaption><strong>Figura 6:</strong> Etapas de processamento no ambiente Car Racing. Superior esquerdo: imagem bruta redimensionada para 96x96. Superior direito: convolução 1x1 + residual. Inferior esquerdo: quantização. Inferior direito: atenção com k=1.
+			</figcaption>
+		</figure>
+
+        <h3>5.2 Doom Take Cover</h3>
+        <p>Esta tarefa é baseada no jogo Doom, que é visualmente mais complexo e possui muito mais cores do que a tarefa anterior (veja a Fig. 8, superior esquerdo), tornando as etapas de convolução e quantização estritamente necessárias para evitar um número gigantesco de segmentos. Ela ocorre em uma sala retangular. O agente é gerado ao longo de uma parede, e monstros são gerados de forma constante e aleatória ao longo da parede oposta. Eles continuam atirando bolas de fogo no agente, que deve se esquivar delas para sobreviver. O agente ganha 1 ponto de recompensa para cada tic vivo e possui 3 ações discretas: mover-se para a esquerda, para a direita ou ficar parado.</p>
+
+        <figure>
+            <img src="learning_curves_comparison_takecover.png" loading="lazy" alt="Comparação da curva de aprendizado no ambiente Doom Take Cover ao longo de 400 execuções de teste fora das sementes da amostra de treinamento para cada geração exibida">
+            <figcaption><strong>Figura 7:</strong> Comparação da curva de aprendizado no ambiente Doom Take Cover ao longo de 400 execuções de teste fora das sementes da amostra de treinamento para cada geração mostrada. Nosso método com k = 1 mostrou menor eficiência de amostragem, mas alcançou desempenho semelhante após 1000 gerações em relação a <a href="#ref22">[22]</a>, que atingiu o desempenho máximo em 700 gerações (p = 0.414 entre as melhores soluções). No entanto, com k = 10 (mesmo da configuração baseada em patches) e ajustes adicionais detalhados no texto, nossa solução teve melhor eficiência de amostragem e alcançou um desempenho significativamente maior (p = 2.8e−5) (pontuação de 1193 em 700 gerações).</figcaption>
+        </figure>
+
+        <figure>
+            <video src="video_iter_1000.npz_ep1.mp4" controls width="100%"></video>
+            <figcaption><strong>Figura 8:</strong> Etapas de processamento no ambiente Doom Take Cover. Superior esquerdo: imagem bruta redimensionada para 96x96. Superior direito: convolução 1x1 + residual. Inferior esquerdo: quantização. Inferior direito: atenção. Observe que essa solução ignora completamente as bolas de fogo a partir da etapa de quantização.</figcaption>
+        </figure>
+
+        <p>As curvas de aprendizado são mostradas na Fig. 7. Observamos que nossa abordagem teve uma eficiência de amostragem ligeiramente menor, precisando de mais gerações para igualar o desempenho do modelo baseado em patches (p = 0.414). Também experimentamos com d<sub>q</sub> = 4, k = 10 (mesma configuração baseada em patches) e convoluções 3x3 (2671 parâmetros) e essa solução teve melhor eficiência de amostragem e alcançou um desempenho significativamente maior (p = 2.8e-5), atingindo uma pontuação de 1193 em 55h de treinamento. Hipotetizamos que a degradação do desempenho se deveu a k = 1, o que significa que a LSTM precisa de um trabalho muito mais árduo para acompanhar múltiplos proto-objetos de interesse na tela, ou até mesmo perder alguns deles completamente, enquanto também aprende a descartar os proto-objetos de parede que ativam quando não há projéteis na tela.</p>
+
+        <table>
+             <caption><strong>Tabela 2:</strong> Comparação dos resultados. O número de tokens por quadro é fixo para o modelo regular baseado em patches, mas variável para nosso modelo baseado em proto-objetos. Nosso método está atualmente otimizado para CPU. Na seção do número de tokens, n se refere ao número de quadros, enquanto nas pontuações equivale ao número de execuções.</caption>
+             <thead>
+                 <tr>
+                     <th></th>
+                     <th>Patches <a href="#ref22">[22]</a></th>
+                     <th>Proto-objetos (Nosso)</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 <tr><td colspan="3"><strong>Número de Tokens e IC de 95% da Melhor Solução (n=800)</strong></td></tr>
+                 <tr><td>Car Racing</td><td>529</td><td>12.6 ± 0.26</td></tr>
+                 <tr><td>Doom Take Cover</td><td>529</td><td>10.7 ± 0.73</td></tr>
+                 <tr><td colspan="3"><strong>Melhor Pontuação e IC de 95% Após 1000 Iterações (n=400)</strong></td></tr>
+                 <tr><td>Car Racing</td><td>888.69 ± 5.84</td><td>910.39 ± 1.28</td></tr>
+                 <tr><td>Doom Take Cover</td><td>959.27 ± 58.85</td><td>930.68 ± 57.19 (k = 1)<br>1192.82 ± 75.26 (k = 10)</td></tr>
+                 <tr><td colspan="3"><strong>Tempo de Treinamento</strong></td></tr>
+                 <tr><td>Car Racing</td><td>97h (GPU)</td><td>36.5h (CPU)</td></tr>
+                 <tr><td>Doom Take Cover</td><td>85.5h (GPU)</td><td>33h (k = 1, CPU)<br>55h (k = 10, CPU)</td></tr>
+             </tbody>
+        </table>
+
+        <p>A Tabela 2 também mostra que o número de proto-objetos extraídos foi baixo para este ambiente também, demonstrando que nossas etapas de pré-processamento são eficazes em reduzir e uniformizar a complexidade visual de diferentes domínios, mantendo as informações necessárias para a tomada de decisão. O tempo de treinamento foi 2,6 vezes mais rápido para k = 1 e 1,6 vezes mais rápido para k = 10.</p>
+        <p>As etapas fundamentais de processamento no ambiente Doom são ilustradas na Fig. 7: redimensionamento da imagem, convolução 1x1, quantização de cores e atenção (k = 1). Notavelmente, o agente evoluído adota uma estratégia surpreendentemente minimalista, ignorando elementos aparentemente críticos como as bolas de fogo que se aproximam. Em vez disso, ele se concentra exclusivamente no monstro mais à direita na tela enquanto executa um padrão de movimento rítmico da esquerda para a direita. Essa estratégia iguala o desempenho do modelo baseado em patches, apesar deste último atender tanto às bolas de fogo quanto às paredes. A equivalência com nossa abordagem simples sugere que a LSTM do modelo baseado em patches também pode estar confiando primariamente no movimento periódico e ignorando as coordenadas dos projéteis. Essa estratégia se mostra eficaz porque os projéteis dos monstros miram na posição atual do agente – o movimento contínuo serve, portanto, como uma técnica robusta de esquiva, independentemente dos locais específicos do fogo vindo. No entanto, nosso agente com k = 10 parece mais reativo às bolas de fogo.</p>
+    </section>
+
+    <section id="conclusion">
+        <h2>6 Conclusão e Trabalhos Futuros</h2>
+        <p>Apresentamos uma nova representação para agentes baseados em atenção por gargalo em tarefas visuais que opera sobre proto-objetos em vez de pixels brutos ou patches de imagem. Ao trabalhar com esses objetos primitivos pré-atencionais, obtidos por meio de métodos clássicos de visão computacional, alcançamos um desempenho comparável ou superior, reduzindo dramaticamente o número de tokens a atender e sua dimensionalidade, bem como o tempo de treinamento em comparação com soluções anteriores. O sucesso dessa abordagem híbrida destaca uma das principais vantagens dos métodos evolutivos para o treinamento de tais modelos: a liberdade de combinar componentes diferenciáveis e não diferenciáveis sem estar restrito aos requisitos de otimização baseada em gradiente. No entanto, desenvolver uma versão totalmente diferenciável de nossa solução continua sendo uma direção atraente para trabalhos futuros, pois poderia melhorar substancialmente a eficiência de amostragem.</p>
+
+        <p>Nossos experimentos revelaram que os modelos atencionais de gargalo são suscetíveis a máximos locais durante a evolução. A arquitetura de módulo duplo (atenção e controle) torna desafiador descobrir novas estratégias de atenção uma vez que uma abordagem se estabelece, pois o controlador se adapta especificamente ao mecanismo de atenção atual. Quaisquer alterações significativas no módulo de atenção correm o risco de perturbar esse equilíbrio delicado. Hipotetizamos que o CMA-ES pode ser muito "ganancioso" (greedy) para essa arquitetura, e alternativas como a evolução diferencial <a href="#ref21">[21]</a> podem ser mais adequadas, permitindo que múltiplas estratégias de atenção evoluam em paralelo.</p>
+
+        <p>Demonstramos que, ao aprimorar a camada de atenção, enviar coordenadas de um único proto-objeto para o controlador é suficiente para produzir políticas eficazes. Isso funciona porque a LSTM pode manter e atualizar uma representação de estado interno entre os quadros, decidindo quais informações preservar ou descartar. Essa abordagem se alinha bem com os movimentos oculares biológicos, onde o foco necessariamente se desloca entre locais ou objetos individuais <a href="#ref4">[4]</a>. No entanto, esse fluxo simplificado de informações tem o custo de tempos de aprendizado mais longos quando há várias entidades relevantes na tela, pois o módulo de atenção deve atender a todas elas e o controlador deve desenvolver estratégias sofisticadas de gerenciamento de memória. Uma solução potencial é desacoplar memória e controle, possivelmente implementando mecanismos de atenção sobre coordenadas recentemente atendidas para gerar incorporações (embeddings) de tamanho fixo <a href="#ref18">[18]</a> para o controlador. Isso poderia ser estendido para incluir armazenamento e recuperação adaptativos a partir de bancos de dados vetoriais.</p>
+
+        <p>Várias direções promissoras para pesquisas futuras emergem deste trabalho. Sinais de retroalimentação (feedback) do controlador poderiam modular a atenção, permitindo estratégias top-down ativas. Isso exigiria enriquecer o fluxo de informações do módulo de atenção para ajudar o controlador a interpretar os sinais de entrada. A autoatenção de múltiplas cabeças (multi-head attention) representa outra extensão natural. A abordagem poderia potencialmente escalar para o reconhecimento completo de objetos, incorporando camadas convolucionais adicionais e profundidade de processamento (quando disponível) e informações de movimento. Mecanismos de autoatenção podem permitir o agrupamento autônomo de regiões em entidades de nível superior, enquanto a atenção cruzada (cross-attention) pode facilitar o rastreamento de objetos entre quadros.</p>
+
+        <p>Finalmente, um próximo passo crucial é validar nossa abordagem em imagens do mundo real e determinar se o aumento da complexidade nos estágios de convolução e quantização é necessário, ou se abordagens baseadas em patches se mostram mais eficazes nesses cenários. O sucesso nesse domínio pode levar a sistemas de robôs e carros autônomos mais eficientes, reduzindo os requisitos computacionais e permitindo uma inteligência mais sofisticada por unidade de processamento.</p>
+    </section>
+
+    <section id="acknowledgments" class="acknowledgments">
+        <h2>Agradecimentos</h2>
+        <p>Os autores gostariam de agradecer à FAPERGS (Edital 10/2021 – ARD/ARC) pelo apoio financeiro. Este estudo também foi apoiado pelo Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Sul (IFRS).</p>
+    </section>
+
+    <section id="references" class="references">
+        <h2>Referências</h2>
+        <ol>
+            <li id="ref1"><span class="ref-content">William Agnew and Pedro Domingos. 2018. Unsupervised Object-Level Deep Reinforcement Learning. Deep Reinforcement Learning Workshop (NIPS 2018).</span></li>
+            <li id="ref2"><span class="ref-content">Ali Borji and Laurent Itti. 2012. State-of-the-art in visual attention modeling. IEEE transactions on pattern analysis and machine intelligence 35, 1 (2012), 185-207.</span></li>
+            <li id="ref3"><span class="ref-content">Greg Brockman, Vicki Cheung, Ludwig Pettersson, Jonas Schneider, John Schulman, Jie Tang, and Wojciech Zaremba. 2016. OpenAI Gym. <a href="https://arxiv.org/abs/1606.01540" target="_blank" rel="noopener noreferrer">arXiv:1606.01540</a> [cs.LG]</span></li>
+            <li id="ref4"><span class="ref-content">Marisa Carrasco. 2011. Visual attention: The past 25 years. Vision Research 51, 13 (2011), 1484-1525. <a href="https://doi.org/10.1016/j.visres.2011.04.012" target="_blank" rel="noopener noreferrer">doi:10.1016/j.visres.2011.04.012</a> Vision Research 50th Anniversary Issue: Part 2.</span></li>
+            <li id="ref5"><span class="ref-content">Zhe Chen. 2012. Object-based attention: A tutorial review. Attention, Perception, &amp; Psychophysics 74 (2012), 784 - 802. <a href="https://doi.org/10.3758/s13414-012-0322-z" target="_blank" rel="noopener noreferrer">doi:10.3758/s13414-012-0322-z</a></span></li>
+            <li id="ref6"><span class="ref-content">Leif H. Finkel and Paul Sajda. 1992. Proto-objects: an intermediate-level visual representation, In Optical Society of America Annual Meeting. Optical Society of America Annual Meeting -, -, FO1. <a href="https://doi.org/10.1364/OAM.1992.FO1" target="_blank" rel="noopener noreferrer">doi:10.1364/OAM.1992.FO1</a></span></li>
+            <li id="ref7"><span class="ref-content">Christophe Fiorio and Jens Gustedt. 1996. Two linear time union-find strategies for image processing. Theoretical Computer Science 154, 2 (1996), 165-181.</span></li>
+            <li id="ref8"><span class="ref-content">Nikolaus Hansen. 2006. The CMA Evolution Strategy: A Comparing Review. Springer Berlin Heidelberg, Berlin, Heidelberg, 75-102. <a href="https://doi.org/10.1007/3-540-32494-1_4" target="_blank" rel="noopener noreferrer">doi:10.1007/3-540-32494-1_4</a></span></li>
+            <li id="ref9"><span class="ref-content">Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2016. Deep Residual Learning for Image Recognition. In 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR). IEEE Computer Society, Los Alamitos, CA, USA, 770-778. <a href="https://doi.org/10.1109/CVPR.2016.90" target="_blank" rel="noopener noreferrer">doi:10.1109/CVPR.2016.90</a></span></li>
+            <li id="ref10"><span class="ref-content">Sepp Hochreiter and Jürgen Schmidhuber. 1997. Long short-term memory. Neural computation 9, 8 (1997), 1735-1780.</span></li>
+            <li id="ref11"><span class="ref-content">Kristin Koch, Judith McLean, Ronen Segev, Michael A. Freed, Michael J. Berry, Vijay Balasubramanian, and Peter Sterling. 2006. How Much the Eye Tells the Brain. Current Biology 16, 14 (2006), 1428-1434. <a href="https://doi.org/10.1016/j.cub.2006.05.056" target="_blank" rel="noopener noreferrer">doi:10.1016/j.cub.2006.05.056</a></span></li>
+            <li id="ref12"><span class="ref-content">Yitao Liang, Marlos C. Machado, Erik Talvitie, and Michael Bowling. 2016. State of the Art Control of Atari Games Using Shallow Reinforcement Learning. In Proceedings of the 2016 International Conference on Autonomous Agents &amp; Multiagent Systems (Singapore, Singapore) (AAMAS '16). International Foundation for Autonomous Agents and Multiagent Systems, Richland, SC, 485-493.</span></li>
+            <li id="ref13"><span class="ref-content">H. B. Mann and D. R. Whitney. 1947. On a Test of Whether one of Two Random Variables is Stochastically Larger than the Other. The Annals of Mathematical Statistics 18, 1 (1947), 50-60. <a href="https://doi.org/10.1214/aoms/1177730491" target="_blank" rel="noopener noreferrer">doi:10.1214/aoms/1177730491</a></span></li>
+            <li id="ref14"><span class="ref-content">Volodymyr Mnih, Nicolas Heess, Alex Graves, and Koray Kavukcuoglu. 2014. Recurrent models of visual attention. In Proceedings of the 28th International Conference on Neural Information Processing Systems - Volume 2 (Montreal, Canada) (NIPS'14). MIT Press, Cambridge, MA, USA, 2204-2212.</span></li>
+            <li id="ref15"><span class="ref-content">Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis Antonoglou, Daan Wierstra, and Martin Riedmiller. 2013. Playing Atari with Deep Reinforcement Learning. <a href="https://arxiv.org/abs/1312.5602" target="_blank" rel="noopener noreferrer">arXiv:1312.5602</a> [cs.LG]</span></li>
+            <li id="ref16"><span class="ref-content">Francesco Orabona, Giorgio Metta, and Giulio Sandini. 2007. A Proto-object Based Visual Attention Model. In Attention in Cognitive Systems. Theories and Systems from an Interdisciplinary Viewpoint, Lucas Paletta and Erich Rome (Eds.). Springer Berlin Heidelberg, Berlin, Heidelberg, 198-215.</span></li>
+            <li id="ref17"><span class="ref-content">Rafael C. Pinto and Anderson R. Tavares. 2024. PReLU: Yet Another Single-Layer Solution to the XOR Problem. <a href="https://arxiv.org/abs/2409.10821" target="_blank" rel="noopener noreferrer">arXiv:2409.10821</a> [cs.NE]</span></li>
+            <li id="ref18"><span class="ref-content">Nils Reimers and Iryna Gurevych. 2019. Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. <a href="https://arxiv.org/abs/1908.10084" target="_blank" rel="noopener noreferrer">arXiv:1908.10084</a> [cs.CL]</span></li>
+            <li id="ref19"><span class="ref-content">Ronald A Rensink. 2000. The dynamic representation of scenes. Visual cognition 7, 1-3 (2000), 17-42.</span></li>
+            <li id="ref20"><span class="ref-content">William Silversmith. 2025. connected-components-3d: Connected Components on Discrete and Continuous Multilabel 3D &amp; 2D Images. GitHub. <a href="https://github.com/seung-lab/connected-components-3d" target="_blank" rel="noopener noreferrer">https://github.com/seung-lab/connected-components-3d</a></span></li>
+            <li id="ref21"><span class="ref-content">Rainer Storn and Kenneth V. Price. 1997. Differential Evolution - A Simple and Efficient Heuristic for global Optimization over Continuous Spaces. Journal of Global Optimization 11 (1997), 341-359. <a href="https://api.semanticscholar.org/CorpusID:5297867" target="_blank" rel="noopener noreferrer">https://api.semanticscholar.org/CorpusID:5297867</a></span></li>
+            <li id="ref22"><span class="ref-content">Yujin Tang, Duong Nguyen, and David Ha. 2020. Neuroevolution of self-interpretable agents. In Proceedings of the 2020 Genetic and Evolutionary Computation Conference (Cancún, Mexico) (GECCO '20). Association for Computing Machinery, New York, NY, USA, 414-424. <a href="https://doi.org/10.1145/3377930.3389847" target="_blank" rel="noopener noreferrer">doi:10.1145/3377930.3389847</a></span></li>
+            <li id="ref23"><span class="ref-content">Naftali Tishby, Fernando C. Pereira, and William Bialek. 2000. The information bottleneck method. <a href="https://arxiv.org/abs/physics/0004057" target="_blank" rel="noopener noreferrer">arXiv:physics/0004057</a> [physics.data-an]</span></li>
+            <li id="ref24"><span class="ref-content">Mark Towers, Ariel Kwiatkowski, Jordan Terry, John U. Balis, Gianluca De Cola, Tristan Deleu, Manuel Goulão, Andreas Kallinteris, Markus Krimmel, Arjun KG, Rodrigo Perez-Vicente, Andrea Pierré, Sander Schulhoff, Jun Jet Tai, Hannah Tan, and Omar G. Younis. 2024. Gymnasium: A Standard Interface for Reinforcement Learning Environments. <a href="https://arxiv.org/abs/2407.17032" target="_blank" rel="noopener noreferrer">arXiv:2407.17032</a> [cs.LG]</span></li>
+            <li id="ref25"><span class="ref-content">Stefan Treue and Julio C. Martínez Trujillo. 1999. Feature-based attention influences motion processing gain in macaque visual cortex. Nature 399 (1999), 575-579. <a href="https://api.semanticscholar.org/CorpusID:4424973" target="_blank" rel="noopener noreferrer">https://api.semanticscholar.org/CorpusID:4424973</a></span></li>
+            <li id="ref26"><span class="ref-content">Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. Attention is all you need. In Proceedings of the 31st International Conference on Neural Information Processing Systems (Long Beach, California, USA) (NIPS'17). Curran Associates Inc., Red Hook, NY, USA, 6000-6010.</span></li>
+            <li id="ref27"><span class="ref-content">Shaun P. Vecera and Martha J. Farah. 1994. Does visual attention select objects or locations? Journal of experimental psychology. General 123 2 (1994), 146-60. <a href="https://doi.org/10.1037//0096-3445.123.2.146" target="_blank" rel="noopener noreferrer">doi:10.1037//0096-3445.123.2.146</a></span></li>
+            <li id="ref28"><span class="ref-content">Dirk Walther and Christof Koch. 2006. Modeling attention to salient proto-objects. Neural Networks 19, 9 (2006), 1395-1407. <a href="https://doi.org/10.1016/j.neunet.2006.10.001" target="_blank" rel="noopener noreferrer">doi:10.1016/j.neunet.2006.10.001</a> Brain and Attention.</span></li>
+            <li id="ref29"><span class="ref-content">Jeremy M Wolfe. 1994. Guided search 2.0 a revised model of visual search. Psychonomic bulletin &amp; review 1 (1994), 202-238.</span></li>
+            <li id="ref30"><span class="ref-content">William Woof and Ke Chen. 2018. Learning to Play General Video-Games via an Object Embedding Network. In 2018 IEEE Conference on Computational Intelligence and Games (CIG). IEEE, Maastricht, Netherlands, 1-8. <a href="https://doi.org/10.1109/CIG.2018.8490438" target="_blank" rel="noopener noreferrer">doi:10.1109/CIG.2018.8490438</a></span></li>
+        </ol>
+    </section>
+
+</body>
+</html>
