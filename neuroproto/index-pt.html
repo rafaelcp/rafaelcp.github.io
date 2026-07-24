@@ -231,18 +231,26 @@
             .header-arxiv-id { display: none; }
             a { color: inherit; text-decoration: none; }
             .references li::before { color: inherit; }
+			#translations { display: none }
         }
+		
+		#notebooklm {
+			display: flex;
+		}
+		#notebooklm div {
+			flex: 1;
+		}
+		#translations {
+			float: right;
+		}
 
-        #notebooklm {
-            display: flex;
-        }
-        #notebooklm div {
-            flex: 1;
-        }
     </style>
 </head>
 <body>
 
+	<div id="translations">
+		<a href="index.html">English</a> | <a href="index-pt.html">Português</a> | <a href="index-es.html">Español</a> | <a href="index-fr.html">Français</a> | <a href="index-zh.html">中文</a> | <a href="index-jp.html">日本語</a> | <a href="index-hi.html">हिंदी</a> | <a href="index-ar.html">عربي</a>
+	</div>
     <div class="header-arxiv-id"><a href="https://arxiv.org/abs/2505.00186v1">arXiv:2505.00186v1</a> [cs.NE] 30 de abril de 2025
     <br>DOI: <a href="https://doi.org/10.1145/3712256.3726451">10.1145/3712256.3726451</a> 13 de julho de 2025</div>
 
@@ -497,6 +505,26 @@
         <p>Os autores gostariam de agradecer à FAPERGS (Edital 10/2021 – ARD/ARC) pelo apoio financeiro. Este estudo também foi apoiado pelo Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Sul (IFRS).</p>
     </section>
 
+	<section id"howtocite">
+		<h2>Como Citar</h2>
+		<pre>@inproceedings{10.1145/3712256.3726451,
+	author = {Pinto, Rafael and Tavares, Anderson},
+	title = {Neuroevolution of Self-Attention Over Proto-Objects},
+	year = {2025},
+	isbn = {9798400714658},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	url = {https://doi.org/10.1145/3712256.3726451},
+	doi = {10.1145/3712256.3726451},
+	booktitle = {Proceedings of the Genetic and Evolutionary Computation Conference},
+	pages = {1300–1308},
+	numpages = {9},
+	keywords = {neuroevolution, representation learning},
+	location = {NH Malaga Hotel, Malaga, Spain},
+	series = {GECCO '25}
+}</pre>
+	</section>
+	
     <section id="references" class="references">
         <h2>Referências</h2>
         <ol>
