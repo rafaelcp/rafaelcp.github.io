@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+       <loc>https://rafaelcp.github.io/neuroproto/</loc>
+       <lastmod>1970-01-01T00:33:45+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://rafaelcp.github.io/neuroproto/index-pt.html</loc>
+       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://rafaelcp.github.io/neuroproto/index-es.html</loc>
+       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://rafaelcp.github.io/neuroproto/index-fr.html</loc>
+       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://rafaelcp.github.io/neuroproto/index-zh.html</loc>
+       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://rafaelcp.github.io/neuroproto/index-jp.html</loc>
+       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://rafaelcp.github.io/neuroproto/index-hi.html</loc>
+       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://rafaelcp.github.io/neuroproto/index-ar.html</loc>
+       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+</urlset>
