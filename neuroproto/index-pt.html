@@ -4,253 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neuroevolução de Autoatenção sobre Proto-objetos</title>
+    <meta name="description" content="Autoatenção baseada em proto-objetos para aprendizado por reforço visual, com 62% menos parâmetros e treinamento até 2,6 vezes mais rápido.">
+    <link rel="canonical" href="https://rafaelcp.github.io/neuroproto/index-pt.html">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/">
+    <link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html">
+    <link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html">
+    <link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html">
+    <link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html">
+    <link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html">
+    <link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html">
+    <link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/">
 
-    <meta name="title" property="og:title" content="Neuroevolução de Autoatenção sobre Proto-objetos">
-    <meta name="type" property="og:type" content="article">
-    <meta name="url" property="og:url" content="https://rafaelcp.github.io/neuroproto/">
-    <meta name="image" property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
-    <meta name="description" property="og:description" content="Proto-objetos – regiões da imagem que compartilham propriedades visuais comuns – oferecem uma alternativa promissora aos mecanismos de atenção tradicionais baseados em patches retangulares de imagem em redes neurais. Embora trabalhos anteriores tenham demonstrado que evoluir um módulo de atenção dura baseado em patches juntamente com uma rede controladora poderia alcançar desempenho no estado da arte em tarefas de aprendizado por reforço visual, nossa abordagem aproveita a segmentação de imagens para trabalhar com características de nível mais alto. Ao operar sobre proto-objetos em vez de patches fixos, reduzimos significativamente a complexidade de representação: cada imagem se decompõe em menos proto-objetos do que patches regulares, e cada proto-objeto pode ser eficientemente codificado como um vetor compacto de características. Isso permite um módulo de autoatenção substancialmente menor que processa informações semânticas mais ricas. Nossos experimentos demonstram que essa abordagem baseada em proto-objetos iguala ou supera o desempenho no estado da arte de implementações baseadas em patches com 62% menos parâmetros e 2,6 vezes menos tempo de treinamento.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://rafaelcp.github.io/neuroproto/index-pt.html">
+    <meta property="og:title" content="Neuroevolução de Autoatenção sobre Proto-objetos">
+    <meta property="og:description" content="Autoatenção baseada em proto-objetos para aprendizado por reforço visual, com 62% menos parâmetros e treinamento até 2,6 vezes mais rápido.">
+    <meta property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta property="og:image:alt" content="Neuroevolução de Autoatenção sobre Proto-objetos">
+    <meta property="og:image:width" content="470">
+    <meta property="og:image:height" content="470">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:locale" content="pt_BR">
 
-    <meta name="twitter:card" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://rafaelcp.github.io/neuroproto/index-pt.html">
     <meta name="twitter:title" content="Neuroevolução de Autoatenção sobre Proto-objetos">
-    <meta name="twitter:description" content="Proto-objetos – regiões da imagem que compartilham propriedades visuais comuns – oferecem uma alternativa promissora aos mecanismos de atenção tradicionais baseados em patches retangulares de imagem em redes neurais. Embora trabalhos anteriores tenham demonstrado que evoluir um módulo de atenção dura baseado em patches juntamente com uma rede controladora poderia alcançar desempenho no estado da arte em tarefas de aprendizado por reforço visual, nossa abordagem aproveita a segmentação de imagens para trabalhar com características de nível mais alto. Ao operar sobre proto-objetos em vez de patches fixos, reduzimos significativamente a complexidade de representação: cada imagem se decompõe em menos proto-objetos do que patches regulares, e cada proto-objeto pode ser eficientemente codificado como um vetor compacto de características. Isso permite um módulo de autoatenção substancialmente menor que processa informações semânticas mais ricas. Nossos experimentos demonstram que essa abordagem baseada em proto-objetos iguala ou supera o desempenho no estado da arte de implementações baseadas em patches com 62% menos parâmetros e 2,6 vezes menos tempo de treinamento.">
+    <meta name="twitter:description" content="Autoatenção baseada em proto-objetos para aprendizado por reforço visual, com 62% menos parâmetros e treinamento até 2,6 vezes mais rápido.">
+    <meta name="twitter:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:image:alt" content="Neuroevolução de Autoatenção sobre Proto-objetos">
 
-    <style>
-        body {
-            font-family: serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 15px;
-            color: #333;
-        }
+    <meta name="citation_title" content="Neuroevolution of Self-Attention Over Proto-Objects">
+    <meta name="citation_author" content="Pinto, Rafael C.">
+    <meta name="citation_author" content="Tavares, Anderson R.">
+    <meta name="citation_publication_date" content="2025/07/13">
+    <meta name="citation_conference_title" content="Proceedings of the Genetic and Evolutionary Computation Conference">
+    <meta name="citation_doi" content="10.1145/3712256.3726451">
+    <meta name="citation_arxiv_id" content="2505.00186">
+    <meta name="citation_abstract_html_url" content="https://rafaelcp.github.io/neuroproto/index-pt.html">
 
-        h1, h2, h3, h4 {
-            font-family: sans-serif;
-            color: #111;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-            line-height: 1.3;
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ScholarlyArticle",
+      "@id": "https://doi.org/10.1145/3712256.3726451",
+      "url": "https://rafaelcp.github.io/neuroproto/index-pt.html",
+      "mainEntityOfPage": "https://rafaelcp.github.io/neuroproto/index-pt.html",
+      "headline": "Neuroevolução de Autoatenção sobre Proto-objetos",
+      "description": "Autoatenção baseada em proto-objetos para aprendizado por reforço visual, com 62% menos parâmetros e treinamento até 2,6 vezes mais rápido.",
+      "inLanguage": "pt-BR",
+      "image": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "datePublished": "2025-07-13",
+      "author": [
+        {
+          "@type": "Person",
+          "name": "Rafael C. Pinto",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Federal Institute of Education, Science and Technology of Rio Grande do Sul (IFRS)"
+          }
+        },
+        {
+          "@type": "Person",
+          "name": "Anderson R. Tavares",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Federal University of Rio Grande do Sul (UFRGS)"
+          }
         }
-
-        h1 {
-            font-size: 2em;
-            text-align: center;
-            margin-bottom: 1em;
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "Association for Computing Machinery"
+      },
+      "identifier": [
+        {
+          "@type": "PropertyValue",
+          "propertyID": "DOI",
+          "value": "10.1145/3712256.3726451"
+        },
+        {
+          "@type": "PropertyValue",
+          "propertyID": "arXiv",
+          "value": "2505.00186"
         }
-
-        h2 {
-            font-size: 1.6em;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.3em;
-        }
-
-        h3 {
-            font-size: 1.3em;
-        }
-
-        h4 {
-            font-size: 1.1em;
-            font-style: italic;
-        }
-
-        p {
-            margin-bottom: 1em;
-            text-align: justify;
-        }
-
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .authors-affiliations {
-            text-align: center;
-            margin-bottom: 2em;
-            font-family: sans-serif;
-        }
-
-        .author {
-            font-weight: bold;
-        }
-
-        .affiliation {
-            font-size: 0.9em;
-            color: #555;
-        }
-
-        .email a {
-            font-size: 0.9em;
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .email a:hover {
-            text-decoration: underline;
-        }
-
-        .abstract {
-            margin-top: 2em;
-            margin-bottom: 2em;
-            padding: 1em;
-            background-color: #f9f9f9;
-            border-left: 3px solid #ccc;
-        }
-
-        .abstract h2 {
-            font-size: 1.4em;
-            border-bottom: none;
-            margin-top: 0;
-        }
-
-        figure {
-            margin: 2em auto;
-            text-align: center;
-            border: 1px solid #eee;
-            padding: 1em;
-            background-color: #fdfdfd;
-        }
-
-        figure img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto 0.5em auto;
-        }
-
-        figcaption {
-            font-size: 0.9em;
-            color: #555;
-            text-align: left;
-            margin-top: 0.5em;
-            font-family: sans-serif;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2em 0;
-            font-family: sans-serif;
-            font-size: 0.9em;
-        }
-
-        caption {
-            caption-side: top;
-            font-weight: bold;
-            margin-bottom: 0.5em;
-            font-size: 1em;
-            color: #333;
-            text-align: left;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        .equation {
-            text-align: center;
-            margin: 1.5em 0;
-            font-family: monospace;
-            font-size: 1.1em;
-        }
-
-        .references ol {
-            padding-left: 20px;
-            list-style: none;
-            counter-reset: ref-counter;
-        }
-
-        .references li {
-            margin-bottom: 0.8em;
-            counter-increment: ref-counter;
-            position: relative;
-            padding-left: 25px;
-        }
-        .references li::before {
-            content: "[" counter(ref-counter) "]";
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-            color: #555;
-        }
-        .references li span.ref-content {
-            display: inline-block;
-            margin-left: 1em;
-        }
-
-        strong {
-            font-weight: bold;
-        }
-
-        code, pre {
-             font-family: monospace, monospace;
-             background-color: #f4f4f4;
-             padding: 1px 3px;
-             border-radius: 3px;
-        }
-
-        .acknowledgments {
-            font-size: 0.9em;
-            margin-top: 2em;
-        }
-
-        .header-arxiv-id {
-            font-family: sans-serif;
-            color: #555;
-            font-size: 0.9em;
-            margin-bottom: 2em;
-            text-align: left;
-        }
-        .header-arxiv-id a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .header-arxiv-id a:hover {
-            text-decoration: underline;
-        }
-
-        @media print {
-            body {
-                max-width: none;
-                margin: 1cm;
-                font-size: 10pt;
-            }
-            h1, h2, h3, h4 { page-break-after: avoid; }
-            figure, table { page-break-inside: avoid; }
-            .header-arxiv-id { display: none; }
-            a { color: inherit; text-decoration: none; }
-            .references li::before { color: inherit; }
-			#translations { display: none }
-        }
-		
-		#notebooklm {
-			display: flex;
-		}
-		#notebooklm div {
-			flex: 1;
-		}
-		#translations {
-			float: right;
-		}
-
-    </style>
+      ],
+      "sameAs": [
+        "https://doi.org/10.1145/3712256.3726451",
+        "https://arxiv.org/abs/2505.00186"
+      ]
+    },
+    {
+      "@type": "VideoObject",
+      "name": "Neuroevolução de Autoatenção sobre Proto-objetos — overview",
+      "description": "Autoatenção baseada em proto-objetos para aprendizado por reforço visual, com 62% menos parâmetros e treinamento até 2,6 vezes mais rápido.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/proto.mp4"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "Neuroevolução de Autoatenção sobre Proto-objetos — Car Racing experiment",
+      "description": "Processing stages and evolved attention in the Car Racing experiment.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_carracing_proto-objects_iter_1000.mp4"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "Neuroevolução de Autoatenção sobre Proto-objetos — Doom Take Cover experiment",
+      "description": "Processing stages and evolved attention in the Doom Take Cover experiment.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_iter_1000.npz_ep1.mp4"
+    }
+  ]
+}
+    </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-	<div id="translations">
-		<a href="index.html">English</a> | <a href="index-pt.html">Português</a> | <a href="index-es.html">Español</a> | <a href="index-fr.html">Français</a> | <a href="index-zh.html">中文</a> | <a href="index-jp.html">日本語</a> | <a href="index-hi.html">हिंदी</a> | <a href="index-ar.html">عربي</a>
-	</div>
+	<nav id="translations" aria-label="Language selector">
+		<a href="./">English</a> | <a href="index-pt.html">Português</a> | <a href="index-es.html">Español</a> | <a href="index-fr.html">Français</a> | <a href="index-zh.html">中文</a> | <a href="index-jp.html">日本語</a> | <a href="index-hi.html">हिंदी</a> | <a href="index-ar.html">عربي</a>
+	</nav>
     <div class="header-arxiv-id"><a href="https://arxiv.org/abs/2505.00186v1">arXiv:2505.00186v1</a> [cs.NE] 30 de abril de 2025
     <br>DOI: <a href="https://doi.org/10.1145/3712256.3726451">10.1145/3712256.3726451</a> 13 de julho de 2025</div>
 
@@ -281,12 +161,12 @@
     </div>
 	
     <div id="notebooklm">
-        <div>NotebookLM Podcast (EN)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects.mp3" controls></audio></div>
-        <div>NotebookLM Podcast (PT-BR)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects-ptbr.mp3" controls></audio></div>
+        <div>NotebookLM Podcast (EN)<br><audio preload="none" src="neuroevolution-self-attention-proto-objects-en.mp3" controls></audio></div>
+        <div>NotebookLM Podcast (PT-BR)<br><audio preload="none" src="neuroevolution-self-attention-proto-objects-pt-br.mp3" controls></audio></div>
     </div>
 	
     <figure>
-        <video controls src="proto.mp4" type="video/mp4"></video>
+        <video preload="metadata" poster="att1000.png" controls src="proto.mp4"></video>
         <figcaption><strong>Figura 1:</strong> Nosso agente atencional é capaz de focar em regiões uniformes inteiras em vez de pequenos patches de imagem de tamanho fixo.</figcaption>
     </figure>
 
@@ -325,7 +205,7 @@
         <p>Trabalhos recentes de Tang et al. <a href="#ref22">[22]</a> exploraram o uso de mecanismos de atenção dura no aprendizado por reforço. A abordagem deles divide a entrada visual em patches de 7x7 e aplica um mecanismo de autoatenção modificado para selecionar apenas os top-k patches para processamento (veja a Fig. 2). Isso cria um gargalo de informação que força o modelo a focar nas entradas mais relevantes enquanto ignora as outras. Quando aplicada a tarefas de aprendizado por reforço baseadas em visão, essa abordagem permitiu que os agentes alcançassem melhor desempenho, interpretabilidade e eficiência computacional com muito menos parâmetros do que as abordagens convencionais. Nosso método difere principalmente ao usar proto-objetos em vez de patches, reduzindo o número de tokens e sua dimensionalidade, ao mesmo tempo que adiciona informações de nível mais alto a eles.</p>
 
         <figure>
-            <video src="patches-video_best.npz_ep1.mp4" controls></video>
+            <video preload="metadata" poster="att1000.png" src="patches-video_best.npz_ep1.mp4" controls></video>
             <figcaption><strong>Figura 2:</strong> O agente extrai patches do quadro atual e seleciona os top-k (destacados em branco) por um mecanismo de atenção dura. Ao visualizar os patches selecionados, é possível ter uma ideia melhor da estratégia aprendida, além de facilitar a depuração.</figcaption>
         </figure>
 
@@ -393,15 +273,11 @@
                 <tr><td>Dimensão de f(n)</td><td>2</td><td>2</td></tr>
                 <tr><td>Tamanho da Entrada da LSTM</td><td>20</td><td>2</td></tr>
                 <tr><td>Nº de Neurônios da LSTM</td><td>16</td><td>16</td></tr>
-            </tbody>
-            <thead>
                 <tr>
                     <th>Número de Parâmetros Treináveis</th>
                     <th></th>
                     <th></th>
                 </tr>
-            </thead>
-             <tbody>
                 <tr><td>Convolução</td><td>0</td><td>12</td></tr>
                 <tr><td>Atenção</td><td>1184</td><td>63</td></tr>
                 <tr><td>LSTM</td><td>2432</td><td>1280</td></tr>
@@ -411,7 +287,7 @@
         </table>
 
         <figure>
-            <img src="flowchart.svg" loading="lazy" alt="Fluxograma do nosso processo completo">
+            <img src="flowchart.svg" width="257" height="479" loading="lazy" alt="Fluxograma do nosso processo completo">
             <figcaption><strong>Figura 3:</strong> Fluxograma do nosso processo completo. Em nossos experimentos, H = W = 96, F = 11 (número de características dos segmentos), d<sub>q</sub> = 2, M = 2 (usamos apenas as coordenadas x, y de cada token), k = 1 e O = 3 (número de saídas para ambos os ambientes). Qualquer número de camadas convolucionais pode ser usado, desde que preservem o tamanho da imagem e a última tenha 3 filtros para corresponder à conexão residual. Usamos uma camada de 3 filtros 1x1. Nossa quantização está configurada para 1 bit por canal (8 cores). P é a função de ativação PReLU. Elementos em verde são novos em relação a <a href="#ref22">[22]</a>.</figcaption>
         </figure>
     </section>
@@ -429,19 +305,19 @@
         <small>²<a href="https://www.pygame.org" target="_blank" rel="noopener noreferrer">https://www.pygame.org</a></small></p>
 
         <figure>
-            <img src="learning_curves_comparison_carracing.png" loading="lazy" alt="Comparação da curva de aprendizado no ambiente Car Racing ao longo de 400 execuções de teste fora das pistas de amostragem de treinamento para cada geração exibida">
+            <img src="learning_curves_comparison_carracing.png" width="3570" height="2365" loading="lazy" alt="Comparação da curva de aprendizado no ambiente Car Racing ao longo de 400 execuções de teste fora das pistas de amostragem de treinamento para cada geração exibida">
             <figcaption><strong>Figura 4:</strong> Comparação da curva de aprendizado no ambiente Car Racing ao longo de 400 execuções de teste fora das pistas de amostragem de treinamento para cada geração mostrada. Nosso método de proto-objetos alcança resultados significativamente melhores após 1000 gerações em relação ao método baseado em patches de <a href="#ref22">[22]</a>. Ambos atingiram o pico em 1000 gerações.</figcaption>
         </figure>
 
         <figure>
-            <img src="evolution.png" loading="lazy" alt="Evolução da segmentação em 5 pontos relevantes no tempo. A estratégia básica de atenção (foco na região de grama menor, destacada em branco com centroide em preto; outros centroides em rosa) é aprendida cedo no processo, enquanto a segmentação continua evoluindo até o final">
+            <img src="evolution.png" width="1248" height="835" loading="lazy" alt="Evolução da segmentação em 5 pontos relevantes no tempo. A estratégia básica de atenção (foco na região de grama menor, destacada em branco com centroide em preto; outros centroides em rosa) é aprendida cedo no processo, enquanto a segmentação continua evoluindo até o final">
             <figcaption><strong>Figura 5:</strong> Evolução da segmentação em 5 pontos relevantes no tempo. A estratégia básica de atenção (foco na região menor de grama, destacada em branco com centroide em preto; outros centroides em rosa) é aprendida no início do processo, enquanto a segmentação continua evoluindo até o final. Superior Esquerdo: Imagem bruta após redimensionamento e antes da segmentação. Superior Centro (100 gerações): A segmentação trivial a partir das cores originais é mantida durante as primeiras centenas de gerações. Superior Direito (300 gerações): Aprende a separar a pista da exibição Head-Up (HUD) abaixo e diferencia alguns dos sensores ABS. Inferior Esquerdo (800 gerações): Troca as segmentações da pista e do HUD, tornando o carro visível, diferenciando os marcadores vermelhos de curva e ocultando os indicadores do giroscópio. Também diferencia as marcações brancas de curva do indicador de pontuação e velocidade, e funde os sensores ABS novamente. Inferior Centro (900 gerações): Diferencia os segmentos da pista. Inferior Direito (1000 gerações): Desiste da segmentação detalhada da pista e retorna à estratégia de segmentação anterior, com mudanças muito pequenas e irrelevantes em alguns pixels da pontuação.</figcaption>
         </figure>
 		
         <p>Um aspecto interessante deste experimento é observar a evolução da segmentação e da atenção, como mostra a Fig. 5. A solução começa com a quantização trivial sobre as cores originais da tarefa, mas como a pista é escura, ela acaba se fundindo com a exibição Head-Up (HUD) preta na parte inferior da tela. No entanto, ela já sabe como focar na região menor de grama, pois ela geralmente aponta para a direção em que o carro deve virar. Em 300 gerações, ela aprende a separar a pista do HUD, enquanto em 800 gerações ela separa o carro e os marcadores vermelhos de curva da pista. Embora o carro seja inútil (ele está sempre no mesmo lugar e até foi fundido com a pista em outros experimentos), os marcadores vermelhos podem reforçar o lado correto da curva "votando" (como consultas) em sua região de grama adjacente. Em 900 gerações, aprende a segmentar os blocos da pista, mas descarta isso na solução final. A solução final decomposta em suas etapas de processamento pode ser vista na Fig. 6.</p>
 
 		<figure>
-			<video src="video_carracing_proto-objects_iter_1000.mp4" controls width="100%"></video>
+			<video preload="metadata" poster="att1000.png" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
 			<figcaption><strong>Figura 6:</strong> Etapas de processamento no ambiente Car Racing. Superior esquerdo: imagem bruta redimensionada para 96x96. Superior direito: convolução 1x1 + residual. Inferior esquerdo: quantização. Inferior direito: atenção com k=1.
 			</figcaption>
 		</figure>
@@ -450,12 +326,12 @@
         <p>Esta tarefa é baseada no jogo Doom, que é visualmente mais complexo e possui muito mais cores do que a tarefa anterior (veja a Fig. 8, superior esquerdo), tornando as etapas de convolução e quantização estritamente necessárias para evitar um número gigantesco de segmentos. Ela ocorre em uma sala retangular. O agente é gerado ao longo de uma parede, e monstros são gerados de forma constante e aleatória ao longo da parede oposta. Eles continuam atirando bolas de fogo no agente, que deve se esquivar delas para sobreviver. O agente ganha 1 ponto de recompensa para cada tic vivo e possui 3 ações discretas: mover-se para a esquerda, para a direita ou ficar parado.</p>
 
         <figure>
-            <img src="learning_curves_comparison_takecover.png" loading="lazy" alt="Comparação da curva de aprendizado no ambiente Doom Take Cover ao longo de 400 execuções de teste fora das sementes da amostra de treinamento para cada geração exibida">
+            <img src="learning_curves_comparison_takecover.png" width="3576" height="2375" loading="lazy" alt="Comparação da curva de aprendizado no ambiente Doom Take Cover ao longo de 400 execuções de teste fora das sementes da amostra de treinamento para cada geração exibida">
             <figcaption><strong>Figura 7:</strong> Comparação da curva de aprendizado no ambiente Doom Take Cover ao longo de 400 execuções de teste fora das sementes da amostra de treinamento para cada geração mostrada. Nosso método com k = 1 mostrou menor eficiência de amostragem, mas alcançou desempenho semelhante após 1000 gerações em relação a <a href="#ref22">[22]</a>, que atingiu o desempenho máximo em 700 gerações (p = 0.414 entre as melhores soluções). No entanto, com k = 10 (mesmo da configuração baseada em patches) e ajustes adicionais detalhados no texto, nossa solução teve melhor eficiência de amostragem e alcançou um desempenho significativamente maior (p = 2.8e−5) (pontuação de 1193 em 700 gerações).</figcaption>
         </figure>
 
         <figure>
-            <video src="video_iter_1000.npz_ep1.mp4" controls width="100%"></video>
+            <video preload="metadata" poster="att1000.png" src="video_iter_1000.npz_ep1.mp4" controls></video>
             <figcaption><strong>Figura 8:</strong> Etapas de processamento no ambiente Doom Take Cover. Superior esquerdo: imagem bruta redimensionada para 96x96. Superior direito: convolução 1x1 + residual. Inferior esquerdo: quantização. Inferior direito: atenção. Observe que essa solução ignora completamente as bolas de fogo a partir da etapa de quantização.</figcaption>
         </figure>
 
@@ -505,7 +381,7 @@
         <p>Os autores gostariam de agradecer à FAPERGS (Edital 10/2021 – ARD/ARC) pelo apoio financeiro. Este estudo também foi apoiado pelo Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Sul (IFRS).</p>
     </section>
 
-	<section id"howtocite">
+	<section id="how-to-cite">
 		<h2>Como Citar</h2>
 		<pre>@inproceedings{10.1145/3712256.3726451,
 	author = {Pinto, Rafael and Tavares, Anderson},

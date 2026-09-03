@@ -4,242 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>プロトオブジェクト上のセルフアテンションのニューロエボリューション</title>
+    <meta name="description" content="視覚強化学習のためのプロトオブジェクトベースのセルフアテンション。パラメータを62%削減し、学習を最大2.6倍高速化します。">
+    <link rel="canonical" href="https://rafaelcp.github.io/neuroproto/index-jp.html">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/">
+    <link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html">
+    <link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html">
+    <link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html">
+    <link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html">
+    <link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html">
+    <link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html">
+    <link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/">
 
-    <meta name="title" property="og:title" content="プロトオブジェクト上のセルフアテンションのニューロエボリューション">
-    <meta name="type" property="og:type" content="article">
-    <meta name="url" property="og:url" content="https://rafaelcp.github.io/neuroproto/">
-    <meta name="image" property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
-    <meta name="description" property="og:description" content="プロトオブジェクト（共通の視覚的プロパティを共有する画像領域）は、ニューラルネットワークにおける長方形の画像パッチに基づく従来の注意機構に対する有望な代替手段を提供します。コントローラネットワークと並行してパッチベースのハードアテンションモジュールを進化させることで視覚的強化学習タスクにおいてSOTAの性能を達成できることが先行研究で示されていますが、本アプローチでは画像セグメンテーションを活用してより高次元の特徴を扱います。固定パッチではなくプロトオブジェクト上で操作を行うことで、表現の複雑さを大幅に削減します。各画像は通常のパッチよりも少ないプロトオブジェクトに分解され、各プロトオブジェクトはコンパクトな特徴ベクトルとして効率的に符号化できます。これにより、より豊かなセマンティック情報を処理する大幅に小型化されたセルフアテンションモジュールが可能になります。実験の結果、このプロトオブジェクトに基づくアプローチは、パッチベースの実装と同等以上の性能を達成しつつ、パラメータ数を62%削減し、学習時間を2.6倍短縮することが実証されました。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://rafaelcp.github.io/neuroproto/index-jp.html">
+    <meta property="og:title" content="プロトオブジェクト上のセルフアテンションのニューロエボリューション">
+    <meta property="og:description" content="視覚強化学習のためのプロトオブジェクトベースのセルフアテンション。パラメータを62%削減し、学習を最大2.6倍高速化します。">
+    <meta property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta property="og:image:alt" content="プロトオブジェクト上のセルフアテンションのニューロエボリューション">
+    <meta property="og:image:width" content="470">
+    <meta property="og:image:height" content="470">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:locale" content="ja">
 
-    <meta name="twitter:card" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://rafaelcp.github.io/neuroproto/index-jp.html">
     <meta name="twitter:title" content="プロトオブジェクト上のセルフアテンションのニューロエボリューション">
-    <meta name="twitter:description" content="プロトオブジェクト（共通の視覚적プロパティを共有する画像領域）は、ニューラルネットワークにおける長方形の画像パッチに基づく従来の注意機構に対する有望な代替手段を提供します。コントローラネットワークと並行してパッチベースのハードアテンションモジュールを進化させることで視覚的強化学習タスクにおいてSOTAの性能を達成できることが先行研究で示されていますが、本アプローチでは画像セグメンテーションを活用してより高次元の特徴を扱います。固定パッチではなくプロトオブジェクト上で操作を行うことで、表現の複雑さを大幅に削減します。各画像は通常のパッチよりも少ないプロトオブジェクトに分解され、各プロトオブジェクトはコンパクトな特徴ベクトルとして効率的に符号化できます。これにより、より豊かなセマンティック情報を処理する大幅に小型化されたセルフアテンションモジュールが可能になります。実験の結果、このプロトオブジェクトに基づくアプローチは、パッチベースの実装と同等以上の性能を達成しつつ、パラメータ数を62%削減し、学習時間を2.6倍短縮することが実証されました。">
+    <meta name="twitter:description" content="視覚強化学習のためのプロトオブジェクトベースのセルフアテンション。パラメータを62%削減し、学習を最大2.6倍高速化します。">
+    <meta name="twitter:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:image:alt" content="プロトオブジェクト上のセルフアテンションのニューロエボリューション">
 
-    <style>
-        body {
-            font-family: serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 15px;
-            color: #333;
-        }
+    <meta name="citation_title" content="Neuroevolution of Self-Attention Over Proto-Objects">
+    <meta name="citation_author" content="Pinto, Rafael C.">
+    <meta name="citation_author" content="Tavares, Anderson R.">
+    <meta name="citation_publication_date" content="2025/07/13">
+    <meta name="citation_conference_title" content="Proceedings of the Genetic and Evolutionary Computation Conference">
+    <meta name="citation_doi" content="10.1145/3712256.3726451">
+    <meta name="citation_arxiv_id" content="2505.00186">
+    <meta name="citation_abstract_html_url" content="https://rafaelcp.github.io/neuroproto/index-jp.html">
 
-        h1, h2, h3, h4 {
-            font-family: sans-serif;
-            color: #111;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-            line-height: 1.3;
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ScholarlyArticle",
+      "@id": "https://doi.org/10.1145/3712256.3726451",
+      "url": "https://rafaelcp.github.io/neuroproto/index-jp.html",
+      "mainEntityOfPage": "https://rafaelcp.github.io/neuroproto/index-jp.html",
+      "headline": "プロトオブジェクト上のセルフアテンションのニューロエボリューション",
+      "description": "視覚強化学習のためのプロトオブジェクトベースのセルフアテンション。パラメータを62%削減し、学習を最大2.6倍高速化します。",
+      "inLanguage": "ja",
+      "image": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "datePublished": "2025-07-13",
+      "author": [
+        {
+          "@type": "Person",
+          "name": "Rafael C. Pinto",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Federal Institute of Education, Science and Technology of Rio Grande do Sul (IFRS)"
+          }
+        },
+        {
+          "@type": "Person",
+          "name": "Anderson R. Tavares",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Federal University of Rio Grande do Sul (UFRGS)"
+          }
         }
-
-        h1 {
-            font-size: 2em;
-            text-align: center;
-            margin-bottom: 1em;
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "Association for Computing Machinery"
+      },
+      "identifier": [
+        {
+          "@type": "PropertyValue",
+          "propertyID": "DOI",
+          "value": "10.1145/3712256.3726451"
+        },
+        {
+          "@type": "PropertyValue",
+          "propertyID": "arXiv",
+          "value": "2505.00186"
         }
-
-        h2 {
-            font-size: 1.6em;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.3em;
-        }
-
-        h3 {
-            font-size: 1.3em;
-        }
-
-        h4 {
-            font-size: 1.1em;
-            font-style: italic;
-        }
-
-        p {
-            margin-bottom: 1em;
-            text-align: justify;
-        }
-
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .authors-affiliations {
-            text-align: center;
-            margin-bottom: 2em;
-            font-family: sans-serif;
-        }
-
-        .author {
-            font-weight: bold;
-        }
-
-        .affiliation {
-            font-size: 0.9em;
-            color: #555;
-        }
-
-        .email a {
-            font-size: 0.9em;
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .email a:hover {
-            text-decoration: underline;
-        }
-
-        .abstract {
-            margin-top: 2em;
-            margin-bottom: 2em;
-            padding: 1em;
-            background-color: #f9f9f9;
-            border-left: 3px solid #ccc;
-        }
-
-        .abstract h2 {
-            font-size: 1.4em;
-            border-bottom: none;
-            margin-top: 0;
-        }
-
-        figure {
-            margin: 2em auto;
-            text-align: center;
-            border: 1px solid #eee;
-            padding: 1em;
-            background-color: #fdfdfd;
-        }
-
-        figure img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto 0.5em auto;
-        }
-
-        figcaption {
-            font-size: 0.9em;
-            color: #555;
-            text-align: left;
-            margin-top: 0.5em;
-            font-family: sans-serif;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2em 0;
-            font-family: sans-serif;
-            font-size: 0.9em;
-        }
-
-        caption {
-            caption-side: top;
-            font-weight: bold;
-            margin-bottom: 0.5em;
-            font-size: 1em;
-            color: #333;
-            text-align: left;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        .equation {
-            text-align: center;
-            margin: 1.5em 0;
-            font-family: monospace;
-            font-size: 1.1em;
-        }
-
-        .references ol {
-            padding-left: 20px;
-            list-style: none;
-            counter-reset: ref-counter;
-        }
-
-        .references li {
-            margin-bottom: 0.8em;
-            counter-increment: ref-counter;
-            position: relative;
-            padding-left: 25px;
-        }
-        .references li::before {
-            content: "[" counter(ref-counter) "]";
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-            color: #555;
-        }
-        .references li span.ref-content {
-            display: inline-block;
-            margin-left: 1em;
-        }
-
-        strong {
-            font-weight: bold;
-        }
-
-        code, pre {
-             font-family: monospace, monospace;
-             background-color: #f4f4f4;
-             padding: 1px 3px;
-             border-radius: 3px;
-        }
-
-        .acknowledgments {
-            font-size: 0.9em;
-            margin-top: 2em;
-        }
-
-        .header-arxiv-id {
-            font-family: sans-serif;
-            color: #555;
-            font-size: 0.9em;
-            margin-bottom: 2em;
-            text-align: left;
-        }
-        .header-arxiv-id a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .header-arxiv-id a:hover {
-            text-decoration: underline;
-        }
-
-        @media print {
-            body {
-                max-width: none;
-                margin: 1cm;
-                font-size: 10pt;
-            }
-            h1, h2, h3, h4 { page-break-after: avoid; }
-            figure, table { page-break-inside: avoid; }
-            .header-arxiv-id { display: none; }
-            a { color: inherit; text-decoration: none; }
-            .references li::before { color: inherit; }
-        }
-
-        #notebooklm {
-            display: flex;
-        }
-        #notebooklm div {
-            flex: 1;
-        }
-    </style>
+      ],
+      "sameAs": [
+        "https://doi.org/10.1145/3712256.3726451",
+        "https://arxiv.org/abs/2505.00186"
+      ]
+    },
+    {
+      "@type": "VideoObject",
+      "name": "プロトオブジェクト上のセルフアテンションのニューロエボリューション — overview",
+      "description": "視覚強化学習のためのプロトオブジェクトベースのセルフアテンション。パラメータを62%削減し、学習を最大2.6倍高速化します。",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/proto.mp4"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "プロトオブジェクト上のセルフアテンションのニューロエボリューション — Car Racing experiment",
+      "description": "Processing stages and evolved attention in the Car Racing experiment.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_carracing_proto-objects_iter_1000.mp4"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "プロトオブジェクト上のセルフアテンションのニューロエボリューション — Doom Take Cover experiment",
+      "description": "Processing stages and evolved attention in the Doom Take Cover experiment.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_iter_1000.npz_ep1.mp4"
+    }
+  ]
+}
+    </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -273,12 +158,12 @@
     </div>
 	
     <div id="notebooklm">
-        <div>NotebookLM ポッドキャスト (英語)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects.mp3" controls></audio></div>
-        <div>NotebookLM ポッドキャスト (ポルトガル語)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects-ptbr.mp3" controls></audio></div>
+        <div>NotebookLM ポッドキャスト (英語)<br><audio preload="none" src="neuroevolution-self-attention-proto-objects-en.mp3" controls></audio></div>
+        <div>NotebookLM ポッドキャスト (ポルトガル語)<br><audio preload="none" src="neuroevolution-self-attention-proto-objects-pt-br.mp3" controls></audio></div>
     </div>
 	
     <figure>
-        <video controls src="proto.mp4" type="video/mp4"></video>
+        <video preload="metadata" poster="att1000.png" controls src="proto.mp4"></video>
         <figcaption><strong>図 1:</strong> 我々のアテンショナルエージェントは、サイズの固定された小さな画像パッチではなく、均一な領域全体に焦点を当てることができます。</figcaption>
     </figure>
 
@@ -317,7 +202,7 @@
         <p>Tangらによる最近の研究 <a href="#ref22">[22]</a> では、強化学習におけるハードアテンション機構の利用が探求されました。彼らの手法は視覚入力を7x7のパッチに分割し、変更されたセルフアテンション機構を適用して処理のために上位k個のパッチのみを選択します（図2を参照）。これにより情報ボトルネックが作成され、モデルは他の入力を無視しながら最も関連性の高い入力に集中せざるを得なくなります。視覚ベースの強化学習タスクに適用した場合、この手法により、エージェントは従来の方式よりも大幅に少ないパラメータで、より優れた性能、解釈可能性、計算効率を達成できました。本手法は、パッチの代わりにプロトオブジェクトを使用し、トークンの数とその次元数を削減しつつ、それらに高レベルの情報を付加する点で主に異なります。</p>
 
         <figure>
-            <video src="patches-video_best.npz_ep1.mp4" controls></video>
+            <video preload="metadata" poster="att1000.png" src="patches-video_best.npz_ep1.mp4" controls></video>
             <figcaption><strong>図 2:</strong> エージェントは現在のフレームからパッチを抽出し、ハードアテンション機構によって上位k個（白でハイライト）を選択します。選択されたパッチを可視化することで、学習された戦略をより良く理解できるようになり、デバッグも容易になります。</figcaption>
         </figure>
 
@@ -390,15 +275,11 @@
                 <tr><td>f(n) 次元数</td><td>2</td><td>2</td></tr>
                 <tr><td>LSTM 入力サイズ</td><td>20</td><td>2</td></tr>
                 <tr><td>LSTM ニューロン数</td><td>16</td><td>16</td></tr>
-            </tbody>
-            <thead>
                 <tr>
                     <th>学習可能パラメータ数</th>
                     <th></th>
                     <th></th>
                 </tr>
-            </thead>
-             <tbody>
                 <tr><td>畳み込み</td><td>0</td><td>12</td></tr>
                 <tr><td>アテンション</td><td>1184</td><td>63</td></tr>
                 <tr><td>LSTM</td><td>2432</td><td>1280</td></tr>
@@ -408,7 +289,7 @@
         </table>
 
         <figure>
-            <img src="flowchart.svg" loading="lazy" alt="完全なプロセスのフローチャート">
+            <img src="flowchart.svg" width="257" height="479" loading="lazy" alt="完全なプロセスのフローチャート">
             <figcaption><strong>図 3:</strong> 完全なプロセスのフローチャート。実験では、H = W = 96、F = 11（セグメント特徴の数）、d<sub>q</sub> = 2、M = 2（各トークンからx, y座標のみを使用）、k = 1、および O = 3（両環境の出力数）です。画像サイズを保持し、最後の層に残差接続と一致する3つのフィルタがある限り、任意の数の畳み込み層を使用できます。ここでは3つの1x1フィルタからなる1つの層を使用しています。量子化はチャンネルあたり1ビット（8色）に設定されています。PはPReLU活性化関数です。緑色の要素は <a href="#ref22">[22]</a> に対して新規に追加された部分です。</figcaption>
         </figure>
     </section>
@@ -426,19 +307,19 @@
         <small>²<a href="https://www.pygame.org" target="_blank" rel="noopener noreferrer">https://www.pygame.org</a></small></p>
 
         <figure>
-            <img src="learning_curves_comparison_carracing.png" loading="lazy" alt="各表示世代におけるトレーニングサンプルコース外の400回のテストランにわたるCar Racing環境での学習曲線の比較">
+            <img src="learning_curves_comparison_carracing.png" width="3570" height="2365" loading="lazy" alt="各表示世代におけるトレーニングサンプルコース外の400回のテストランにわたるCar Racing環境での学習曲線の比較">
             <figcaption><strong>図 4:</strong> 各表示世代におけるトレーニングサンプルコース外の400回のテストランにわたるCar Racing環境での学習曲線の比較。提案するプロトオブジェクト手法は、<a href="#ref22">[22]</a> のパッチベースの手法と比較して、1000世代後に有意に優れた結果を達成しています。両者とも1000世代でピークに達しました。</figcaption>
         </figure>
 
         <figure>
-            <img src="evolution.png" loading="lazy" alt="5つの関連する時点におけるセグメンテーションの進化。基本となるアテンション戦略（小さめの芝生領域に焦点を当てる。白でハイライトされ、重心は黒、その他の重心はピンク）はプロセスの初期段階で学習されますが、セグメンテーションは最後まで進化し続けます">
+            <img src="evolution.png" width="1248" height="835" loading="lazy" alt="5つの関連する時点におけるセグメンテーションの進化。基本となるアテンション戦略（小さめの芝生領域に焦点を当てる。白でハイライトされ、重心は黒、その他の重心はピンク）はプロセスの初期段階で学習されますが、セグメンテーションは最後まで進化し続けます">
             <figcaption><strong>図 5:</strong> 5つの関連する時点におけるセグメンテーションの進化。基本となるアテンション戦略（小さめの芝生領域に焦点を当てる。白でハイライトされ、重心は黒、その他の重心はピンク）はプロセスの初期段階で学習されますが、セグメンテーションは最後まで進化し続けます。左上：リサイズ後・セグメンテーション前の生画像。中央上（100世代）：元の色からの自明なセグメンテーションが最初の数百年世代の間維持されます。右上（300世代）：コースを下のヘッドアップディスプレイ（HUD）から分離することを学習し、ABSセンサーの一部を識別します。左下（800世代）：コースとHUDのセグメンテーションを入れ替え、車を可視化し、赤色のコーナーマーカーを識別し、ジャイロスコープインジケータを非表示にします。また、コーナーの白いマーキングをスコアおよび速度インジケータから識別し、ABSセンサーを再び結合します。中央下（900世代）：コースセグメントを識別します。右下（1000世代）：コースのきめ細かなセグメンテーションを諦め、スコアのいくつかの画素における極めて小さな無関係な変化を除き、以前のセグメンテーション戦略に戻ります。</figcaption>
         </figure>
 		
         <p>図5に示すように、この実験の興味深い側面はセグメンテーションとアテンションの進化を観察することです。解はタスクの元の色に対する自明な量子化から始まりますが、コースが暗いため、画面下部の黒いヘッドアップディスプレイ（HUD）と結合してしまいます。それにもかかわらず、通常は車が曲がるべき方向を指し示しているため、小さな芝生領域に集中する方法をすでに知っています。300世代でコースをHUDから分離することを学び、800世代で車と赤色のコーナーマーカーをコースから分離します。車は役に立ちませんが（常に同じ場所にあり、他の実験ではコースと結合されていました）、赤色のマーカーは隣接する芝生領域に対して（クエリとして）「投票」することで、正しい旋回方向を強化できます。900世代でコースタイルをセグメント化することを学びますが、最終解ではそれを破棄します。処理ステップに分解された最終解は図6で確認できます。</p>
 
 		<figure>
-			<video src="video_carracing_proto-objects_iter_1000.mp4" controls width="100%"></video>
+			<video preload="metadata" poster="att1000.png" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
 			<figcaption><strong>図 6:</strong> Car Racing環境における処理ステージ。左上：96x96にリサイズされた生画像。右上：1x1畳み込み + 残差。左下：量子化。右下：k=1のアテンション。
 			</figcaption>
 		</figure>
@@ -447,12 +328,12 @@
         <p>このタスクはゲームDoomに基づいており、前のタスクよりも視覚的に複雑でかなり多くの色を含んでいます（図8の左上を参照）。そのため、膨大な数のセグメント防ぐために畳み込みと量子化のステップが厳密に必要となります。長方形の部屋で実施されます。エージェントは壁に沿ってスポーンし、モンスターは反対側の壁に沿って絶えずランダムにスポーンします。モンスターはエージェントに向かって火の玉を撃ち続け、エージェントは生き残るためにそれらを避けなければなりません。エージェントは生存しているチック（tic）ごとに1報酬ポイントを獲得し、左に移動、右に移動、または静止の3つの離散アクションを持ちます。</p>
 
         <figure>
-            <img src="learning_curves_comparison_takecover.png" loading="lazy" alt="各表示世代におけるトレーニングサンプルシード外の400回のテストランにわたるDoom Take Cover環境での学習曲線の比較">
+            <img src="learning_curves_comparison_takecover.png" width="3576" height="2375" loading="lazy" alt="各表示世代におけるトレーニングサンプルシード外の400回のテストランにわたるDoom Take Cover環境での学習曲線の比較">
             <figcaption><strong>図 7:</strong> 各表示世代におけるトレーニングサンプルシード外の400回のテストランにわたるDoom Take Cover環境での学習曲線の比較。k = 1での提案手法はサンプル効率がやや低かったものの、1000世代後に700世代でピークパフォーマンスを達成した <a href="#ref22">[22]</a> と同様のパフォーマンスを達成しました（最良解間で p = 0.414）。しかし、k = 10（パッチベースのセットアップと同じ）とし、本文で詳述するさらなる調整を行うことで、提案解は優れたサンプル効率を示し、700世代で有意に高い（p = 2.8e−5）パフォーマンス（1193スコア）を達成しました。</figcaption>
         </figure>
 
         <figure>
-            <video src="video_iter_1000.npz_ep1.mp4" controls width="100%"></video>
+            <video preload="metadata" poster="att1000.png" src="video_iter_1000.npz_ep1.mp4" controls></video>
             <figcaption><strong>図 8:</strong> Doom Take Cover環境における処理ステージ。左上：96x96にリサイズされた生画像。右上：1x1畳み込み + 残差。左下：量子化。右下：アテンション。この解は量子化ステージ以降、火の玉を完全に無視していることに注意してください。</figcaption>
         </figure>
 

@@ -1,0 +1,260 @@
+
+        body {
+            font-family: serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+            color: #333;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: sans-serif;
+            color: #111;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        h2 {
+            font-size: 1.6em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.3em;
+        }
+
+        h3 {
+            font-size: 1.3em;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        p {
+            margin-bottom: 1em;
+            text-align: justify;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .authors-affiliations {
+            text-align: center;
+            margin-bottom: 2em;
+            font-family: sans-serif;
+        }
+
+        .author {
+            font-weight: bold;
+        }
+
+        .affiliation {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .email a {
+            font-size: 0.9em;
+            color: #0066cc; /* Link-like color */
+            text-decoration: none;
+        }
+         .email a:hover {
+            text-decoration: underline;
+        }
+
+        .abstract {
+            margin-top: 2em;
+            margin-bottom: 2em;
+            padding: 1em;
+            background-color: #f9f9f9;
+            border-left: 3px solid #ccc;
+        }
+
+        .abstract h2 {
+            font-size: 1.4em;
+            border-bottom: none;
+            margin-top: 0;
+        }
+
+        figure {
+            margin: 2em auto;
+            text-align: center;
+            border: 1px solid #eee;
+            padding: 1em;
+            background-color: #fdfdfd;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5em auto;
+        }
+
+        figcaption {
+            font-size: 0.9em;
+            color: #555;
+            text-align: left;
+            margin-top: 0.5em;
+            font-family: sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2em 0;
+            font-family: sans-serif;
+            font-size: 0.9em;
+        }
+
+        caption {
+            caption-side: top;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            font-size: 1em;
+            color: #333;
+            text-align: left;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .equation {
+            text-align: center;
+            margin: 1.5em 0;
+            font-family: monospace; /* Or keep serif */
+            font-size: 1.1em;
+        }
+
+        .references ol {
+            padding-left: 20px;
+            list-style: none; /* Remove default numbering */
+            counter-reset: ref-counter;
+        }
+
+        .references li {
+            margin-bottom: 0.8em;
+            counter-increment: ref-counter;
+            position: relative;
+            padding-left: 25px; /* Space for custom number */
+        }
+        .references li::before {
+            content: "[" counter(ref-counter) "]";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #555;
+        }
+        .references li span.ref-content {
+            display: inline-block; /* Keep content together */
+			margin-left: 1em;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        code, pre {
+             font-family: monospace, monospace;
+             background-color: #f4f4f4;
+             padding: 1px 3px;
+             border-radius: 3px;
+        }
+
+        /* Footer/Acknowledgments */
+        .acknowledgments {
+            font-size: 0.9em;
+            margin-top: 2em;
+        }
+
+        /* Style for the arXiv ID mentioned in the header */
+        .header-arxiv-id {
+            font-family: sans-serif;
+            color: #555;
+            font-size: 0.9em;
+            margin-bottom: 2em;
+            text-align: left; /* Or adjust as needed */
+        }
+        .header-arxiv-id a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .header-arxiv-id a:hover {
+            text-decoration: underline;
+        }
+
+
+        @media print {
+            body {
+                max-width: none;
+                margin: 1cm;
+                font-size: 10pt;
+            }
+            h1, h2, h3, h4 { page-break-after: avoid; }
+            figure, table { page-break-inside: avoid; }
+            .header-arxiv-id { display: none; } /* Hide on print too */
+            a { color: inherit; text-decoration: none; } /* Make links look like normal text */
+             .references li::before { color: inherit; }
+			#translations { display: none }
+        }
+
+		#notebooklm {
+			display: flex;
+		}
+		#notebooklm div {
+			flex: 1;
+		}
+		#translations {
+			float: right;
+		}
+
+
+/* Bidirectional overrides keep the single shared stylesheet readable in RTL. */
+[dir="rtl"] .abstract { border-left: 0; border-right: 3px solid #ccc; }
+[dir="rtl"] figcaption,
+[dir="rtl"] caption,
+[dir="rtl"] th,
+[dir="rtl"] td { text-align: right; }
+[dir="rtl"] .header-arxiv-id { text-align: right; direction: ltr; }
+[dir="rtl"] .equation { direction: ltr; }
+[dir="rtl"] .references ol { padding-right: 20px; padding-left: 0; }
+[dir="rtl"] .references li {
+    padding-right: 25px;
+    padding-left: 0;
+    direction: ltr;
+    text-align: left;
+}
+[dir="rtl"] .references li::before { right: 0; left: auto; }
+[dir="rtl"] .references li span.ref-content { margin-right: 1em; margin-left: 0; }
+
+#translations { float: right; font-family: sans-serif; }
+#notebooklm { display: flex; gap: 1rem; }
+#notebooklm > div { flex: 1; }
+audio, video { max-width: 100%; }
+
+@media (max-width: 640px) {
+    #translations { float: none; margin-bottom: 1rem; }
+    #notebooklm { display: block; }
+}

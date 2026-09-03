@@ -1,53 +1,107 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
+<?xml version='1.0' encoding='utf-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
   <url>
-       <loc>https://rafaelcp.github.io/neuroproto/</loc>
-       <lastmod>1970-01-01T00:33:45+00:00</lastmod>
-       <changefreq>daily</changefreq>
-       <priority>0.8000</priority>
+    <loc>https://rafaelcp.github.io/neuroproto/</loc>
+    <lastmod>2026-09-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/" />
   </url>
   <url>
-       <loc>https://rafaelcp.github.io/neuroproto/index-pt.html</loc>
-       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
-       <changefreq>daily</changefreq>
-       <priority>0.6400</priority>
+    <loc>https://rafaelcp.github.io/neuroproto/index-pt.html</loc>
+    <lastmod>2026-09-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/" />
   </url>
   <url>
-       <loc>https://rafaelcp.github.io/neuroproto/index-es.html</loc>
-       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
-       <changefreq>daily</changefreq>
-       <priority>0.6400</priority>
+    <loc>https://rafaelcp.github.io/neuroproto/index-es.html</loc>
+    <lastmod>2026-09-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/" />
   </url>
   <url>
-       <loc>https://rafaelcp.github.io/neuroproto/index-fr.html</loc>
-       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
-       <changefreq>daily</changefreq>
-       <priority>0.6400</priority>
+    <loc>https://rafaelcp.github.io/neuroproto/index-fr.html</loc>
+    <lastmod>2026-09-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/" />
   </url>
   <url>
-       <loc>https://rafaelcp.github.io/neuroproto/index-zh.html</loc>
-       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
-       <changefreq>daily</changefreq>
-       <priority>0.6400</priority>
+    <loc>https://rafaelcp.github.io/neuroproto/index-zh.html</loc>
+    <lastmod>2026-09-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/" />
   </url>
   <url>
-       <loc>https://rafaelcp.github.io/neuroproto/index-jp.html</loc>
-       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
-       <changefreq>daily</changefreq>
-       <priority>0.6400</priority>
+    <loc>https://rafaelcp.github.io/neuroproto/index-jp.html</loc>
+    <lastmod>2026-09-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/" />
   </url>
   <url>
-       <loc>https://rafaelcp.github.io/neuroproto/index-hi.html</loc>
-       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
-       <changefreq>daily</changefreq>
-       <priority>0.6400</priority>
+    <loc>https://rafaelcp.github.io/neuroproto/index-hi.html</loc>
+    <lastmod>2026-09-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/" />
   </url>
   <url>
-       <loc>https://rafaelcp.github.io/neuroproto/index-ar.html</loc>
-       <lastmod>2026-07-24T00:27:41+00:00</lastmod>
-       <changefreq>daily</changefreq>
-       <priority>0.6400</priority>
+    <loc>https://rafaelcp.github.io/neuroproto/index-ar.html</loc>
+    <lastmod>2026-09-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/" />
   </url>
 </urlset>
