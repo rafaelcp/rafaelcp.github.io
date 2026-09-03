@@ -96,30 +96,6 @@
         "https://doi.org/10.1145/3712256.3726451",
         "https://arxiv.org/abs/2505.00186"
       ]
-    },
-    {
-      "@type": "VideoObject",
-      "name": "基于原型物体的自注意力神经演化 — overview",
-      "description": "用于视觉强化学习的原型物体自注意力方法，参数减少 62%，训练速度最高提升 2.6 倍。",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/proto.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "基于原型物体的自注意力神经演化 — Car Racing experiment",
-      "description": "Processing stages and evolved attention in the Car Racing experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_carracing_proto-objects_iter_1000.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "基于原型物体的自注意力神经演化 — Doom Take Cover experiment",
-      "description": "Processing stages and evolved attention in the Doom Take Cover experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_iter_1000.npz_ep1.mp4"
     }
   ]
 }
@@ -166,7 +142,7 @@
     </div>
 	
     <figure>
-        <video preload="metadata" poster="att1000.png" controls src="proto.mp4"></video>
+        <video preload="metadata" controls src="proto.mp4"></video>
         <figcaption><strong>图 1：</strong> 我们的注意力智能体能够专注于整个均匀区域，而非小尺寸的固定图像块。</figcaption>
     </figure>
 
@@ -205,7 +181,7 @@
         <p>Tang 等人最近的工作 <a href="#ref22" title="Yujin Tang, Duong Nguyen, and David Ha. 2020. Neuroevolution of self-interpretable agents. In Proceedings of the 2020 Genetic and Evolutionary Computation Conference (Cancún, Mexico) (GECCO &#x27;20). Association for Computing Machinery, New York, NY, USA, 414-424. doi:10.1145/3377930.3389847">[22]</a> 探索了在强化学习中使用硬注意力机制。其方法将视觉输入划分为 7x7 的图像块，并应用改进的自注意力机制仅选择前 k 个图像块进行处理（参见图 2）。这造成了一个信息瓶颈，迫使模型关注最相关的输入而忽略其他输入。当应用于基于视觉的强化学习任务时，这种方法使智能体能够以远少于传统方法的参数量获得更好的性能、可解释性和计算效率。我们的方法主要区别在于使用原型物体代替图像块，减少了 Token 的数量及其维度，同时为其添加了更高层次的信息。</p>
 
         <figure>
-            <video preload="metadata" poster="att1000.png" src="patches-video_best.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="patches-video_best.npz_ep1.mp4" controls></video>
             <figcaption><strong>图 2：</strong> 智能体从当前帧提取图像块，并通过硬注意力机制选择前 k 个（以白色高亮显示）。通过可视化所选的图像块，可以更好地了解所学策略，同时也便于调试。</figcaption>
         </figure>
 
@@ -317,7 +293,7 @@
         <p>这个实验的一个有趣方面是观察分割和注意力的演化过程，如图 5 所示。解决方案始于任务原始颜色上的平凡量化，但由于跑道颜色较深，它与屏幕底部的黑色抬头显示（HUD）合并在了一起。尽管如此，它已经知道如何专注于较小的草地区域，因为这通常指向赛车必须转向的方向。在 300 代时，它学会了将跑道与 HUD 分开；而在 800 代时，它将赛车和红色弯道标记与跑道分离开来。虽然赛车是没有用的（它总是处于同一个位置，甚至在其他实验中与跑道合并），但红色标记可以通过对其相邻的草地区域进行“投票”（作为 Query）来巩固正确的转向边。在 900 代时，它学会了分割跑道图块，但在最终解中丢弃了这一策略。分解为各个处理步骤的最终解决方案如图 6 所示。</p>
 
 		<figure>
-			<video preload="metadata" poster="att1000.png" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
+			<video preload="metadata" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
 			<figcaption><strong>图 6：</strong> Car Racing 环境中的处理阶段。左上：调整为 96x96 的原始图像。右上：1x1 卷积 + 残差。左下：量化。右下：k=1 的注意力。
 			</figcaption>
 		</figure>
@@ -331,7 +307,7 @@
         </figure>
 
         <figure>
-            <video preload="metadata" poster="att1000.png" src="video_iter_1000.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="video_iter_1000.npz_ep1.mp4" controls></video>
             <figcaption><strong>图 8：</strong> Doom Take Cover 环境中的处理阶段。左上：调整为 96x96 的原始图像。右上：1x1 卷积 + 残差。左下：量化。右下：注意力。请注意，该解自量化阶段起就完全忽略了火球。</figcaption>
         </figure>
 

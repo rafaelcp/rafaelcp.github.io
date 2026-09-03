@@ -13,13 +13,13 @@ The eight HTML documents contain localized scholarly content and share `styles.c
 3. Regenerate the sitemap with `python3 neuroproto/scripts/generate_sitemap.py`.
 4. Run `python3 -m unittest discover -s neuroproto/tests -v`.
 
-Canonical URLs, Open Graph URLs, Twitter URLs, `hreflang` links and sitemap entries must remain consistent. Descriptions should be concise and localized. Images require useful alternative text and intrinsic dimensions. Videos use metadata-only preload and a poster to avoid unnecessarily downloading large media during initial rendering.
+Canonical URLs, Open Graph URLs, Twitter URLs, `hreflang` links and sitemap entries must remain consistent. Descriptions should be concise and localized. Images require useful alternative text and intrinsic dimensions. Videos use metadata-only preload and intentionally omit custom posters, so each browser derives its preview from the corresponding video instead of displaying unrelated artwork. Video structured data must only be added when an accurate, video-specific thumbnail is available.
 
 Every in-text citation link includes a `title` containing the complete rendered text of its corresponding bibliography entry. This provides the reference on hover without requiring JavaScript. When a bibliography entry changes, update every citation that targets it in all localized documents; the regression suite verifies that the decoded attribute and bibliography text remain identical.
 
 ## SEO inventory
 
-Every localized page provides a self-referencing canonical, reciprocal language alternates, social cards, Highwire/Google Scholar citation metadata, and schema.org `ScholarlyArticle` plus `VideoObject` data. The repository-level `robots.txt` advertises the sitemap. The sitemap deliberately omits speculative `changefreq` and `priority` values.
+Every localized page provides a self-referencing canonical, reciprocal language alternates, social cards, Highwire/Google Scholar citation metadata, and schema.org `ScholarlyArticle` structured data. The repository-level `robots.txt` advertises the sitemap. The sitemap deliberately omits speculative `changefreq` and `priority` values.
 
 ## HTML validation
 

@@ -96,30 +96,6 @@
         "https://doi.org/10.1145/3712256.3726451",
         "https://arxiv.org/abs/2505.00186"
       ]
-    },
-    {
-      "@type": "VideoObject",
-      "name": "التطور العصبي للانتباه الذاتي على الأجسام الأولية — overview",
-      "description": "انتباه ذاتي قائم على الأجسام الأولية للتعلم المعزز البصري، بمعلمات أقل بنسبة 62% وتدريب أسرع بما يصل إلى 2.6 مرة.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/proto.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "التطور العصبي للانتباه الذاتي على الأجسام الأولية — Car Racing experiment",
-      "description": "Processing stages and evolved attention in the Car Racing experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_carracing_proto-objects_iter_1000.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "التطور العصبي للانتباه الذاتي على الأجسام الأولية — Doom Take Cover experiment",
-      "description": "Processing stages and evolved attention in the Doom Take Cover experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_iter_1000.npz_ep1.mp4"
     }
   ]
 }
@@ -166,7 +142,7 @@
     </div>
 	
     <figure>
-        <video preload="metadata" poster="att1000.png" controls src="proto.mp4"></video>
+        <video preload="metadata" controls src="proto.mp4"></video>
         <figcaption><strong>الشكل 1:</strong> وكيلنا الانتباهي قادر على التركيز على مناطق موحدة بالكامل بدلاً من رقع صور صغيرة ذات حجم ثابت.</figcaption>
     </figure>
 
@@ -205,7 +181,7 @@
         <p>استكشفت الأعمال الحديثة بواسطة Tang وآخرون <a href="#ref22" title="Yujin Tang, Duong Nguyen, and David Ha. 2020. Neuroevolution of self-interpretable agents. In Proceedings of the 2020 Genetic and Evolutionary Computation Conference (Cancún, Mexico) (GECCO &#x27;20). Association for Computing Machinery, New York, NY, USA, 414-424. doi:10.1145/3377930.3389847">[22]</a> استخدام آليات الانتباه الصلبة في التعلم المعزز. يحدد نهجهم المدخلات البصرية إلى رقع 7x7 ويطبق آلية انتباه ذاتي معدلة لاختيار أفضل k رقع فقط للمعالجة (انظر الشكل 2). هذا يخلق عنق زجاجة للمعلومات يجبر النموذج على التركيز على المدخلات الأكثر صلة مع تجاهل المدخلات الأخرى. عند تطبيقها على مهام التعلم المعزز القائمة على الرؤية، مكنت هذه الطريقة الوكلاء من تحقيق أداء وتفسيرية وكفاءة حسابية أفضل مع عدد أقل بكثير من المعلمات مقارنة بالطرق التقليدية. يختلف نهجنا بشكل أساسي باستخدام الأجسام الأولية بدلاً من الرقع، مما يقلل من عدد الرموز وأبعادها مع إضافة معلومات أعلى مستوى إليها.</p>
 
         <figure>
-            <video preload="metadata" poster="att1000.png" src="patches-video_best.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="patches-video_best.npz_ep1.mp4" controls></video>
             <figcaption><strong>الشكل 2:</strong> يستخرج الوكيل الرقع من الإطار الحالي ويحدد أفضل k منها (المظللة باللون الأبيض) بواسطة آلية انتباه صلبة. من خلال تصور الرقع المحددة، من الممكن الحصول على فكرة أفضل عن الاستراتيجية المتعلمة، بالإضافة إلى تسهيل تصحيح الأخطاء.</figcaption>
         </figure>
 
@@ -317,7 +293,7 @@
         <p>من الجوانب الممتعة لهذه التجربة ملاحظة تطور التجزئة والانتباه، كما يوضح الشكل 5. يبدأ الحل بالتكميم البسيط على الألوان الأصلية للمهمة، ولكن بما أن المضمار داكن، فإنه ينضم إلى شاشة العرض الرأسية (HUD) السوداء في أسفل الشاشة. ومع ذلك، فهو يعرف بالفعل كيفية التركيز على منطقة العشب الأصغر، حيث إنها عادةً ما تشير إلى الاتجاه الذي يجب أن تدور فيه السيارة. في 300 جيل تتعلم فصل المضمار عن الـ HUD، بينما في 800 جيل تفصل السيارة وعلامات المنعطفات الحمراء عن المضمار. في حين أن السيارة غير مفيدة (فهي دائمًا في نفس المكان وتم دمجها مع المضمار في تجارب أخرى)، يمكن للعلامات الحمراء تعزيز اتجاه الدوران الصحيح من خلال "التصويت" (كاستعلامات) على منطقة العشب المجاورة لها. في 900 جيل، يتعلم تجزئة بلاطات المضمار، ولكنه يستغني عنها في الحل النهائي. يمكن رؤية الحل النهائي مفككًا إلى خطوات معالجته في الشكل 6.</p>
 
 		<figure>
-			<video preload="metadata" poster="att1000.png" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
+			<video preload="metadata" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
 			<figcaption><strong>الشكل 6:</strong> مراحل المعالجة في بيئة Car Racing. أقصى اليسار العلوي: صورة خام تم تغيير حجمها إلى 96x96. أقصى اليمين العلوي: تلافيف 1x1 + اتصال متبقي. أقصى اليسار السفلي: تكميم. أقصى اليمين السفلي: انتباه مع k=1.
 			</figcaption>
 		</figure>
@@ -331,7 +307,7 @@
         </figure>
 
         <figure>
-            <video preload="metadata" poster="att1000.png" src="video_iter_1000.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="video_iter_1000.npz_ep1.mp4" controls></video>
             <figcaption><strong>الشكل 8:</strong> مراحل المعالجة في بيئة Doom Take Cover. أقصى اليسار العلوي: صورة خام تم تغيير حجمها إلى 96x96. أقصى اليمين العلوي: تلافيف 1x1 + اتصال متبقي. أقصى اليسار السفلي: تكميم. أقصى اليمين السفلي: انتباه. لاحظ أن هذا الحل يتجاهل كرات النار تمامًا منذ مرحلة التكميم.</figcaption>
         </figure>
 
