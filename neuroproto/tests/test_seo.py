@@ -36,6 +36,44 @@ class DocumentParser(HTMLParser):
             self._json_buffer = None
 
 
+class CitationParser(HTMLParser):
+    """Collect citation links and the rendered text of bibliography entries."""
+
+    def __init__(self):
+        super().__init__()
+        self.citations = []
+        self.references = {}
+        self._reference_id = None
+        self._reference_depth = 0
+        self._reference_text = []
+
+    def handle_starttag(self, tag, attrs):
+        values = dict(attrs)
+        href = values.get("href", "")
+        if tag == "a" and re.fullmatch(r"#ref\d+", href):
+            self.citations.append((values, self.getpos()))
+
+        if self._reference_id is not None:
+            self._reference_depth += 1
+        elif tag == "li" and re.fullmatch(r"ref\d+", values.get("id", "")):
+            self._reference_id = values["id"]
+            self._reference_depth = 1
+            self._reference_text = []
+
+    def handle_data(self, data):
+        if self._reference_id is not None:
+            self._reference_text.append(data)
+
+    def handle_endtag(self, tag):
+        if self._reference_id is None:
+            return
+        self._reference_depth -= 1
+        if self._reference_depth == 0:
+            self.references[self._reference_id] = "".join(self._reference_text).strip()
+            self._reference_id = None
+            self._reference_text = []
+
+
 def parse(page):
     parser = DocumentParser()
     parser.feed(page.read_text(encoding="utf-8"))
@@ -43,6 +81,23 @@ def parse(page):
 
 
 class SeoTests(unittest.TestCase):
+    def test_citation_titles_match_bibliography_entries(self):
+        for page in PAGES:
+            path = ROOT / page.filename
+            parser = CitationParser()
+            parser.feed(path.read_text(encoding="utf-8"))
+            self.assertTrue(parser.citations, f"{path}: expected citation links")
+            for attrs, position in parser.citations:
+                reference_id = attrs["href"][1:]
+                location = f"{path}:{position[0]}"
+                self.assertIn(reference_id, parser.references, f"{location}: missing bibliography entry")
+                self.assertIn("title", attrs, f"{location}: citation lacks a title attribute")
+                self.assertEqual(
+                    attrs["title"],
+                    parser.references[reference_id],
+                    f"{location}: citation title differs from bibliography entry {reference_id}",
+                )
+
     def test_every_page_has_the_complete_language_menu(self):
         expected_links = [page.filename if page.filename != "index.html" else "./" for page in PAGES]
         for page in PAGES:
