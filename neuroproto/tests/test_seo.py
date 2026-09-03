@@ -43,6 +43,26 @@ def parse(page):
 
 
 class SeoTests(unittest.TestCase):
+    def test_every_page_has_the_complete_language_menu(self):
+        expected_links = [page.filename if page.filename != "index.html" else "./" for page in PAGES]
+        for page in PAGES:
+            path = ROOT / page.filename
+            with self.subTest(page=page.filename):
+                parser = parse(path)
+                menus = [attrs for tag, attrs, _ in parser.tags if tag == "nav" and attrs.get("id") == "translations"]
+                self.assertEqual(len(menus), 1, f"{path}: expected exactly one language menu")
+                menu_index = next(
+                    index
+                    for index, (tag, attrs, _) in enumerate(parser.tags)
+                    if tag == "nav" and attrs.get("id") == "translations"
+                )
+                links = [
+                    attrs.get("href")
+                    for tag, attrs, _ in parser.tags[menu_index + 1 :]
+                    if tag == "a"
+                ][: len(PAGES)]
+                self.assertEqual(links, expected_links, f"{path}: incomplete or incorrectly ordered language menu")
+
     def test_every_page_has_complete_unique_metadata(self):
         expected_alternates = {page.language: page.url for page in PAGES}
         expected_alternates["x-default"] = BASE_URL
