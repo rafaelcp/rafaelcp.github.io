@@ -140,7 +140,13 @@ class SeoTests(unittest.TestCase):
                 self.assertEqual(names["twitter:card"], "summary_large_image")
                 self.assertEqual(properties["og:url"], page.url)
                 self.assertEqual(len(parser.json_ld), 1)
-                article = parser.json_ld[0]["@graph"][0]
+                graph = parser.json_ld[0]["@graph"]
+                self.assertEqual(
+                    [item["@type"] for item in graph],
+                    ["ScholarlyArticle"],
+                    f"{ROOT / page.filename}: structured data must not advertise videos without accurate thumbnails",
+                )
+                article = graph[0]
                 self.assertEqual(article["url"], page.url)
                 self.assertEqual(article["inLanguage"], page.language)
 
@@ -200,7 +206,11 @@ class SeoTests(unittest.TestCase):
                     self.assertEqual(attrs.get("preload"), "none", f"{path}:{position[0]} audio preload")
                 if tag == "video":
                     self.assertEqual(attrs.get("preload"), "metadata", f"{path}:{position[0]} video preload")
-                    self.assertTrue(attrs.get("poster"), f"{path}:{position[0]} video poster")
+                    self.assertNotIn(
+                        "poster",
+                        attrs,
+                        f"{path}:{position[0]} video must use a preview frame from its own content",
+                    )
 
     def test_robots_advertises_sitemap(self):
         robots = (ROOT.parent / "robots.txt").read_text(encoding="utf-8")

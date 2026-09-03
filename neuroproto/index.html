@@ -96,30 +96,6 @@
         "https://doi.org/10.1145/3712256.3726451",
         "https://arxiv.org/abs/2505.00186"
       ]
-    },
-    {
-      "@type": "VideoObject",
-      "name": "Neuroevolution of Self-Attention Over Proto-Objects — overview",
-      "description": "Proto-object self-attention for visual reinforcement learning achieves state-of-the-art results with 62% fewer parameters and up to 2.6× faster training.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/proto.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "Neuroevolution of Self-Attention Over Proto-Objects — Car Racing experiment",
-      "description": "Processing stages and evolved attention in the Car Racing experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_carracing_proto-objects_iter_1000.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "Neuroevolution of Self-Attention Over Proto-Objects — Doom Take Cover experiment",
-      "description": "Processing stages and evolved attention in the Doom Take Cover experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_iter_1000.npz_ep1.mp4"
     }
   ]
 }
@@ -167,7 +143,7 @@
 	
     <figure>
         <!-- Image representation for Figure 1 -->
-        <video preload="metadata" poster="att1000.png" controls src="proto.mp4"></video>
+        <video preload="metadata" controls src="proto.mp4"></video>
         <figcaption><strong>Figure 1:</strong> Our attentional agent is capable of focusing on entire uniform regions instead of small fixed-size image patches.</figcaption>
     </figure>
 
@@ -207,7 +183,7 @@
 
         <figure>
             <!-- Image representation for Figure 2 -->
-            <video preload="metadata" poster="att1000.png" src="patches-video_best.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="patches-video_best.npz_ep1.mp4" controls></video>
             <figcaption><strong>Figure 2:</strong> The agent extracts patches from the current frame and selects the top-k ones (highlighted in white) by a hard attention mechanism. By visualizing the selected patches, it is possible to have a better idea of the learned strategy, as well as making it easier for debugging.</figcaption>
         </figure>
 
@@ -317,7 +293,7 @@
         <p>An interesting aspect of this experiment is to observe the evolution of segmentation and attention, as Fig 5 shows. The solution starts with the trivial quantization over the task's original colors, but since the track is dark, it gets merged with the black head-up display (HUD) at the bottom of the screen. Nevertheless, it already knows how to focus on the smaller grass region, as it usually points at the direction the car must turn. At 300 generations it learns to separate the track from the HUD, while at 800 generations it separates the car and the red corner markings from the track. While the car is useless (it is always at the same place and was even merged with the track in other experiments), the red markings can reinforce the correct turning side by "voting" (as queries) on their adjacent grass region. At 900 generations, it learns to segment the track tiles, but discards it in the final solution. The final solution decomposed into its processing steps can be seen in Fig 6.</p>
 
 		<figure>
-			<video preload="metadata" poster="att1000.png" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
+			<video preload="metadata" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
 			<figcaption><strong>Figure 6:</strong> Processing stages in the Car Racing environment. Top-left: raw image resized to 96x96. Top-right: 1x1 convolution + residual. Bottom-left: quantization. Bottom-right: attention with k=1.
 			</figcaption>
 		</figure>
@@ -333,7 +309,7 @@
 
         <figure>
              <!-- Image representation for Figure 8 -->
-            <video preload="metadata" poster="att1000.png" src="video_iter_1000.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="video_iter_1000.npz_ep1.mp4" controls></video>
             <figcaption><strong>Figure 8:</strong> Processing stages in the Doom Take Cover environment. Top-left: raw image resized to 96x96. Top-right: 1x1 convolution + residual. Bottom-left: quantization. Bottom-right: attention. Note that this solution completely ignores the fireballs since the quantization stage.</figcaption>
         </figure>
 

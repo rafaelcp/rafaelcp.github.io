@@ -96,30 +96,6 @@
         "https://doi.org/10.1145/3712256.3726451",
         "https://arxiv.org/abs/2505.00186"
       ]
-    },
-    {
-      "@type": "VideoObject",
-      "name": "Neuroevolución de la autoatención sobre protoobjetos — overview",
-      "description": "Autoatención basada en protoobjetos para aprendizaje por refuerzo visual, con un 62 % menos de parámetros y un entrenamiento hasta 2,6 veces más rápido.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/proto.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "Neuroevolución de la autoatención sobre protoobjetos — Car Racing experiment",
-      "description": "Processing stages and evolved attention in the Car Racing experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_carracing_proto-objects_iter_1000.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "Neuroevolución de la autoatención sobre protoobjetos — Doom Take Cover experiment",
-      "description": "Processing stages and evolved attention in the Doom Take Cover experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_iter_1000.npz_ep1.mp4"
     }
   ]
 }
@@ -166,7 +142,7 @@
     </div>
 	
     <figure>
-        <video preload="metadata" poster="att1000.png" controls src="proto.mp4"></video>
+        <video preload="metadata" controls src="proto.mp4"></video>
         <figcaption><strong>Figura 1:</strong> Nuestro agente atencional es capaz de enfocarse en regiones uniformes completas en lugar de pequeños parches de imagen de tamaño fijo.</figcaption>
     </figure>
 
@@ -205,7 +181,7 @@
         <p>Trabajos recientes de Tang et al. <a href="#ref22" title="Yujin Tang, Duong Nguyen, and David Ha. 2020. Neuroevolution of self-interpretable agents. In Proceedings of the 2020 Genetic and Evolutionary Computation Conference (Cancún, Mexico) (GECCO &#x27;20). Association for Computing Machinery, New York, NY, USA, 414-424. doi:10.1145/3377930.3389847">[22]</a> exploraron el uso de mecanismos de atención dura en el aprendizaje por refuerzo. Su enfoque divide la entrada visual en parches de 7x7 y aplica un mecanismo de autoatención modificado para seleccionar solo los top-k parches para su procesamiento (ver Fig. 2). Esto crea un cuello de botella de información que obliga al modelo a centrarse en las entradas más relevantes mientras ignora las demás. Cuando se aplicó a tareas de aprendizaje por refuerzo basadas en visión, este enfoque permitió a los agentes lograr un mejor rendimiento, interpretabilidad y eficiencia computacional con muchos menos parámetros que los enfoques convencionales. Nuestro método difiere principalmente al utilizar protoobjetos en lugar de parches, reduciendo el número de tokens y su dimensionalidad mientras les añade información de nivel más alto.</p>
 
         <figure>
-            <video preload="metadata" poster="att1000.png" src="patches-video_best.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="patches-video_best.npz_ep1.mp4" controls></video>
             <figcaption><strong>Figura 2:</strong> El agente extrae parches del fotograma actual y selecciona los top-k (resaltados en blanco) mediante un mecanismo de atención dura. Al visualizar los parches seleccionados, es posible tener una mejor idea de la estrategia aprendida, además de facilitar la depuración.</figcaption>
         </figure>
 
@@ -317,7 +293,7 @@
         <p>Un aspecto interesante de este experimento es observar la evolución de la segmentación y la atención, como muestra la Fig. 5. La solución comienza con la cuantización trivial sobre los colores originales de la tarea, pero como la pista es oscura, se fusiona con la pantalla de visualización frontal (HUD) negra en la parte inferior de la pantalla. Sin embargo, ya sabe cómo enfocarse en la región de césped más pequeña, ya que suele apuntar a la dirección en la que el coche debe girar. A las 300 generaciones aprende a separar la pista del HUD, mientras que a las 800 generaciones separa el coche y las marcas rojas de las esquinas de la pista. Aunque el coche es inútil (siempre está en el mismo lugar e incluso se fusionó con la pista en otros experimentos), las marcas rojas pueden reforzar el lado correcto de giro "votando" (como consultas) sobre su región de césped adyacente. A las 900 generaciones, aprende a segmentar las casillas de la pista, pero lo descarta en la solución final. La solución final descompuesta en sus pasos de procesamiento se puede ver en la Fig. 6.</p>
 
 		<figure>
-			<video preload="metadata" poster="att1000.png" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
+			<video preload="metadata" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
 			<figcaption><strong>Figura 6:</strong> Etapas de procesamiento en el entorno Car Racing. Superior izquierda: imagen original redimensionada a 96x96. Superior derecha: convolución 1x1 + residual. Inferior izquierda: cuantización. Inferior derecha: atención con k=1.
 			</figcaption>
 		</figure>
@@ -331,7 +307,7 @@
         </figure>
 
         <figure>
-            <video preload="metadata" poster="att1000.png" src="video_iter_1000.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="video_iter_1000.npz_ep1.mp4" controls></video>
             <figcaption><strong>Figura 8:</strong> Etapas de procesamiento en el entorno Doom Take Cover. Superior izquierda: imagen original redimensionada a 96x96. Superior derecha: convolución 1x1 + residual. Inferior izquierda: cuantización. Inferior derecha: atención. Tenga en cuenta que esta solución ignora por completo las bolas de fuego desde la etapa de cuantización.</figcaption>
         </figure>
 

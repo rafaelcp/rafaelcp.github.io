@@ -96,30 +96,6 @@
         "https://doi.org/10.1145/3712256.3726451",
         "https://arxiv.org/abs/2505.00186"
       ]
-    },
-    {
-      "@type": "VideoObject",
-      "name": "プロトオブジェクト上のセルフアテンションのニューロエボリューション — overview",
-      "description": "視覚強化学習のためのプロトオブジェクトベースのセルフアテンション。パラメータを62%削減し、学習を最大2.6倍高速化します。",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/proto.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "プロトオブジェクト上のセルフアテンションのニューロエボリューション — Car Racing experiment",
-      "description": "Processing stages and evolved attention in the Car Racing experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_carracing_proto-objects_iter_1000.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "プロトオブジェクト上のセルフアテンションのニューロエボリューション — Doom Take Cover experiment",
-      "description": "Processing stages and evolved attention in the Doom Take Cover experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_iter_1000.npz_ep1.mp4"
     }
   ]
 }
@@ -166,7 +142,7 @@
     </div>
 	
     <figure>
-        <video preload="metadata" poster="att1000.png" controls src="proto.mp4"></video>
+        <video preload="metadata" controls src="proto.mp4"></video>
         <figcaption><strong>図 1:</strong> 我々のアテンショナルエージェントは、サイズの固定された小さな画像パッチではなく、均一な領域全体に焦点を当てることができます。</figcaption>
     </figure>
 
@@ -205,7 +181,7 @@
         <p>Tangらによる最近の研究 <a href="#ref22" title="Yujin Tang, Duong Nguyen, and David Ha. 2020. Neuroevolution of self-interpretable agents. In Proceedings of the 2020 Genetic and Evolutionary Computation Conference (Cancún, Mexico) (GECCO &#x27;20). Association for Computing Machinery, New York, NY, USA, 414-424. doi:10.1145/3377930.3389847">[22]</a> では、強化学習におけるハードアテンション機構の利用が探求されました。彼らの手法は視覚入力を7x7のパッチに分割し、変更されたセルフアテンション機構を適用して処理のために上位k個のパッチのみを選択します（図2を参照）。これにより情報ボトルネックが作成され、モデルは他の入力を無視しながら最も関連性の高い入力に集中せざるを得なくなります。視覚ベースの強化学習タスクに適用した場合、この手法により、エージェントは従来の方式よりも大幅に少ないパラメータで、より優れた性能、解釈可能性、計算効率を達成できました。本手法は、パッチの代わりにプロトオブジェクトを使用し、トークンの数とその次元数を削減しつつ、それらに高レベルの情報を付加する点で主に異なります。</p>
 
         <figure>
-            <video preload="metadata" poster="att1000.png" src="patches-video_best.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="patches-video_best.npz_ep1.mp4" controls></video>
             <figcaption><strong>図 2:</strong> エージェントは現在のフレームからパッチを抽出し、ハードアテンション機構によって上位k個（白でハイライト）を選択します。選択されたパッチを可視化することで、学習された戦略をより良く理解できるようになり、デバッグも容易になります。</figcaption>
         </figure>
 
@@ -322,7 +298,7 @@
         <p>図5に示すように、この実験の興味深い側面はセグメンテーションとアテンションの進化を観察することです。解はタスクの元の色に対する自明な量子化から始まりますが、コースが暗いため、画面下部の黒いヘッドアップディスプレイ（HUD）と結合してしまいます。それにもかかわらず、通常は車が曲がるべき方向を指し示しているため、小さな芝生領域に集中する方法をすでに知っています。300世代でコースをHUDから分離することを学び、800世代で車と赤色のコーナーマーカーをコースから分離します。車は役に立ちませんが（常に同じ場所にあり、他の実験ではコースと結合されていました）、赤色のマーカーは隣接する芝生領域に対して（クエリとして）「投票」することで、正しい旋回方向を強化できます。900世代でコースタイルをセグメント化することを学びますが、最終解ではそれを破棄します。処理ステップに分解された最終解は図6で確認できます。</p>
 
 		<figure>
-			<video preload="metadata" poster="att1000.png" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
+			<video preload="metadata" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
 			<figcaption><strong>図 6:</strong> Car Racing環境における処理ステージ。左上：96x96にリサイズされた生画像。右上：1x1畳み込み + 残差。左下：量子化。右下：k=1のアテンション。
 			</figcaption>
 		</figure>
@@ -336,7 +312,7 @@
         </figure>
 
         <figure>
-            <video preload="metadata" poster="att1000.png" src="video_iter_1000.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="video_iter_1000.npz_ep1.mp4" controls></video>
             <figcaption><strong>図 8:</strong> Doom Take Cover環境における処理ステージ。左上：96x96にリサイズされた生画像。右上：1x1畳み込み + 残差。左下：量子化。右下：アテンション。この解は量子化ステージ以降、火の玉を完全に無視していることに注意してください。</figcaption>
         </figure>
 

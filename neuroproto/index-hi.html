@@ -96,30 +96,6 @@
         "https://doi.org/10.1145/3712256.3726451",
         "https://arxiv.org/abs/2505.00186"
       ]
-    },
-    {
-      "@type": "VideoObject",
-      "name": "प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन — overview",
-      "description": "विज़ुअल रीइन्फोर्समेंट लर्निंग के लिए प्रोटो-ऑब्जेक्ट आधारित सेल्फ-अटेंशन, 62% कम पैरामीटर और 2.6 गुना तक तेज़ प्रशिक्षण के साथ।",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/proto.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन — Car Racing experiment",
-      "description": "Processing stages and evolved attention in the Car Racing experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_carracing_proto-objects_iter_1000.mp4"
-    },
-    {
-      "@type": "VideoObject",
-      "name": "प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन — Doom Take Cover experiment",
-      "description": "Processing stages and evolved attention in the Doom Take Cover experiment.",
-      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
-      "uploadDate": "2025-07-13",
-      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_iter_1000.npz_ep1.mp4"
     }
   ]
 }
@@ -166,7 +142,7 @@
     </div>
 	
     <figure>
-        <video preload="metadata" poster="att1000.png" controls src="proto.mp4"></video>
+        <video preload="metadata" controls src="proto.mp4"></video>
         <figcaption><strong>चित्र 1:</strong> हमारा अटेंशनल एजेंट छोटे निश्चित आकार के इमेज पैच के बजाय पूरे एकसमान क्षेत्रों पर ध्यान केंद्रित करने में सक्षम है।</figcaption>
     </figure>
 
@@ -205,7 +181,7 @@
         <p>Tang एवं अन्य द्वारा हाल ही के कार्य <a href="#ref22" title="Yujin Tang, Duong Nguyen, and David Ha. 2020. Neuroevolution of self-interpretable agents. In Proceedings of the 2020 Genetic and Evolutionary Computation Conference (Cancún, Mexico) (GECCO &#x27;20). Association for Computing Machinery, New York, NY, USA, 414-424. doi:10.1145/3377930.3389847">[22]</a> ने रीइन्फोर्समेंट लर्निंग में हार्ड-अटेंशन तंत्र के उपयोग की खोज की। उनका दृष्टिकोण दृश्य इनपुट को 7x7 पैच में विभाजित करता है और केवल शीर्ष-k (top-k) पैच को प्रोसेस करने के लिए एक संशोधित सेल्फ-अटेंशन तंत्र लागू करता है (चित्र 2 देखें)। यह एक सूचना अड़चन बनाता है जो मॉडल को दूसरों को अनदेखा करते हुए केवल सबसे प्रासंगिक इनपुट पर ध्यान केंद्रित करने के लिए मजबूर करता है। जब दृष्टि-आधारित रीइन्फोर्समेंट लर्निंग कार्यों पर लागू किया जाता है, तो इस दृष्टिकोण ने एजेंटों को पारंपरिक दृष्टिकोणों की तुलना में बहुत कम मापदंडों के साथ बेहतर प्रदर्शन, व्याख्यात्मकता और कम्प्यूटेशनल दक्षता प्राप्त करने में सक्षम बनाया। हमारा तरीका मुख्य रूप से पैच के बजाय प्रोटो-ऑब्जेक्ट्स का उपयोग करके भिन्न है, जो टोकन की संख्या और उनके आयाम को कम करते हुए उनमें उच्च-स्तरीय जानकारी जोड़ता है।</p>
 
         <figure>
-            <video preload="metadata" poster="att1000.png" src="patches-video_best.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="patches-video_best.npz_ep1.mp4" controls></video>
             <figcaption><strong>चित्र 2:</strong> एजेंट वर्तमान फ़्रेम से पैच निकालता है और हार्ड अटेंशन तंत्र द्वारा शीर्ष-k पैच (सफेद रंग में हाइलाइट किए गए) का चयन करता है। चयनित पैच की कल्पना करके, सीखी गई रणनीति का बेहतर विचार प्राप्त करना संभव है, साथ ही यह डिबगिंग को आसान बनाता है।</figcaption>
         </figure>
 
@@ -317,7 +293,7 @@
         <p>इस प्रयोग का एक दिलचस्प पहलू सेगमेंटेशन और अटेंशन के विकास का निरीक्षण करना है, जैसा कि चित्र 5 दिखाता है। समाधान कार्य के मूल रंगों पर सामान्य क्वांटाइजेशन के साथ शुरू होता है, लेकिन चूंकि ट्रैक गहरा है, यह स्क्रीन के निचले हिस्से में काले हेड-अप डिस्प्ले (HUD) के साथ विलय हो जाता है। फिर भी, यह पहले से ही जानता है कि छोटे घास के क्षेत्र पर कैसे ध्यान केंद्रित करना है, क्योंकि यह आमतौर पर उस दिशा की ओर इशारा करता है जहाँ कार को मुड़ना चाहिए। 300 पीढ़ियों में यह ट्रैक को एचयूडी से अलग करना सीखता है, जबकि 800 पीढ़ियों में यह कार और लाल कोने के निशानों को ट्रैक से अलग करता है। जबकि कार बेकार है (यह हमेशा एक ही स्थान पर होती है और अन्य प्रयोगों में ट्रैक के साथ विलय हो गई थी), लाल निशान अपने आस-पास के घास क्षेत्र पर (क्वेरी के रूप में) "मतदान" करके सही मोड़ने की दिशा को सुदृढ़ कर सकते हैं। 900 पीढ़ियों पर, यह ट्रैक टाइल्स को सेगमेंट करना सीखता है, लेकिन अंतिम समाधान में इसे छोड़ देता है। इसके प्रसंस्करण चरणों में विघटित अंतिम समाधान चित्र 6 में देखा जा सकता है।</p>
 
 		<figure>
-			<video preload="metadata" poster="att1000.png" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
+			<video preload="metadata" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
 			<figcaption><strong>चित्र 6:</strong> कार रेसिंग वातावरण में प्रसंस्करण चरण। शीर्ष-बाएं: कच्ची छवि 96x96 पर आकार बदला गया। शीर्ष-दाएं: 1x1 कॉन्वोल्यूशन + अवशिष्ट। नीचे-बाएं: क्वांटाइजेशन। नीचे-दाएं: k=1 के साथ ध्यान।
 			</figcaption>
 		</figure>
@@ -331,7 +307,7 @@
         </figure>
 
         <figure>
-            <video preload="metadata" poster="att1000.png" src="video_iter_1000.npz_ep1.mp4" controls></video>
+            <video preload="metadata" src="video_iter_1000.npz_ep1.mp4" controls></video>
             <figcaption><strong>चित्र 8:</strong> डूम टेक कवर वातावरण में प्रसंस्करण चरण। शीर्ष-बाएं: 96x96 पर आकार बदला गया कच्ची छवि। शीर्ष-दाएं: 1x1 कॉन्वोल्यूशन + अवशिष्ट। नीचे-बाएं: क्वांटाइजेशन। नीचे-दाएं: अटेंशन। ध्यान दें कि यह समाधान क्वांटाइजेशन चरण से ही आग के गोलों को पूरी तरह से नजरअंदाज कर देता है।</figcaption>
         </figure>
 
