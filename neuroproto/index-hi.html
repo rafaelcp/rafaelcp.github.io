@@ -3,243 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरो-इवोल्यूशन</title>
+    <title>प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन</title>
+    <meta name="description" content="विज़ुअल रीइन्फोर्समेंट लर्निंग के लिए प्रोटो-ऑब्जेक्ट आधारित सेल्फ-अटेंशन, 62% कम पैरामीटर और 2.6 गुना तक तेज़ प्रशिक्षण के साथ।">
+    <link rel="canonical" href="https://rafaelcp.github.io/neuroproto/index-hi.html">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/">
+    <link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html">
+    <link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html">
+    <link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html">
+    <link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html">
+    <link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html">
+    <link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html">
+    <link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/">
 
-    <meta name="title" property="og:title" content="प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरो-इवोल्यूशन">
-    <meta name="type" property="og:type" content="article">
-    <meta name="url" property="og:url" content="https://rafaelcp.github.io/neuroproto/">
-    <meta name="image" property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
-    <meta name="description" property="og:description" content="प्रोटो-ऑब्जेक्ट्स (Proto-objects) – छवि के वे क्षेत्र जो समान दृश्य विशेषताओं को साझा करते हैं – न्यूरल नेटवर्क में आयताकार छवि पैच पर आधारित पारंपरिक ध्यान (attention) तंत्रों का एक आशाजनक विकल्प प्रदान करते हैं। यद्यपि पिछले अध्ययनों ने यह प्रदर्शित किया है कि नियंत्रक नेटवर्क के साथ पैच-आधारित हार्ड-अटेंशन मॉड्यूल का विकास करके विजुअल रीइन्फोर्समेंट लर्निंग कार्यों में अत्याधुनिक प्रदर्शन प्राप्त किया जा सकता है, हमारा दृष्टिकोण उच्च-स्तरीय विशेषताओं के साथ काम करने के लिए इमेज सेगमेंटेशन का लाभ उठाता है। निश्चित पैच के बजाय प्रोटो-ऑब्जेक्ट्स पर काम करके, हम निरूपण जटिलता को महत्वपूर्ण रूप से कम करते हैं: प्रत्येक छवि नियमित पैच की तुलना में कम प्रोटो-ऑब्जेक्ट्स में विघटित होती है, और प्रत्येक प्रोटो-ऑब्जेक्ट को एक संक्षिप्त विशेषता वेक्टर के रूप में कुशलतापूर्वक एन्कोड किया जा सकता है। यह एक अत्यधिक छोटे सेल्फ-अटेंशन मॉड्यूल को सक्षम बनाता है जो अधिक समृद्ध अर्थविषयक (semantic) जानकारी को प्रोसेस करता है। हमारे प्रयोग दर्शाते हैं कि यह प्रोटो-ऑब्जेक्ट-आधारित दृष्टिकोण 62% कम मापदंडों (parameters) और 2.6 गुना कम प्रशिक्षण समय के साथ पैच-आधारित कार्यान्वयनों के अत्याधुनिक प्रदर्शन की बराबरी या उससे बेहतर प्रदर्शन करता है।">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://rafaelcp.github.io/neuroproto/index-hi.html">
+    <meta property="og:title" content="प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन">
+    <meta property="og:description" content="विज़ुअल रीइन्फोर्समेंट लर्निंग के लिए प्रोटो-ऑब्जेक्ट आधारित सेल्फ-अटेंशन, 62% कम पैरामीटर और 2.6 गुना तक तेज़ प्रशिक्षण के साथ।">
+    <meta property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta property="og:image:alt" content="प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन">
+    <meta property="og:image:width" content="470">
+    <meta property="og:image:height" content="470">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:locale" content="hi">
 
-    <meta name="twitter:card" content="https://rafaelcp.github.io/neuroproto/att1000.png">
-    <meta name="twitter:title" content="प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरो-इवोल्यूशन">
-    <meta name="twitter:description" content="प्रोटो-ऑब्जेक्ट्स (Proto-objects) – छवि के वे क्षेत्र जो समान दृश्य विशेषताओं को साझा करते हैं – न्यूरल नेटवर्क में आयताकार छवि पैच पर आधारित पारंपरिक ध्यान (attention) तंत्रों का एक आशाजनक विकल्प प्रदान करते हैं। यद्यपि पिछले अध्ययनों ने यह प्रदर्शित किया है कि नियंत्रक नेटवर्क के साथ पैच-आधारित हार्ड-अटेंशन मॉड्यूल का विकास करके विजुअल रीइन्फोर्समेंट लर्निंग कार्यों में अत्याधुनिक प्रदर्शन प्राप्त किया जा सकता है, हमारा दृष्टिकोण उच्च-स्तरीय विशेषताओं के साथ काम करने के लिए इमेज सेगमेंटेशन का लाभ उठाता है। निश्चित पैच के बजाय प्रोटो-ऑब्जेक्ट्स पर काम करके, हम निरूपण जटिलता को महत्वपूर्ण रूप से कम करते हैं: प्रत्येक छवि नियमित पैच की तुलना में कम प्रोटो-ऑब्जेक्ट्स में विघटित होती है, और प्रत्येक प्रोटो-ऑब्जेक्ट को एक संक्षिप्त विशेषता वेक्टर के रूप में कुशलतापूर्वक एन्कोड किया जा सकता है। यह एक अत्यधिक छोटे सेल्फ-अटेंशन मॉड्यूल को सक्षम बनाता है जो अधिक समृद्ध अर्थविषयक (semantic) जानकारी को प्रोसेस करता है। हमारे प्रयोग दर्शाते हैं कि यह प्रोटो-ऑब्जेक्ट-आधारित दृष्टिकोण 62% कम मापदंडों (parameters) और 2.6 गुना कम प्रशिक्षण समय के साथ पैच-आधारित कार्यान्वयनों के अत्याधुनिक प्रदर्शन की बराबरी या उससे बेहतर प्रदर्शन करता है।">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://rafaelcp.github.io/neuroproto/index-hi.html">
+    <meta name="twitter:title" content="प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन">
+    <meta name="twitter:description" content="विज़ुअल रीइन्फोर्समेंट लर्निंग के लिए प्रोटो-ऑब्जेक्ट आधारित सेल्फ-अटेंशन, 62% कम पैरामीटर और 2.6 गुना तक तेज़ प्रशिक्षण के साथ।">
+    <meta name="twitter:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:image:alt" content="प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन">
 
-    <style>
-        body {
-            font-family: serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 15px;
-            color: #333;
-        }
+    <meta name="citation_title" content="Neuroevolution of Self-Attention Over Proto-Objects">
+    <meta name="citation_author" content="Pinto, Rafael C.">
+    <meta name="citation_author" content="Tavares, Anderson R.">
+    <meta name="citation_publication_date" content="2025/07/13">
+    <meta name="citation_conference_title" content="Proceedings of the Genetic and Evolutionary Computation Conference">
+    <meta name="citation_doi" content="10.1145/3712256.3726451">
+    <meta name="citation_arxiv_id" content="2505.00186">
+    <meta name="citation_abstract_html_url" content="https://rafaelcp.github.io/neuroproto/index-hi.html">
 
-        h1, h2, h3, h4 {
-            font-family: sans-serif;
-            color: #111;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-            line-height: 1.3;
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ScholarlyArticle",
+      "@id": "https://doi.org/10.1145/3712256.3726451",
+      "url": "https://rafaelcp.github.io/neuroproto/index-hi.html",
+      "mainEntityOfPage": "https://rafaelcp.github.io/neuroproto/index-hi.html",
+      "headline": "प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन",
+      "description": "विज़ुअल रीइन्फोर्समेंट लर्निंग के लिए प्रोटो-ऑब्जेक्ट आधारित सेल्फ-अटेंशन, 62% कम पैरामीटर और 2.6 गुना तक तेज़ प्रशिक्षण के साथ।",
+      "inLanguage": "hi",
+      "image": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "datePublished": "2025-07-13",
+      "author": [
+        {
+          "@type": "Person",
+          "name": "Rafael C. Pinto",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Federal Institute of Education, Science and Technology of Rio Grande do Sul (IFRS)"
+          }
+        },
+        {
+          "@type": "Person",
+          "name": "Anderson R. Tavares",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Federal University of Rio Grande do Sul (UFRGS)"
+          }
         }
-
-        h1 {
-            font-size: 2em;
-            text-align: center;
-            margin-bottom: 1em;
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "Association for Computing Machinery"
+      },
+      "identifier": [
+        {
+          "@type": "PropertyValue",
+          "propertyID": "DOI",
+          "value": "10.1145/3712256.3726451"
+        },
+        {
+          "@type": "PropertyValue",
+          "propertyID": "arXiv",
+          "value": "2505.00186"
         }
-
-        h2 {
-            font-size: 1.6em;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.3em;
-        }
-
-        h3 {
-            font-size: 1.3em;
-        }
-
-        h4 {
-            font-size: 1.1em;
-            font-style: italic;
-        }
-
-        p {
-            margin-bottom: 1em;
-            text-align: justify;
-        }
-
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .authors-affiliations {
-            text-align: center;
-            margin-bottom: 2em;
-            font-family: sans-serif;
-        }
-
-        .author {
-            font-weight: bold;
-        }
-
-        .affiliation {
-            font-size: 0.9em;
-            color: #555;
-        }
-
-        .email a {
-            font-size: 0.9em;
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .email a:hover {
-            text-decoration: underline;
-        }
-
-        .abstract {
-            margin-top: 2em;
-            margin-bottom: 2em;
-            padding: 1em;
-            background-color: #f9f9f9;
-            border-left: 3px solid #ccc;
-        }
-
-        .abstract h2 {
-            font-size: 1.4em;
-            border-bottom: none;
-            margin-top: 0;
-        }
-
-        figure {
-            margin: 2em auto;
-            text-align: center;
-            border: 1px solid #eee;
-            padding: 1em;
-            background-color: #fdfdfd;
-        }
-
-        figure img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto 0.5em auto;
-        }
-
-        figcaption {
-            font-size: 0.9em;
-            color: #555;
-            text-align: left;
-            margin-top: 0.5em;
-            font-family: sans-serif;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2em 0;
-            font-family: sans-serif;
-            font-size: 0.9em;
-        }
-
-        caption {
-            caption-side: top;
-            font-weight: bold;
-            margin-bottom: 0.5em;
-            font-size: 1em;
-            color: #333;
-            text-align: left;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        .equation {
-            text-align: center;
-            margin: 1.5em 0;
-            font-family: monospace;
-            font-size: 1.1em;
-        }
-
-        .references ol {
-            padding-left: 20px;
-            list-style: none;
-            counter-reset: ref-counter;
-        }
-
-        .references li {
-            margin-bottom: 0.8em;
-            counter-increment: ref-counter;
-            position: relative;
-            padding-left: 25px;
-        }
-        .references li::before {
-            content: "[" counter(ref-counter) "]";
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-            color: #555;
-        }
-        .references li span.ref-content {
-            display: inline-block;
-            margin-left: 1em;
-        }
-
-        strong {
-            font-weight: bold;
-        }
-
-        code, pre {
-             font-family: monospace, monospace;
-             background-color: #f4f4f4;
-             padding: 1px 3px;
-             border-radius: 3px;
-        }
-
-        .acknowledgments {
-            font-size: 0.9em;
-            margin-top: 2em;
-        }
-
-        .header-arxiv-id {
-            font-family: sans-serif;
-            color: #555;
-            font-size: 0.9em;
-            margin-bottom: 2em;
-            text-align: left;
-        }
-        .header-arxiv-id a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .header-arxiv-id a:hover {
-            text-decoration: underline;
-        }
-
-        @media print {
-            body {
-                max-width: none;
-                margin: 1cm;
-                font-size: 10pt;
-            }
-            h1, h2, h3, h4 { page-break-after: avoid; }
-            figure, table { page-break-inside: avoid; }
-            .header-arxiv-id { display: none; }
-            a { color: inherit; text-decoration: none; }
-            .references li::before { color: inherit; }
-        }
-
-        #notebooklm {
-            display: flex;
-        }
-        #notebooklm div {
-            flex: 1;
-        }
-    </style>
+      ],
+      "sameAs": [
+        "https://doi.org/10.1145/3712256.3726451",
+        "https://arxiv.org/abs/2505.00186"
+      ]
+    },
+    {
+      "@type": "VideoObject",
+      "name": "प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन — overview",
+      "description": "विज़ुअल रीइन्फोर्समेंट लर्निंग के लिए प्रोटो-ऑब्जेक्ट आधारित सेल्फ-अटेंशन, 62% कम पैरामीटर और 2.6 गुना तक तेज़ प्रशिक्षण के साथ।",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/proto.mp4"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन — Car Racing experiment",
+      "description": "Processing stages and evolved attention in the Car Racing experiment.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_carracing_proto-objects_iter_1000.mp4"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "प्रोटो-ऑब्जेक्ट्स पर सेल्फ-अटेंशन का न्यूरोएवोल्यूशन — Doom Take Cover experiment",
+      "description": "Processing stages and evolved attention in the Doom Take Cover experiment.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_iter_1000.npz_ep1.mp4"
+    }
+  ]
+}
+    </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -273,12 +158,12 @@
     </div>
 	
     <div id="notebooklm">
-        <div>NotebookLM पॉडकास्ट (अंग्रेज़ी)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects.mp3" controls></audio></div>
-        <div>NotebookLM पॉडकास्ट (पुर्तगाली)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects-ptbr.mp3" controls></audio></div>
+        <div>NotebookLM पॉडकास्ट (अंग्रेज़ी)<br><audio preload="none" src="neuroevolution-self-attention-proto-objects-en.mp3" controls></audio></div>
+        <div>NotebookLM पॉडकास्ट (पुर्तगाली)<br><audio preload="none" src="neuroevolution-self-attention-proto-objects-pt-br.mp3" controls></audio></div>
     </div>
 	
     <figure>
-        <video controls src="proto.mp4" type="video/mp4"></video>
+        <video preload="metadata" poster="att1000.png" controls src="proto.mp4"></video>
         <figcaption><strong>चित्र 1:</strong> हमारा अटेंशनल एजेंट छोटे निश्चित आकार के इमेज पैच के बजाय पूरे एकसमान क्षेत्रों पर ध्यान केंद्रित करने में सक्षम है।</figcaption>
     </figure>
 
@@ -317,7 +202,7 @@
         <p>Tang एवं अन्य द्वारा हाल ही के कार्य <a href="#ref22">[22]</a> ने रीइन्फोर्समेंट लर्निंग में हार्ड-अटेंशन तंत्र के उपयोग की खोज की। उनका दृष्टिकोण दृश्य इनपुट को 7x7 पैच में विभाजित करता है और केवल शीर्ष-k (top-k) पैच को प्रोसेस करने के लिए एक संशोधित सेल्फ-अटेंशन तंत्र लागू करता है (चित्र 2 देखें)। यह एक सूचना अड़चन बनाता है जो मॉडल को दूसरों को अनदेखा करते हुए केवल सबसे प्रासंगिक इनपुट पर ध्यान केंद्रित करने के लिए मजबूर करता है। जब दृष्टि-आधारित रीइन्फोर्समेंट लर्निंग कार्यों पर लागू किया जाता है, तो इस दृष्टिकोण ने एजेंटों को पारंपरिक दृष्टिकोणों की तुलना में बहुत कम मापदंडों के साथ बेहतर प्रदर्शन, व्याख्यात्मकता और कम्प्यूटेशनल दक्षता प्राप्त करने में सक्षम बनाया। हमारा तरीका मुख्य रूप से पैच के बजाय प्रोटो-ऑब्जेक्ट्स का उपयोग करके भिन्न है, जो टोकन की संख्या और उनके आयाम को कम करते हुए उनमें उच्च-स्तरीय जानकारी जोड़ता है।</p>
 
         <figure>
-            <video src="patches-video_best.npz_ep1.mp4" controls></video>
+            <video preload="metadata" poster="att1000.png" src="patches-video_best.npz_ep1.mp4" controls></video>
             <figcaption><strong>चित्र 2:</strong> एजेंट वर्तमान फ़्रेम से पैच निकालता है और हार्ड अटेंशन तंत्र द्वारा शीर्ष-k पैच (सफेद रंग में हाइलाइट किए गए) का चयन करता है। चयनित पैच की कल्पना करके, सीखी गई रणनीति का बेहतर विचार प्राप्त करना संभव है, साथ ही यह डिबगिंग को आसान बनाता है।</figcaption>
         </figure>
 
@@ -385,15 +270,11 @@
                 <tr><td>f(n) आयाम</td><td>2</td><td>2</td></tr>
                 <tr><td>LSTM इनपुट साइज</td><td>20</td><td>2</td></tr>
                 <tr><td>LSTM न्यूरॉन्स की संख्या</td><td>16</td><td>16</td></tr>
-            </tbody>
-            <thead>
                 <tr>
                     <th>सीखने योग्य मापदंडों की संख्या</th>
                     <th></th>
                     <th></th>
                 </tr>
-            </thead>
-             <tbody>
                 <tr><td>कॉन्वोल्यूशन</td><td>0</td><td>12</td></tr>
                 <tr><td>अटेंशन</td><td>1184</td><td>63</td></tr>
                 <tr><td>LSTM</td><td>2432</td><td>1280</td></tr>
@@ -403,7 +284,7 @@
         </table>
 
         <figure>
-            <img src="flowchart.svg" loading="lazy" alt="हमारी पूरी प्रक्रिया का फ्लोचार्ट">
+            <img src="flowchart.svg" width="257" height="479" loading="lazy" alt="हमारी पूरी प्रक्रिया का फ्लोचार्ट">
             <figcaption><strong>चित्र 3:</strong> हमारी पूरी प्रक्रिया का फ्लोचार्ट। हमारे प्रयोगों में, H = W = 96, F = 11 (सेगमेंट सुविधाओं की संख्या), d<sub>q</sub> = 2, M = 2 (हम प्रत्येक टोकन से केवल x, y निर्देशांक का उपयोग करते हैं), k = 1 और O = 3 (दोनों वातावरणों के लिए आउटपुट की संख्या)। किसी भी संख्या में कॉन्वोल्यूशनल लेयर्स का उपयोग किया जा सकता है, जब तक कि वे छवि आकार को बनाए रखते हैं और अंतिम में अवशिष्ट कनेक्शन से मेल खाने के लिए 3 फ़िल्टर होते हैं। हम 3 1x1 फ़िल्टर की एक लेयर का उपयोग करते हैं। हमारा क्वांटाइजेशन प्रति चैनल 1 बिट (8 रंग) पर सेट है। P, PReLU सक्रियण फ़ंक्शन है। हरे रंग के तत्व <a href="#ref22">[22]</a> के संबंध में नए हैं।</figcaption>
         </figure>
     </section>
@@ -421,19 +302,19 @@
         <small>²<a href="https://www.pygame.org" target="_blank" rel="noopener noreferrer">https://www.pygame.org</a></small></p>
 
         <figure>
-            <img src="learning_curves_comparison_carracing.png" loading="lazy" alt="प्रत्येक दिखाई गई पीढ़ी के लिए प्रशिक्षण नमूना ट्रैक से बाहर 400 टेस्ट रन पर कार रेसिंग वातावरण में सीखने की अवधि की तुलना">
+            <img src="learning_curves_comparison_carracing.png" width="3570" height="2365" loading="lazy" alt="प्रत्येक दिखाई गई पीढ़ी के लिए प्रशिक्षण नमूना ट्रैक से बाहर 400 टेस्ट रन पर कार रेसिंग वातावरण में सीखने की अवधि की तुलना">
             <figcaption><strong>चित्र 4:</strong> कार रेसिंग वातावरण में प्रत्येक दिखाई गई पीढ़ी के लिए प्रशिक्षण नमूना पटरियों से बाहर 400 टेस्ट रन पर सीखने की अवधि (learning curve) की तुलना। हमारा प्रोटो-ऑब्जेक्ट तरीका <a href="#ref22">[22]</a> के पैच-आधारित के संबंध में 1000 पीढ़ियों के बाद महत्वपूर्ण रूप से बेहतर परिणाम प्राप्त करता है। दोनों 1000 पीढ़ियों पर चरम पर थे।</figcaption>
         </figure>
 
         <figure>
-            <img src="evolution.png" loading="lazy" alt="समय में 5 प्रासंगिक बिंदुओं पर सेगमेंटेशन का विकास। बुनियादी ध्यान रणनीति (छोटे घास क्षेत्र पर ध्यान केंद्रित करना, काले रंग में सेंट्रॉइड के साथ सफेद रंग में हाइलाइट किया गया; गुलाबी रंग में अन्य सेंट्रॉइड) प्रक्रिया में जल्दी सीखी जाती है, जबकि सेगमेंटेशन अंत तक विकसित होता रहता है">
+            <img src="evolution.png" width="1248" height="835" loading="lazy" alt="समय में 5 प्रासंगिक बिंदुओं पर सेगमेंटेशन का विकास। बुनियादी ध्यान रणनीति (छोटे घास क्षेत्र पर ध्यान केंद्रित करना, काले रंग में सेंट्रॉइड के साथ सफेद रंग में हाइलाइट किया गया; गुलाबी रंग में अन्य सेंट्रॉइड) प्रक्रिया में जल्दी सीखी जाती है, जबकि सेगमेंटेशन अंत तक विकसित होता रहता है">
             <figcaption><strong>चित्र 5:</strong> समय में 5 प्रासंगिक बिंदुओं पर सेगमेंटेशन का इवोल्यूशन। बुनियादी ध्यान रणनीति (छोटे घास के क्षेत्र पर ध्यान केंद्रित करना, काले रंग में सेंट्रॉइड के साथ सफेद रंग में हाइलाइट किया गया; गुलाबी रंग में अन्य सेंट्रॉइड) प्रक्रिया में जल्दी सीखी जाती है, जबकि सेगमेंटेशन अंत तक विकसित होता रहता है। शीर्ष-बाएं: आकार बदलने के बाद और सेगमेंटेशन से पहले कच्ची छवि। शीर्ष-केंद्र (100 पीढ़ियां): मूल रंगों से सामान्य सेगमेंटेशन पहली दो सौ पीढ़ियों के लिए रखा जाता है। शीर्ष-दाएं (300 पीढ़ियां): यह ट्रैक को नीचे दिए गए हेड-अप डिस्प्ले (HUD) से अलग करना सीखता है और कुछ एबीएस सेंसरों को अलग करता है। नीचे-बाएं (800 पीढ़ियां): यह ट्रैक और एचयूडी सेगमेंटेशन की अदला-बदली करता है, जिससे कार दिखाई देती है, लाल कोने के मार्करों को अलग करती है और गायरोस्कोप संकेतकों को छिपाती है। यह स्कोर और गति संकेतक से कोने के सफेद निशानों को भी अलग करता है, और एबीएस सेंसरों को फिर से मर्ज करता है। नीचे-केंद्र (900 पीढ़ियां): यह ट्रैक सेगमेंट को अलग करता है। नीचे-दाएं (1000 पीढ़ियां): यह ट्रैक के सूक्ष्म सेगमेंटेशन को छोड़ देता है और स्कोर में कुछ पिक्सल में बहुत छोटे और अप्रासंगिक बदलावों के साथ पिछली सेगमेंटेशन रणनीति पर वापस चला जाता है।</figcaption>
         </figure>
 		
         <p>इस प्रयोग का एक दिलचस्प पहलू सेगमेंटेशन और अटेंशन के विकास का निरीक्षण करना है, जैसा कि चित्र 5 दिखाता है। समाधान कार्य के मूल रंगों पर सामान्य क्वांटाइजेशन के साथ शुरू होता है, लेकिन चूंकि ट्रैक गहरा है, यह स्क्रीन के निचले हिस्से में काले हेड-अप डिस्प्ले (HUD) के साथ विलय हो जाता है। फिर भी, यह पहले से ही जानता है कि छोटे घास के क्षेत्र पर कैसे ध्यान केंद्रित करना है, क्योंकि यह आमतौर पर उस दिशा की ओर इशारा करता है जहाँ कार को मुड़ना चाहिए। 300 पीढ़ियों में यह ट्रैक को एचयूडी से अलग करना सीखता है, जबकि 800 पीढ़ियों में यह कार और लाल कोने के निशानों को ट्रैक से अलग करता है। जबकि कार बेकार है (यह हमेशा एक ही स्थान पर होती है और अन्य प्रयोगों में ट्रैक के साथ विलय हो गई थी), लाल निशान अपने आस-पास के घास क्षेत्र पर (क्वेरी के रूप में) "मतदान" करके सही मोड़ने की दिशा को सुदृढ़ कर सकते हैं। 900 पीढ़ियों पर, यह ट्रैक टाइल्स को सेगमेंट करना सीखता है, लेकिन अंतिम समाधान में इसे छोड़ देता है। इसके प्रसंस्करण चरणों में विघटित अंतिम समाधान चित्र 6 में देखा जा सकता है।</p>
 
 		<figure>
-			<video src="video_carracing_proto-objects_iter_1000.mp4" controls width="100%"></video>
+			<video preload="metadata" poster="att1000.png" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
 			<figcaption><strong>चित्र 6:</strong> कार रेसिंग वातावरण में प्रसंस्करण चरण। शीर्ष-बाएं: कच्ची छवि 96x96 पर आकार बदला गया। शीर्ष-दाएं: 1x1 कॉन्वोल्यूशन + अवशिष्ट। नीचे-बाएं: क्वांटाइजेशन। नीचे-दाएं: k=1 के साथ ध्यान।
 			</figcaption>
 		</figure>
@@ -442,12 +323,12 @@
         <p>यह कार्य गेम डूम पर आधारित है, जो दृश्य रूप से अधिक जटिल है और इसमें पिछली कार्य की तुलना में बहुत अधिक रंग हैं (चित्र 8 देखें, शीर्ष-बाएं), सेगमेंट की एक बड़ी संख्या को रोकने के लिए कॉन्वोल्यूशन और क्वांटाइजेशन चरणों को कड़ाई से आवश्यक बनाता है। यह एक आयताकार कमरे में होता है। एजेंट को दीवार के साथ उत्पन्न किया जाता है, और राक्षसों को लगातार और यादृच्छिक रूप से विपरीत दीवार के साथ उत्पन्न किया जाता है। वे जीवित रहने के लिए एजेंट पर आग के गोले (fireballs) फेंकते रहते हैं। एजेंट को जीवित प्रत्येक टिक के लिए 1 इनाम बिंदु मिलता है और 3 असतत क्रियाएं होती हैं: बाएं मुड़ें, दाएं मुड़ें या खड़े रहें।</p>
 
         <figure>
-            <img src="learning_curves_comparison_takecover.png" loading="lazy" alt="प्रत्येक दिखाई गई पीढ़ी के लिए प्रशिक्षण नमूना बीजों से बाहर 400 टेस्ट रन पर डूम टेक कवर वातावरण में सीखने की अवधि की तुलना">
+            <img src="learning_curves_comparison_takecover.png" width="3576" height="2375" loading="lazy" alt="प्रत्येक दिखाई गई पीढ़ी के लिए प्रशिक्षण नमूना बीजों से बाहर 400 टेस्ट रन पर डूम टेक कवर वातावरण में सीखने की अवधि की तुलना">
             <figcaption><strong>चित्र 7:</strong> डूम टेक कवर वातावरण में प्रत्येक दिखाई गई पीढ़ी के लिए प्रशिक्षण नमूना बीजों से बाहर 400 टेस्ट रन पर सीखने की अवधि की तुलना। k = 1 के साथ हमारे तरीके ने कम नमूना-दक्षता दिखाई लेकिन 1000 पीढ़ियों के बाद <a href="#ref22">[22]</a> के संबंध में समान प्रदर्शन हासिल किया, जिसने 700 पीढ़ियों में उच्चतम प्रदर्शन प्राप्त किया (सर्वश्रेष्ठ समाधानों के बीच p = 0.414)। हालांकि, k = 10 (पैच-आधारित सेटअप के समान) और पाठ में विस्तृत आगे के समायोजन के साथ, हमारे समाधान में बेहतर नमूना-दक्षता थी और 55 घंटे के प्रशिक्षण में 700 पीढ़ियों में महत्वपूर्ण रूप से उच्च (p = 2.8e−5) प्रदर्शन (1193 स्कोर) प्राप्त किया।</figcaption>
         </figure>
 
         <figure>
-            <video src="video_iter_1000.npz_ep1.mp4" controls width="100%"></video>
+            <video preload="metadata" poster="att1000.png" src="video_iter_1000.npz_ep1.mp4" controls></video>
             <figcaption><strong>चित्र 8:</strong> डूम टेक कवर वातावरण में प्रसंस्करण चरण। शीर्ष-बाएं: 96x96 पर आकार बदला गया कच्ची छवि। शीर्ष-दाएं: 1x1 कॉन्वोल्यूशन + अवशिष्ट। नीचे-बाएं: क्वांटाइजेशन। नीचे-दाएं: अटेंशन। ध्यान दें कि यह समाधान क्वांटाइजेशन चरण से ही आग के गोलों को पूरी तरह से नजरअंदाज कर देता है।</figcaption>
         </figure>
 

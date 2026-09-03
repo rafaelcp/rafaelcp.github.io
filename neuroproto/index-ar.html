@@ -4,248 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>التطور العصبي للانتباه الذاتي على الأجسام الأولية</title>
+    <meta name="description" content="انتباه ذاتي قائم على الأجسام الأولية للتعلم المعزز البصري، بمعلمات أقل بنسبة 62% وتدريب أسرع بما يصل إلى 2.6 مرة.">
+    <link rel="canonical" href="https://rafaelcp.github.io/neuroproto/index-ar.html">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/">
+    <link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html">
+    <link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html">
+    <link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html">
+    <link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html">
+    <link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html">
+    <link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html">
+    <link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/">
 
-    <meta name="title" property="og:title" content="التطور العصبي للانتباه الذاتي على الأجسام الأولية">
-    <meta name="type" property="og:type" content="article">
-    <meta name="url" property="og:url" content="https://rafaelcp.github.io/neuroproto/">
-    <meta name="image" property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
-    <meta name="description" property="og:description" content="تقدم الأجسام الأولية (Proto-objects) – وهي مناطق من الصورة تشترك في خصائص بصرية عامة – بديلاً واعدًا لآليات الانتباه التقليدية القائمة على رقع الصور مستطيلة الشكل في الشبكات العصبية. على الرغم من أن الأعمال السابقة أظهرت أن تطوير وحدة انتباه صلبة قائمة على الرقع جنبًا إلى جنب مع شبكة متحكم يمكن أن يحقق أداءً يمثل ذروة التطور التكنولوجي في مهام التعلم المعزز البصري، فإن نهجنا يستفيد من تقسيم الصور للعمل مع ميزات أعلى مستوى. من خلال العمل على الأجسام الأولية بدلاً من الرقع الثابتة، نحد بشكل كبير من التعقيد التمثيلي: فتتفكك كل صورة إلى عدد أقل من الأجسام الأولية مقارنة بالرقع المنتظمة، ويمكن ترميز كل جسم أولي بكفاءة كمتجه ميزات مدمج. يتيح هذا وحدة انتباه ذاتي أصغر حجمًا بشكل ملحوظ تعالج معلومات دلالية أغنى. تظهر تجاربنا أن هذا النهج القائم على الأجسام الأولية يطابق أو يتجاوز الأداء المتقدم للتطبيقات القائمة على الرقع مع معلمات أقل بنسبة 62% وزمن تدريب أقل بـ 2.6 مرة.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://rafaelcp.github.io/neuroproto/index-ar.html">
+    <meta property="og:title" content="التطور العصبي للانتباه الذاتي على الأجسام الأولية">
+    <meta property="og:description" content="انتباه ذاتي قائم على الأجسام الأولية للتعلم المعزز البصري، بمعلمات أقل بنسبة 62% وتدريب أسرع بما يصل إلى 2.6 مرة.">
+    <meta property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta property="og:image:alt" content="التطور العصبي للانتباه الذاتي على الأجسام الأولية">
+    <meta property="og:image:width" content="470">
+    <meta property="og:image:height" content="470">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:locale" content="ar">
 
-    <meta name="twitter:card" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://rafaelcp.github.io/neuroproto/index-ar.html">
     <meta name="twitter:title" content="التطور العصبي للانتباه الذاتي على الأجسام الأولية">
-    <meta name="twitter:description" content="تقدم الأجسام الأولية (Proto-objects) – وهي مناطق من الصورة تشترك في خصائص بصرية عامة – بديلاً واعدًا لآليات الانتباه التقليدية القائمة على رقع الصور مستطيلة الشكل في الشبكات العصبية. على الرغم من أن الأعمال السابقة أظهرت أن تطوير وحدة انتباه صلبة قائمة على الرقع جنبًا إلى جنب مع شبكة متحكم يمكن أن يحقق أداءً يمثل ذروة التطور التكنولوجي في مهام التعلم المعزز البصري، فإن نهجنا يستفيد من تقسيم الصور للعمل مع ميزات أعلى مستوى. من خلال العمل على الأجسام الأولية بدلاً من الرقع الثابتة، نحد بشكل كبير من التعقيد التمثيلي: فتتفكك كل صورة إلى عدد أقل من الأجسام الأولية مقارنة بالرقع المنتظمة، ويمكن ترميز كل جسم أولي بكفاءة كمتجه ميزات مدمج. يتيح هذا وحدة انتباه ذاتي أصغر حجمًا بشكل ملحوظ تعالج معلومات دلالية أغنى. تظهر تجاربنا أن هذا النهج القائم على الأجسام الأولية يطابق أو يتجاوز الأداء المتقدم للتطبيقات القائمة على الرقع مع معلمات أقل بنسبة 62% وزمن تدريب أقل بـ 2.6 مرة.">
+    <meta name="twitter:description" content="انتباه ذاتي قائم على الأجسام الأولية للتعلم المعزز البصري، بمعلمات أقل بنسبة 62% وتدريب أسرع بما يصل إلى 2.6 مرة.">
+    <meta name="twitter:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:image:alt" content="التطور العصبي للانتباه الذاتي على الأجسام الأولية">
 
-    <style>
-        body {
-            font-family: serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 15px;
-            color: #333;
-        }
+    <meta name="citation_title" content="Neuroevolution of Self-Attention Over Proto-Objects">
+    <meta name="citation_author" content="Pinto, Rafael C.">
+    <meta name="citation_author" content="Tavares, Anderson R.">
+    <meta name="citation_publication_date" content="2025/07/13">
+    <meta name="citation_conference_title" content="Proceedings of the Genetic and Evolutionary Computation Conference">
+    <meta name="citation_doi" content="10.1145/3712256.3726451">
+    <meta name="citation_arxiv_id" content="2505.00186">
+    <meta name="citation_abstract_html_url" content="https://rafaelcp.github.io/neuroproto/index-ar.html">
 
-        h1, h2, h3, h4 {
-            font-family: sans-serif;
-            color: #111;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-            line-height: 1.3;
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ScholarlyArticle",
+      "@id": "https://doi.org/10.1145/3712256.3726451",
+      "url": "https://rafaelcp.github.io/neuroproto/index-ar.html",
+      "mainEntityOfPage": "https://rafaelcp.github.io/neuroproto/index-ar.html",
+      "headline": "التطور العصبي للانتباه الذاتي على الأجسام الأولية",
+      "description": "انتباه ذاتي قائم على الأجسام الأولية للتعلم المعزز البصري، بمعلمات أقل بنسبة 62% وتدريب أسرع بما يصل إلى 2.6 مرة.",
+      "inLanguage": "ar",
+      "image": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "datePublished": "2025-07-13",
+      "author": [
+        {
+          "@type": "Person",
+          "name": "Rafael C. Pinto",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Federal Institute of Education, Science and Technology of Rio Grande do Sul (IFRS)"
+          }
+        },
+        {
+          "@type": "Person",
+          "name": "Anderson R. Tavares",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Federal University of Rio Grande do Sul (UFRGS)"
+          }
         }
-
-        h1 {
-            font-size: 2em;
-            text-align: center;
-            margin-bottom: 1em;
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "Association for Computing Machinery"
+      },
+      "identifier": [
+        {
+          "@type": "PropertyValue",
+          "propertyID": "DOI",
+          "value": "10.1145/3712256.3726451"
+        },
+        {
+          "@type": "PropertyValue",
+          "propertyID": "arXiv",
+          "value": "2505.00186"
         }
-
-        h2 {
-            font-size: 1.6em;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.3em;
-        }
-
-        h3 {
-            font-size: 1.3em;
-        }
-
-        h4 {
-            font-size: 1.1em;
-            font-style: italic;
-        }
-
-        p {
-            margin-bottom: 1em;
-            text-align: justify;
-        }
-
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .authors-affiliations {
-            text-align: center;
-            margin-bottom: 2em;
-            font-family: sans-serif;
-        }
-
-        .author {
-            font-weight: bold;
-        }
-
-        .affiliation {
-            font-size: 0.9em;
-            color: #555;
-        }
-
-        .email a {
-            font-size: 0.9em;
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .email a:hover {
-            text-decoration: underline;
-        }
-
-        .abstract {
-            margin-top: 2em;
-            margin-bottom: 2em;
-            padding: 1em;
-            background-color: #f9f9f9;
-            border-right: 3px solid #ccc;
-        }
-
-        .abstract h2 {
-            font-size: 1.4em;
-            border-bottom: none;
-            margin-top: 0;
-        }
-
-        figure {
-            margin: 2em auto;
-            text-align: center;
-            border: 1px solid #eee;
-            padding: 1em;
-            background-color: #fdfdfd;
-        }
-
-        figure img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto 0.5em auto;
-        }
-
-        figcaption {
-            font-size: 0.9em;
-            color: #555;
-            text-align: right;
-            margin-top: 0.5em;
-            font-family: sans-serif;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2em 0;
-            font-family: sans-serif;
-            font-size: 0.9em;
-        }
-
-        caption {
-            caption-side: top;
-            font-weight: bold;
-            margin-bottom: 0.5em;
-            font-size: 1em;
-            color: #333;
-            text-align: right;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: right;
-            vertical-align: top;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        .equation {
-            text-align: center;
-            margin: 1.5em 0;
-            font-family: monospace;
-            font-size: 1.1em;
-            direction: ltr;
-        }
-
-        .references ol {
-            padding-right: 20px;
-            padding-left: 0;
-            list-style: none;
-            counter-reset: ref-counter;
-        }
-
-        .references li {
-            margin-bottom: 0.8em;
-            counter-increment: ref-counter;
-            position: relative;
-            padding-right: 25px;
-            padding-left: 0;
-            direction: ltr;
-            text-align: left;
-        }
-        .references li::before {
-            content: "[" counter(ref-counter) "]";
-            position: absolute;
-            right: 0;
-            font-weight: bold;
-            color: #555;
-        }
-        .references li span.ref-content {
-            display: inline-block;
-            margin-right: 1em;
-        }
-
-        strong {
-            font-weight: bold;
-        }
-
-        code, pre {
-             font-family: monospace, monospace;
-             background-color: #f4f4f4;
-             padding: 1px 3px;
-             border-radius: 3px;
-        }
-
-        .acknowledgments {
-            font-size: 0.9em;
-            margin-top: 2em;
-        }
-
-        .header-arxiv-id {
-            font-family: sans-serif;
-            color: #555;
-            font-size: 0.9em;
-            margin-bottom: 2em;
-            text-align: right;
-            direction: ltr;
-        }
-        .header-arxiv-id a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .header-arxiv-id a:hover {
-            text-decoration: underline;
-        }
-
-        @media print {
-            body {
-                max-width: none;
-                margin: 1cm;
-                font-size: 10pt;
-            }
-            h1, h2, h3, h4 { page-break-after: avoid; }
-            figure, table { page-break-inside: avoid; }
-            .header-arxiv-id { display: none; }
-            a { color: inherit; text-decoration: none; }
-            .references li::before { color: inherit; }
-        }
-
-        #notebooklm {
-            display: flex;
-        }
-        #notebooklm div {
-            flex: 1;
-        }
-    </style>
+      ],
+      "sameAs": [
+        "https://doi.org/10.1145/3712256.3726451",
+        "https://arxiv.org/abs/2505.00186"
+      ]
+    },
+    {
+      "@type": "VideoObject",
+      "name": "التطور العصبي للانتباه الذاتي على الأجسام الأولية — overview",
+      "description": "انتباه ذاتي قائم على الأجسام الأولية للتعلم المعزز البصري، بمعلمات أقل بنسبة 62% وتدريب أسرع بما يصل إلى 2.6 مرة.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/proto.mp4"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "التطور العصبي للانتباه الذاتي على الأجسام الأولية — Car Racing experiment",
+      "description": "Processing stages and evolved attention in the Car Racing experiment.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_carracing_proto-objects_iter_1000.mp4"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "التطور العصبي للانتباه الذاتي على الأجسام الأولية — Doom Take Cover experiment",
+      "description": "Processing stages and evolved attention in the Doom Take Cover experiment.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_iter_1000.npz_ep1.mp4"
+    }
+  ]
+}
+    </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -279,12 +158,12 @@
     </div>
 	
     <div id="notebooklm">
-        <div>بودكاست NotebookLM (بالإنكليزية)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects.mp3" controls></audio></div>
-        <div>بودكاست NotebookLM (بالبرتغالية)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects-ptbr.mp3" controls></audio></div>
+        <div>بودكاست NotebookLM (بالإنكليزية)<br><audio preload="none" src="neuroevolution-self-attention-proto-objects-en.mp3" controls></audio></div>
+        <div>بودكاست NotebookLM (بالبرتغالية)<br><audio preload="none" src="neuroevolution-self-attention-proto-objects-pt-br.mp3" controls></audio></div>
     </div>
 	
     <figure>
-        <video controls src="proto.mp4" type="video/mp4"></video>
+        <video preload="metadata" poster="att1000.png" controls src="proto.mp4"></video>
         <figcaption><strong>الشكل 1:</strong> وكيلنا الانتباهي قادر على التركيز على مناطق موحدة بالكامل بدلاً من رقع صور صغيرة ذات حجم ثابت.</figcaption>
     </figure>
 
@@ -323,7 +202,7 @@
         <p>استكشفت الأعمال الحديثة بواسطة Tang وآخرون <a href="#ref22">[22]</a> استخدام آليات الانتباه الصلبة في التعلم المعزز. يحدد نهجهم المدخلات البصرية إلى رقع 7x7 ويطبق آلية انتباه ذاتي معدلة لاختيار أفضل k رقع فقط للمعالجة (انظر الشكل 2). هذا يخلق عنق زجاجة للمعلومات يجبر النموذج على التركيز على المدخلات الأكثر صلة مع تجاهل المدخلات الأخرى. عند تطبيقها على مهام التعلم المعزز القائمة على الرؤية، مكنت هذه الطريقة الوكلاء من تحقيق أداء وتفسيرية وكفاءة حسابية أفضل مع عدد أقل بكثير من المعلمات مقارنة بالطرق التقليدية. يختلف نهجنا بشكل أساسي باستخدام الأجسام الأولية بدلاً من الرقع، مما يقلل من عدد الرموز وأبعادها مع إضافة معلومات أعلى مستوى إليها.</p>
 
         <figure>
-            <video src="patches-video_best.npz_ep1.mp4" controls></video>
+            <video preload="metadata" poster="att1000.png" src="patches-video_best.npz_ep1.mp4" controls></video>
             <figcaption><strong>الشكل 2:</strong> يستخرج الوكيل الرقع من الإطار الحالي ويحدد أفضل k منها (المظللة باللون الأبيض) بواسطة آلية انتباه صلبة. من خلال تصور الرقع المحددة، من الممكن الحصول على فكرة أفضل عن الاستراتيجية المتعلمة، بالإضافة إلى تسهيل تصحيح الأخطاء.</figcaption>
         </figure>
 
@@ -391,15 +270,11 @@
                 <tr><td>أبعاد f(n)</td><td>2</td><td>2</td></tr>
                 <tr><td>حجم مدخلات LSTM</td><td>20</td><td>2</td></tr>
                 <tr><td>عدد خلايا LSTM العصبية</td><td>16</td><td>16</td></tr>
-            </tbody>
-            <thead>
                 <tr>
                     <th>عدد المعلمات القابلة للتعلم</th>
                     <th></th>
                     <th></th>
                 </tr>
-            </thead>
-             <tbody>
                 <tr><td>التلافيف</td><td>0</td><td>12</td></tr>
                 <tr><td>الانتباه</td><td>1184</td><td>63</td></tr>
                 <tr><td>LSTM</td><td>2432</td><td>1280</td></tr>
@@ -409,7 +284,7 @@
         </table>
 
         <figure>
-            <img src="flowchart.svg" loading="lazy" alt="مخطط التدفق لعمليتنا الكاملة">
+            <img src="flowchart.svg" width="257" height="479" loading="lazy" alt="مخطط التدفق لعمليتنا الكاملة">
             <figcaption><strong>الشكل 3:</strong> مخطط التدفق لعمليتنا الكاملة. في تجاربنا، H = W = 96، F = 11 (عدد ميزات التجزئة)، d<sub>q</sub> = 2، M = 2 (نستخدم إحداثيات x، y فقط من كل رمز)، k = 1 و O = 3 (عدد المخرجات لكلا البيئتين). يمكن استخدام أي عدد من الطبقات التلافيفية، طالما حافظت على حجم الصورة وكانت الطبقة الأخيرة تحتوي على 3 مرشحات لتتوافق مع الاتصال المتبقي. نستخدم طبقة واحدة من 3 مرشحات 1x1. تم ضبط التكميم على بت واحد لكل قناة (8 ألوان). P هي دالة التنشيط PReLU. العناصر الخضراء جديدة بالمقارنة مع <a href="#ref22">[22]</a>.</figcaption>
         </figure>
     </section>
@@ -427,19 +302,19 @@
         <small>²<a href="https://www.pygame.org" target="_blank" rel="noopener noreferrer">https://www.pygame.org</a></small></p>
 
         <figure>
-            <img src="learning_curves_comparison_carracing.png" loading="lazy" alt="مقارنة منحنى التعلم في بيئة Car Racing على مدار 400 جولة اختبار خارج مضامير عينات التدريب لكل جيل معروض">
+            <img src="learning_curves_comparison_carracing.png" width="3570" height="2365" loading="lazy" alt="مقارنة منحنى التعلم في بيئة Car Racing على مدار 400 جولة اختبار خارج مضامير عينات التدريب لكل جيل معروض">
             <figcaption><strong>الشكل 4:</strong> مقارنة منحنى التعلم في بيئة Car Racing على مدار 400 جولة اختبار خارج مضامير عينات التدريب لكل جيل معروض. تحقق طريقة الأجسام الأولية لدينا نتائج أفضل بكثير بعد 1000 جيل بالنسبة للطريقة القائمة على الرقع في <a href="#ref22">[22]</a>. وصل كلاهما إلى الذروة عند 1000 جيل.</figcaption>
         </figure>
 
         <figure>
-            <img src="evolution.png" loading="lazy" alt="تطور التجزئة في 5 نقاط زمنية ذات صلة. يتم تعلم استراتيجية الانتباه الأساسية (التركيز على منطقة العشب الأصغر، المظللة باللون الأبيض مع النقطة المركزية باللون الأسود؛ النقاط المركزية الأخرى باللون الوردي) في وقت مبكر من العملية، بينما يستمر التجزئة في التطور حتى النهاية">
+            <img src="evolution.png" width="1248" height="835" loading="lazy" alt="تطور التجزئة في 5 نقاط زمنية ذات صلة. يتم تعلم استراتيجية الانتباه الأساسية (التركيز على منطقة العشب الأصغر، المظللة باللون الأبيض مع النقطة المركزية باللون الأسود؛ النقاط المركزية الأخرى باللون الوردي) في وقت مبكر من العملية، بينما يستمر التجزئة في التطور حتى النهاية">
             <figcaption><strong>الشكل 5:</strong> تطور التجزئة في 5 نقاط زمنية ذات صلة. يتم تعلم استراتيجية الانتباه الأساسية (التركيز على منطقة العشب الأصغر، المظللة باللون الأبيض مع النقطة المركزية باللون الأسود؛ النقاط المركزية الأخرى باللون الوردي) في وقت مبكر من العملية، بينما يستمر التجزئة في التطور حتى النهاية. أقصى اليسار العلوي: الصورة الخام بعد تغيير الحجم وقبل التجزئة. أقصى الوسط العلوي (100 جيل): يتم الحفاظ على التجزئة البسيطة من الألوان الأصلية للمائتي جيل الأولى. أقصى اليمين العلوي (300 جيل): يتعلم فصل المضمار عن شاشة العرض الرأسية (HUD) أدناه ويميّز بعض مستشعرات ABS. أقصى اليسار السفلي (800 جيل): يبدل تجزئة المضمار و HUD، مما يجعل السيارة مرئية، ويميّز علامات المنعطفات الحمراء ويخفي مؤشرات البوصلة. كما أنه يميّز علامات المنعطفات البيضاء عن مؤشر النتيجة والسرعة، ويدمج مستشعرات ABS مرة أخرى. أقصى الوسط السفلي (900 جيل): يميّز أجزاء المضمار. أقصى اليمين السفلي (1000 جيل): يتخلى عن التجزئة الدقيقة للمضمار ويعود إلى استراتيجية التجزئة السابقة، مع تغييرات صغيرة جدًا وغير صلة في بعض البكسلات في النتيجة.</figcaption>
         </figure>
 		
         <p>من الجوانب الممتعة لهذه التجربة ملاحظة تطور التجزئة والانتباه، كما يوضح الشكل 5. يبدأ الحل بالتكميم البسيط على الألوان الأصلية للمهمة، ولكن بما أن المضمار داكن، فإنه ينضم إلى شاشة العرض الرأسية (HUD) السوداء في أسفل الشاشة. ومع ذلك، فهو يعرف بالفعل كيفية التركيز على منطقة العشب الأصغر، حيث إنها عادةً ما تشير إلى الاتجاه الذي يجب أن تدور فيه السيارة. في 300 جيل تتعلم فصل المضمار عن الـ HUD، بينما في 800 جيل تفصل السيارة وعلامات المنعطفات الحمراء عن المضمار. في حين أن السيارة غير مفيدة (فهي دائمًا في نفس المكان وتم دمجها مع المضمار في تجارب أخرى)، يمكن للعلامات الحمراء تعزيز اتجاه الدوران الصحيح من خلال "التصويت" (كاستعلامات) على منطقة العشب المجاورة لها. في 900 جيل، يتعلم تجزئة بلاطات المضمار، ولكنه يستغني عنها في الحل النهائي. يمكن رؤية الحل النهائي مفككًا إلى خطوات معالجته في الشكل 6.</p>
 
 		<figure>
-			<video src="video_carracing_proto-objects_iter_1000.mp4" controls width="100%"></video>
+			<video preload="metadata" poster="att1000.png" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
 			<figcaption><strong>الشكل 6:</strong> مراحل المعالجة في بيئة Car Racing. أقصى اليسار العلوي: صورة خام تم تغيير حجمها إلى 96x96. أقصى اليمين العلوي: تلافيف 1x1 + اتصال متبقي. أقصى اليسار السفلي: تكميم. أقصى اليمين السفلي: انتباه مع k=1.
 			</figcaption>
 		</figure>
@@ -448,12 +323,12 @@
         <p>تعتمد هذه المهمة على لعبة Doom، وهي أكثر تعقيدًا بصريًا وتحتوي على ألوان أكثر بكثير من المهمة السابقة (انظر الشكل 8، أقصى اليسار العلوي)، مما يجعل خطوتي التلافيف والتكميم ضروريتين للغاية لمنع عدد هائل من الأجزاء. تجري الأحداث في غرفة مستطيلة. يتواجد الوكيل على طول الجدار، وتظهر الوحوش بشكل مستمر وعشوائي على طول الجدار المقابل. يستمرون في إطلاق كرات النار على الوكيل، والذي يجب عليه تجنبها للبقاء على قيد الحياة. يحصل الوكيل على نقطة مكافأة واحدة لكل ثانية يبقى فيها حياً وله 3 إجراءات منفصلة: التحرك لليسار، التحرك لليمين، أو الوقوف ثابتًا.</p>
 
         <figure>
-            <img src="learning_curves_comparison_takecover.png" loading="lazy" alt="مقارنة منحنى التعلم في بيئة Doom Take Cover على مدار 400 جولة اختبار خارج بذور عينات التدريب لكل جيل معروض">
+            <img src="learning_curves_comparison_takecover.png" width="3576" height="2375" loading="lazy" alt="مقارنة منحنى التعلم في بيئة Doom Take Cover على مدار 400 جولة اختبار خارج بذور عينات التدريب لكل جيل معروض">
             <figcaption><strong>الشكل 7:</strong> مقارنة منحنى التعلم في بيئة Doom Take Cover على مدار 400 جولة اختبار خارج بذور عينات التدريب لكل جيل معروض. أظهرت طريقتنا مع k = 1 كفاءة عينات أقل ولكنها حققت أداءً مشابهًا بعد 1000 جيل بالنسبة لـ <a href="#ref22">[22]</a>، والتي حققت ذروة الأداء عند 700 جيل (p = 0.414 بين أفضل الحلول). ومع ذلك، مع k = 10 (نفس الإعداد القائم على الرقع) وتعديلات إضافية مفصلة في النص، كان لحلنا كفاءة عينات أفضل وحقق أداءً أعلى بشكل ملحوظ (p = 2.8e−5) بنتيجة 1193 عند 700 جيل.</figcaption>
         </figure>
 
         <figure>
-            <video src="video_iter_1000.npz_ep1.mp4" controls width="100%"></video>
+            <video preload="metadata" poster="att1000.png" src="video_iter_1000.npz_ep1.mp4" controls></video>
             <figcaption><strong>الشكل 8:</strong> مراحل المعالجة في بيئة Doom Take Cover. أقصى اليسار العلوي: صورة خام تم تغيير حجمها إلى 96x96. أقصى اليمين العلوي: تلافيف 1x1 + اتصال متبقي. أقصى اليسار السفلي: تكميم. أقصى اليمين السفلي: انتباه. لاحظ أن هذا الحل يتجاهل كرات النار تمامًا منذ مرحلة التكميم.</figcaption>
         </figure>
 

@@ -4,253 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>基于原型物体的自注意力神经演化</title>
+    <meta name="description" content="用于视觉强化学习的原型物体自注意力方法，参数减少 62%，训练速度最高提升 2.6 倍。">
+    <link rel="canonical" href="https://rafaelcp.github.io/neuroproto/index-zh.html">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="alternate" hreflang="en" href="https://rafaelcp.github.io/neuroproto/">
+    <link rel="alternate" hreflang="pt-BR" href="https://rafaelcp.github.io/neuroproto/index-pt.html">
+    <link rel="alternate" hreflang="es" href="https://rafaelcp.github.io/neuroproto/index-es.html">
+    <link rel="alternate" hreflang="fr" href="https://rafaelcp.github.io/neuroproto/index-fr.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://rafaelcp.github.io/neuroproto/index-zh.html">
+    <link rel="alternate" hreflang="ja" href="https://rafaelcp.github.io/neuroproto/index-jp.html">
+    <link rel="alternate" hreflang="hi" href="https://rafaelcp.github.io/neuroproto/index-hi.html">
+    <link rel="alternate" hreflang="ar" href="https://rafaelcp.github.io/neuroproto/index-ar.html">
+    <link rel="alternate" hreflang="x-default" href="https://rafaelcp.github.io/neuroproto/">
 
-    <meta name="title" property="og:title" content="基于原型物体的自注意力神经演化">
-    <meta name="type" property="og:type" content="article">
-    <meta name="url" property="og:url" content="https://rafaelcp.github.io/neuroproto/">
-    <meta name="image" property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
-    <meta name="description" property="og:description" content="原型物体（Proto-objects）——即共享公共视觉特征的图像区域——为神经网络中基于矩形图像块的传统注意力机制提供了一种极具前景的替代方案。尽管先前的研究表明，将基于图像块的硬注意力模块与控制器网络共同演化可以在视觉强化学习任务中达到最先进的性能，但我们的方法利用图像分割来处理更高层次的特征。通过对原型物体而非固定图像块进行操作，我们显著降低了表示复杂度：每张图像分解出的原型物体数量少于常规图像块，且每个原型物体都可以高效编码为紧凑的特征向量。这使得一个大幅缩小的自注意力模块能够处理更丰富的语义信息。我们的实验表明，这种基于原型物体的方法在减少 62% 参数量和 2.6 倍训练时间的条件下，达到或超越了基于图像块实现的最先进性能。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://rafaelcp.github.io/neuroproto/index-zh.html">
+    <meta property="og:title" content="基于原型物体的自注意力神经演化">
+    <meta property="og:description" content="用于视觉强化学习的原型物体自注意力方法，参数减少 62%，训练速度最高提升 2.6 倍。">
+    <meta property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta property="og:image:alt" content="基于原型物体的自注意力神经演化">
+    <meta property="og:image:width" content="470">
+    <meta property="og:image:height" content="470">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:locale" content="zh_CN">
 
-    <meta name="twitter:card" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://rafaelcp.github.io/neuroproto/index-zh.html">
     <meta name="twitter:title" content="基于原型物体的自注意力神经演化">
-    <meta name="twitter:description" content="原型物体（Proto-objects）——即共享公共视觉特征的图像区域——为神经网络中基于矩形图像块的传统注意力机制提供了一种极具前景的替代方案。尽管先前的研究表明，将基于图像块的硬注意力模块与控制器网络共同演化可以在视觉强化学习任务中达到最先进的性能，但我们的方法利用图像分割来处理更高层次的特征。通过对原型物体而非固定图像块进行操作，我们显著降低了表示复杂度：每张图像分解出的原型物体数量少于常规图像块，且每个原型物体都可以高效编码为紧凑的特征向量。这使得一个大幅缩小的自注意力模块能够处理更丰富的语义信息。我们的实验表明，这种基于原型物体的方法在减少 62% 参数量和 2.6 倍训练时间的条件下，达到或超越了基于图像块实现的最先进性能。">
+    <meta name="twitter:description" content="用于视觉强化学习的原型物体自注意力方法，参数减少 62%，训练速度最高提升 2.6 倍。">
+    <meta name="twitter:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+    <meta name="twitter:image:alt" content="基于原型物体的自注意力神经演化">
 
-    <style>
-        body {
-            font-family: serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 15px;
-            color: #333;
-        }
+    <meta name="citation_title" content="Neuroevolution of Self-Attention Over Proto-Objects">
+    <meta name="citation_author" content="Pinto, Rafael C.">
+    <meta name="citation_author" content="Tavares, Anderson R.">
+    <meta name="citation_publication_date" content="2025/07/13">
+    <meta name="citation_conference_title" content="Proceedings of the Genetic and Evolutionary Computation Conference">
+    <meta name="citation_doi" content="10.1145/3712256.3726451">
+    <meta name="citation_arxiv_id" content="2505.00186">
+    <meta name="citation_abstract_html_url" content="https://rafaelcp.github.io/neuroproto/index-zh.html">
 
-        h1, h2, h3, h4 {
-            font-family: sans-serif;
-            color: #111;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-            line-height: 1.3;
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ScholarlyArticle",
+      "@id": "https://doi.org/10.1145/3712256.3726451",
+      "url": "https://rafaelcp.github.io/neuroproto/index-zh.html",
+      "mainEntityOfPage": "https://rafaelcp.github.io/neuroproto/index-zh.html",
+      "headline": "基于原型物体的自注意力神经演化",
+      "description": "用于视觉强化学习的原型物体自注意力方法，参数减少 62%，训练速度最高提升 2.6 倍。",
+      "inLanguage": "zh-CN",
+      "image": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "datePublished": "2025-07-13",
+      "author": [
+        {
+          "@type": "Person",
+          "name": "Rafael C. Pinto",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Federal Institute of Education, Science and Technology of Rio Grande do Sul (IFRS)"
+          }
+        },
+        {
+          "@type": "Person",
+          "name": "Anderson R. Tavares",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Federal University of Rio Grande do Sul (UFRGS)"
+          }
         }
-
-        h1 {
-            font-size: 2em;
-            text-align: center;
-            margin-bottom: 1em;
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "Association for Computing Machinery"
+      },
+      "identifier": [
+        {
+          "@type": "PropertyValue",
+          "propertyID": "DOI",
+          "value": "10.1145/3712256.3726451"
+        },
+        {
+          "@type": "PropertyValue",
+          "propertyID": "arXiv",
+          "value": "2505.00186"
         }
-
-        h2 {
-            font-size: 1.6em;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.3em;
-        }
-
-        h3 {
-            font-size: 1.3em;
-        }
-
-        h4 {
-            font-size: 1.1em;
-            font-style: italic;
-        }
-
-        p {
-            margin-bottom: 1em;
-            text-align: justify;
-        }
-
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .authors-affiliations {
-            text-align: center;
-            margin-bottom: 2em;
-            font-family: sans-serif;
-        }
-
-        .author {
-            font-weight: bold;
-        }
-
-        .affiliation {
-            font-size: 0.9em;
-            color: #555;
-        }
-
-        .email a {
-            font-size: 0.9em;
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .email a:hover {
-            text-decoration: underline;
-        }
-
-        .abstract {
-            margin-top: 2em;
-            margin-bottom: 2em;
-            padding: 1em;
-            background-color: #f9f9f9;
-            border-left: 3px solid #ccc;
-        }
-
-        .abstract h2 {
-            font-size: 1.4em;
-            border-bottom: none;
-            margin-top: 0;
-        }
-
-        figure {
-            margin: 2em auto;
-            text-align: center;
-            border: 1px solid #eee;
-            padding: 1em;
-            background-color: #fdfdfd;
-        }
-
-        figure img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto 0.5em auto;
-        }
-
-        figcaption {
-            font-size: 0.9em;
-            color: #555;
-            text-align: left;
-            margin-top: 0.5em;
-            font-family: sans-serif;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2em 0;
-            font-family: sans-serif;
-            font-size: 0.9em;
-        }
-
-        caption {
-            caption-side: top;
-            font-weight: bold;
-            margin-bottom: 0.5em;
-            font-size: 1em;
-            color: #333;
-            text-align: left;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        .equation {
-            text-align: center;
-            margin: 1.5em 0;
-            font-family: monospace;
-            font-size: 1.1em;
-        }
-
-        .references ol {
-            padding-left: 20px;
-            list-style: none;
-            counter-reset: ref-counter;
-        }
-
-        .references li {
-            margin-bottom: 0.8em;
-            counter-increment: ref-counter;
-            position: relative;
-            padding-left: 25px;
-        }
-        .references li::before {
-            content: "[" counter(ref-counter) "]";
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-            color: #555;
-        }
-        .references li span.ref-content {
-            display: inline-block;
-            margin-left: 1em;
-        }
-
-        strong {
-            font-weight: bold;
-        }
-
-        code, pre {
-             font-family: monospace, monospace;
-             background-color: #f4f4f4;
-             padding: 1px 3px;
-             border-radius: 3px;
-        }
-
-        .acknowledgments {
-            font-size: 0.9em;
-            margin-top: 2em;
-        }
-
-        .header-arxiv-id {
-            font-family: sans-serif;
-            color: #555;
-            font-size: 0.9em;
-            margin-bottom: 2em;
-            text-align: left;
-        }
-        .header-arxiv-id a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .header-arxiv-id a:hover {
-            text-decoration: underline;
-        }
-
-        @media print {
-            body {
-                max-width: none;
-                margin: 1cm;
-                font-size: 10pt;
-            }
-            h1, h2, h3, h4 { page-break-after: avoid; }
-            figure, table { page-break-inside: avoid; }
-            .header-arxiv-id { display: none; }
-            a { color: inherit; text-decoration: none; }
-            .references li::before { color: inherit; }
-			#translations { display: none }
-        }
-		
-		#notebooklm {
-			display: flex;
-		}
-		#notebooklm div {
-			flex: 1;
-		}
-		#translations {
-			float: right;
-		}
-
-    </style>
+      ],
+      "sameAs": [
+        "https://doi.org/10.1145/3712256.3726451",
+        "https://arxiv.org/abs/2505.00186"
+      ]
+    },
+    {
+      "@type": "VideoObject",
+      "name": "基于原型物体的自注意力神经演化 — overview",
+      "description": "用于视觉强化学习的原型物体自注意力方法，参数减少 62%，训练速度最高提升 2.6 倍。",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/proto.mp4"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "基于原型物体的自注意力神经演化 — Car Racing experiment",
+      "description": "Processing stages and evolved attention in the Car Racing experiment.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_carracing_proto-objects_iter_1000.mp4"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "基于原型物体的自注意力神经演化 — Doom Take Cover experiment",
+      "description": "Processing stages and evolved attention in the Doom Take Cover experiment.",
+      "thumbnailUrl": "https://rafaelcp.github.io/neuroproto/att1000.png",
+      "uploadDate": "2025-07-13",
+      "contentUrl": "https://rafaelcp.github.io/neuroproto/video_iter_1000.npz_ep1.mp4"
+    }
+  ]
+}
+    </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-	<div id="translations">
-		<a href="index.html">English</a> | <a href="index-pt.html">Português</a> | <a href="index-es.html">Español</a> | <a href="index-fr.html">Français</a> | <a href="index-zh.html">中文</a> | <a href="index-jp.html">日本語</a> | <a href="index-hi.html">हिंदी</a> | <a href="index-ar.html">عربي</a>
-	</div>
+	<nav id="translations" aria-label="Language selector">
+		<a href="./">English</a> | <a href="index-pt.html">Português</a> | <a href="index-es.html">Español</a> | <a href="index-fr.html">Français</a> | <a href="index-zh.html">中文</a> | <a href="index-jp.html">日本語</a> | <a href="index-hi.html">हिंदी</a> | <a href="index-ar.html">عربي</a>
+	</nav>
     <div class="header-arxiv-id"><a href="https://arxiv.org/abs/2505.00186v1">arXiv:2505.00186v1</a> [cs.NE] 2025年4月30日
     <br>DOI: <a href="https://doi.org/10.1145/3712256.3726451">10.1145/3712256.3726451</a> 2025年7月13日</div>
 
@@ -281,12 +161,12 @@
     </div>
 	
     <div id="notebooklm">
-        <div>NotebookLM 播客 (英文)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects.mp3" controls></audio></div>
-        <div>NotebookLM 播客 (葡语)<br><audio src="Neuroevolution of Self-Attention Over Proto-Objects-ptbr.mp3" controls></audio></div>
+        <div>NotebookLM 播客 (英文)<br><audio preload="none" src="neuroevolution-self-attention-proto-objects-en.mp3" controls></audio></div>
+        <div>NotebookLM 播客 (葡语)<br><audio preload="none" src="neuroevolution-self-attention-proto-objects-pt-br.mp3" controls></audio></div>
     </div>
 	
     <figure>
-        <video controls src="proto.mp4" type="video/mp4"></video>
+        <video preload="metadata" poster="att1000.png" controls src="proto.mp4"></video>
         <figcaption><strong>图 1：</strong> 我们的注意力智能体能够专注于整个均匀区域，而非小尺寸的固定图像块。</figcaption>
     </figure>
 
@@ -325,7 +205,7 @@
         <p>Tang 等人最近的工作 <a href="#ref22">[22]</a> 探索了在强化学习中使用硬注意力机制。其方法将视觉输入划分为 7x7 的图像块，并应用改进的自注意力机制仅选择前 k 个图像块进行处理（参见图 2）。这造成了一个信息瓶颈，迫使模型关注最相关的输入而忽略其他输入。当应用于基于视觉的强化学习任务时，这种方法使智能体能够以远少于传统方法的参数量获得更好的性能、可解释性和计算效率。我们的方法主要区别在于使用原型物体代替图像块，减少了 Token 的数量及其维度，同时为其添加了更高层次的信息。</p>
 
         <figure>
-            <video src="patches-video_best.npz_ep1.mp4" controls></video>
+            <video preload="metadata" poster="att1000.png" src="patches-video_best.npz_ep1.mp4" controls></video>
             <figcaption><strong>图 2：</strong> 智能体从当前帧提取图像块，并通过硬注意力机制选择前 k 个（以白色高亮显示）。通过可视化所选的图像块，可以更好地了解所学策略，同时也便于调试。</figcaption>
         </figure>
 
@@ -393,15 +273,11 @@
                 <tr><td>f(n) 维度</td><td>2</td><td>2</td></tr>
                 <tr><td>LSTM 输入尺寸</td><td>20</td><td>2</td></tr>
                 <tr><td>LSTM 神经元数量</td><td>16</td><td>16</td></tr>
-            </tbody>
-            <thead>
                 <tr>
                     <th>可学习参数数量</th>
                     <th></th>
                     <th></th>
                 </tr>
-            </thead>
-             <tbody>
                 <tr><td>卷积</td><td>0</td><td>12</td></tr>
                 <tr><td>注意力</td><td>1184</td><td>63</td></tr>
                 <tr><td>LSTM</td><td>2432</td><td>1280</td></tr>
@@ -411,7 +287,7 @@
         </table>
 
         <figure>
-            <img src="flowchart.svg" loading="lazy" alt="我们完整流程的流程图">
+            <img src="flowchart.svg" width="257" height="479" loading="lazy" alt="我们完整流程的流程图">
             <figcaption><strong>图 3：</strong> 我们完整流程的流程图。在我们的实验中，H = W = 96，F = 11（分割特征数量），d<sub>q</sub> = 2，M = 2（我们仅使用每个 Token 的 x, y 坐标），k = 1 且 O = 3（两个环境的输出数量）。可以使用任意数量的卷积层，只要保持图像尺寸且最后一层包含 3 个过滤器以匹配残差连接即可。我们使用了一层 3 个 1x1 过滤器。我们的量化设置为每通道 1 比特（8 种颜色）。P 为 PReLU 激活函数。绿色元素为相对于 <a href="#ref22">[22]</a> 的新增部分。</figcaption>
         </figure>
     </section>
@@ -429,19 +305,19 @@
         <small>²<a href="https://www.pygame.org" target="_blank" rel="noopener noreferrer">https://www.pygame.org</a></small></p>
 
         <figure>
-            <img src="learning_curves_comparison_carracing.png" loading="lazy" alt="Car Racing 环境中每个显示代数在训练样本跑道之外的 400 次测试运行中的学习曲线对比">
+            <img src="learning_curves_comparison_carracing.png" width="3570" height="2365" loading="lazy" alt="Car Racing 环境中每个显示代数在训练样本跑道之外的 400 次测试运行中的学习曲线对比">
             <figcaption><strong>图 4：</strong> 在 Car Racing 环境中，在训练样本跑道之外的 400 次测试运行中各个显示代数的学习曲线对比。在 1000 代后，我们的原型物体方法取得了显著优于 <a href="#ref22">[22]</a> 基于图像块的方法的结果。两者均在 1000 代时达到峰值。</figcaption>
         </figure>
 
         <figure>
-            <img src="evolution.png" loading="lazy" alt="5 个关键时间点的分割演化过程。基本注意力策略早在该过程中就被学到，而分割持续演化直至结束">
+            <img src="evolution.png" width="1248" height="835" loading="lazy" alt="5 个关键时间点的分割演化过程。基本注意力策略早在该过程中就被学到，而分割持续演化直至结束">
             <figcaption><strong>图 5：</strong> 5 个关键时间点的分割演化过程。基本的注意力策略（专注于较小的草地区域，以白色高亮显示且质心为黑色；其他质心为粉色）在早期阶段就被学到，而分割过程则持续演化直到最后。左上：调整尺寸后且分割前的原始图像。中上（100 代）：前几百代保持从原始颜色衍生出的平凡分割。右上（300 代）：学会将跑道与下方的抬头显示（HUD）分开，并区分出部分 ABS 传感器。左下（800 代）：交换了跑道和 HUD 的分割，使赛车可见，区分出红色弯道标记并隐藏了陀螺仪指示器。同时还将弯道白色标记与得分和速度指示器区分开，并再次合并了 ABS 传感器。中下（900 代）：区分跑道图块。右下（1000 代）：放弃了跑道的精细分割，退回到先前的分割策略，得分中的某些像素仅发生了极其微小的改变。</figcaption>
         </figure>
 		
         <p>这个实验的一个有趣方面是观察分割和注意力的演化过程，如图 5 所示。解决方案始于任务原始颜色上的平凡量化，但由于跑道颜色较深，它与屏幕底部的黑色抬头显示（HUD）合并在了一起。尽管如此，它已经知道如何专注于较小的草地区域，因为这通常指向赛车必须转向的方向。在 300 代时，它学会了将跑道与 HUD 分开；而在 800 代时，它将赛车和红色弯道标记与跑道分离开来。虽然赛车是没有用的（它总是处于同一个位置，甚至在其他实验中与跑道合并），但红色标记可以通过对其相邻的草地区域进行“投票”（作为 Query）来巩固正确的转向边。在 900 代时，它学会了分割跑道图块，但在最终解中丢弃了这一策略。分解为各个处理步骤的最终解决方案如图 6 所示。</p>
 
 		<figure>
-			<video src="video_carracing_proto-objects_iter_1000.mp4" controls width="100%"></video>
+			<video preload="metadata" poster="att1000.png" src="video_carracing_proto-objects_iter_1000.mp4" controls></video>
 			<figcaption><strong>图 6：</strong> Car Racing 环境中的处理阶段。左上：调整为 96x96 的原始图像。右上：1x1 卷积 + 残差。左下：量化。右下：k=1 的注意力。
 			</figcaption>
 		</figure>
@@ -450,12 +326,12 @@
         <p>任务基于游戏《毁灭战士》（Doom），该游戏在视觉上比前一个任务更复杂，颜色也多得多（参见图 8 左上），这使得卷积和量化步骤变得严格必要，以防止出现大量的分割块。它发生在一个矩形房间里。智能体沿着墙壁生成，怪物沿着对面的墙壁随机且持续地生成。它们不断向智能体发射火球，智能体必须躲避它们以生存。智能体存活的每个 tick 获得 1 分奖励，并有 3 个离散动作：向左移动、向右移动或保持不动。</p>
 
         <figure>
-            <img src="learning_curves_comparison_takecover.png" loading="lazy" alt="Doom Take Cover 环境中每个显示代数在训练样本种子之外的 400 次测试运行中的学习曲线对比">
+            <img src="learning_curves_comparison_takecover.png" width="3576" height="2375" loading="lazy" alt="Doom Take Cover 环境中每个显示代数在训练样本种子之外的 400 次测试运行中的学习曲线对比">
             <figcaption><strong>图 7：</strong> 在 Doom Take Cover 环境中，在训练样本种子之外的 400 次测试运行中各个显示代数的学习曲线对比。在 k = 1 时，我们的方法在样本效率上稍低，但在 1000 代后取得了与 <a href="#ref22">[22]</a> 相似的性能（最佳解之间 p = 0.414，后者在 700 代时达到峰值）。然而，在 k = 10（与基于图像块的设置相同）及正文中详述的进一步调整下，我们的解具有更好的样本效率，并取得了显著更高（p = 2.8e−5）的性能（在 700 代时得分 1193）。</figcaption>
         </figure>
 
         <figure>
-            <video src="video_iter_1000.npz_ep1.mp4" controls width="100%"></video>
+            <video preload="metadata" poster="att1000.png" src="video_iter_1000.npz_ep1.mp4" controls></video>
             <figcaption><strong>图 8：</strong> Doom Take Cover 环境中的处理阶段。左上：调整为 96x96 的原始图像。右上：1x1 卷积 + 残差。左下：量化。右下：注意力。请注意，该解自量化阶段起就完全忽略了火球。</figcaption>
         </figure>
 
@@ -505,7 +381,7 @@
         <p>作者感谢 FAPERGS（Notice 10/2021 – ARD/ARC）资金支持。本研究还得到了南里奥格兰德联邦教育、科学与技术学院（IFRS）的支持。</p>
     </section>
 
-	<section id"howtocite">
+	<section id="how-to-cite">
 		<h2>如何引用</h2>
 		<pre>@inproceedings{10.1145/3712256.3726451,
 	author = {Pinto, Rafael and Tavares, Anderson},
