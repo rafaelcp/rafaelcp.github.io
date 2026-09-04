@@ -35,6 +35,21 @@ test('inglês é o idioma principal e as duas versões apontam uma para a outra'
   }
 });
 
+test('as duas versões omitem o PDF do Lattes e as métricas acadêmicas', () => {
+  for (const page of [html, portugueseHtml]) {
+    assert.doesNotMatch(page, /Currículo do Sistema de Currículos Lattes/);
+    assert.doesNotMatch(page, /class="metrics"/);
+  }
+  for (const metric of ['>351<', '>8<', 'h-index']) assert.ok(!html.includes(metric), metric);
+  for (const metric of ['>351<', '>8<', 'índice h']) assert.ok(!portugueseHtml.includes(metric), metric);
+});
+
+test('o canal de aulas no YouTube aparece na barra de links dos dois idiomas', () => {
+  const channelLink = 'href="https://www.youtube.com/SorPinto" rel="me"';
+  assert.ok(html.includes(`${channelLink}>Lectures on YouTube ↗</a>`));
+  assert.ok(portugueseHtml.includes(`${channelLink}>Aulas no YouTube ↗</a>`));
+});
+
 test('a versão principal apresenta em inglês o conteúdo e a interface', () => {
   for (const expected of ['Professor and researcher', 'Explore publications', 'Research output', 'Search publications', 'Back to top']) {
     assert.ok(html.includes(expected), expected);
