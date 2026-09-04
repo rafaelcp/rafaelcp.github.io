@@ -2,9 +2,10 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { normalizeText, filterPublications } = require('../script.js');
+const { normalizeText, filterPublications, publicationCountLabel } = require('../script.js');
 
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const portugueseHtml = fs.readFileSync(path.join(__dirname, '..', 'index-pt.html'), 'utf8');
 
 test('a página apresenta todos os 20 trabalhos do perfil acadêmico', () => {
   assert.equal((html.match(/data-publication/g) || []).length, 20);
@@ -23,6 +24,24 @@ test('metadados, landmarks e recursos de acessibilidade estão presentes', () =>
   assert.equal((html.match(/<h1/g) || []).length, 1);
 });
 
+test('inglês é o idioma principal e as duas versões apontam uma para a outra', () => {
+  assert.match(html, /<html lang="en">/);
+  assert.match(html, /href="index-pt\.html"[^>]+hreflang="pt-BR"/);
+  assert.match(portugueseHtml, /<html lang="pt-BR">/);
+  assert.match(portugueseHtml, /href="\/"[^>]+hreflang="en"/);
+  for (const page of [html, portugueseHtml]) {
+    assert.match(page, /hreflang="x-default" href="https:\/\/rafaelcp\.github\.io\/"/);
+    assert.equal((page.match(/data-publication/g) || []).length, 20);
+  }
+});
+
+test('a versão principal apresenta em inglês o conteúdo e a interface', () => {
+  for (const expected of ['Professor and researcher', 'Explore publications', 'Research output', 'Search publications', 'Back to top']) {
+    assert.ok(html.includes(expected), expected);
+  }
+  assert.doesNotMatch(html, />Publicações</);
+});
+
 test('normalização ignora caixa e acentos', () => {
   assert.equal(normalizeText('Computação Evolutiva'), 'computacao evolutiva');
 });
@@ -32,4 +51,11 @@ test('filtro alterna a visibilidade e devolve a quantidade encontrada', () => {
   assert.equal(filterPublications(items, 'robotica'), 1);
   assert.deepEqual(items.map(({ hidden }) => hidden), [true, false]);
   assert.equal(filterPublications(items, ''), 2);
+});
+
+test('contador de resultados respeita idioma, singular e plural', () => {
+  assert.equal(publicationCountLabel(1, 'en'), '1 publication');
+  assert.equal(publicationCountLabel(2, 'en-US'), '2 publications');
+  assert.equal(publicationCountLabel(1, 'pt-BR'), '1 publicação');
+  assert.equal(publicationCountLabel(0, 'pt'), '0 publicações');
 });
