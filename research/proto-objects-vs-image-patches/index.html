@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proto-Objects vs. Image Patches for Visual Reinforcement Learning</title>
+  <meta name="description" content="A technical comparison of proto-object and image-patch representations for visual reinforcement learning, based on GECCO 2025 experiments in Car Racing and Doom Take Cover.">
+  <meta name="author" content="Rafael C. Pinto">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#071c2c">
+  <link rel="canonical" href="https://rafaelcp.github.io/research/proto-objects-vs-image-patches/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://rafaelcp.github.io/research/proto-objects-vs-image-patches/">
+  <meta property="og:title" content="Proto-Objects vs. Image Patches for Visual Reinforcement Learning">
+  <meta property="og:description" content="How object-based visual tokens compare with fixed image patches in neuroevolutionary reinforcement learning.">
+  <meta property="og:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+  <meta property="og:image:alt" content="Attention visualization from Neuroevolution of Self-Attention Over Proto-Objects">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Proto-Objects vs. Image Patches for Visual Reinforcement Learning">
+  <meta name="twitter:description" content="A technical comparison of proto-object and patch-based visual representations for reinforcement learning.">
+  <meta name="twitter:image" content="https://rafaelcp.github.io/neuroproto/att1000.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "@id": "https://rafaelcp.github.io/research/proto-objects-vs-image-patches/#article",
+    "url": "https://rafaelcp.github.io/research/proto-objects-vs-image-patches/",
+    "mainEntityOfPage": "https://rafaelcp.github.io/research/proto-objects-vs-image-patches/",
+    "headline": "Proto-Objects vs. Image Patches for Visual Reinforcement Learning",
+    "description": "A technical comparison of proto-object and image-patch representations for visual reinforcement learning, based on GECCO 2025 experiments in Car Racing and Doom Take Cover.",
+    "datePublished": "2026-09-04",
+    "dateModified": "2026-09-04",
+    "inLanguage": "en",
+    "image": "https://rafaelcp.github.io/neuroproto/att1000.png",
+    "author": {
+      "@type": "Person",
+      "name": "Rafael C. Pinto",
+      "url": "https://rafaelcp.github.io/",
+      "sameAs": "https://orcid.org/0000-0002-4512-5566"
+    },
+    "about": [
+      {"@type": "Thing", "name": "Proto-objects"},
+      {"@type": "Thing", "name": "Visual reinforcement learning"},
+      {"@type": "Thing", "name": "Self-attention"},
+      {"@type": "Thing", "name": "Neuroevolution"}
+    ],
+    "keywords": [
+      "proto-objects",
+      "image patches",
+      "visual reinforcement learning",
+      "self-attention",
+      "neuroevolution",
+      "representation learning"
+    ],
+    "isBasedOn": "https://doi.org/10.1145/3712256.3726451",
+    "citation": [
+      "https://doi.org/10.1145/3712256.3726451",
+      "https://doi.org/10.1145/3377930.3389847"
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .article-hero{background:var(--navy);color:#fff;padding:clamp(4rem,8vw,7rem) max(1.5rem,calc((100vw - 900px)/2)) 4rem}
+    .article-hero .eyebrow{color:var(--accent)}
+    .article-hero h1{font-family:Georgia,serif;font-weight:400;letter-spacing:-.045em;font-size:clamp(2.8rem,7vw,5.8rem);line-height:.98;margin:1rem 0 1.3rem;max-width:900px}
+    .article-hero .deck{font-size:clamp(1.08rem,2vw,1.35rem);color:#c5d5db;max-width:790px}
+    .article-hero .byline{margin-top:2rem;color:#9fb5bf;font-size:.9rem}
+    .article-hero .byline a{color:#fff}
+    .article-shell{max-width:900px;margin:auto;padding:clamp(3rem,7vw,6rem) 1.5rem}
+    .article-shell h2{font-size:clamp(2rem,4vw,3.25rem);margin-top:4rem}
+    .article-shell h3{font-family:Georgia,serif;font-size:1.6rem;font-weight:400;margin:2.5rem 0 .6rem}
+    .article-shell p,.article-shell li{font-size:1.05rem}
+    .article-shell p{max-width:760px}
+    .lead{font-size:1.25rem!important;line-height:1.65}
+    .answer-box{background:#e9efdb;border-left:5px solid #86a52d;padding:1.4rem 1.6rem;margin:0 0 3rem}
+    .answer-box strong{display:block;text-transform:uppercase;letter-spacing:.1em;font-size:.76rem;margin-bottom:.45rem}
+    .answer-box p{margin:0;max-width:none}
+    .comparison{width:100%;border-collapse:collapse;margin:1.5rem 0 2rem;background:#fff}
+    .comparison th,.comparison td{text-align:left;vertical-align:top;border:1px solid var(--line);padding:.85rem 1rem}
+    .comparison th{background:#edf1ed;font-size:.84rem;text-transform:uppercase;letter-spacing:.05em}
+    .comparison td:first-child{font-weight:750;width:28%}
+    .note{border:1px solid var(--line);padding:1.2rem 1.4rem;margin:2rem 0;color:#405660;background:#fff}
+    .metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.8rem 0 2.4rem}
+    .metric{border-top:3px solid var(--navy);background:#fff;padding:1.2rem}
+    .metric strong{display:block;font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.1}
+    .metric span{display:block;color:var(--muted);font-size:.88rem;margin-top:.4rem}
+    .paper-cta{margin-top:4rem;background:var(--navy);color:#fff;padding:clamp(1.5rem,4vw,2.5rem)}
+    .paper-cta h2{color:#fff;margin-top:0;font-size:2.2rem}
+    .paper-cta p{color:#c5d5db}
+    .paper-cta .actions{margin-top:1.4rem}
+    .paper-cta .button{color:#fff}
+    .paper-cta .button.primary{color:var(--navy)}
+    .references{font-size:.93rem}
+    .breadcrumbs{font-size:.82rem;margin-bottom:2rem;color:#aac0c9}
+    .breadcrumbs a{color:#fff}
+    @media(max-width:700px){.metric-grid{grid-template-columns:1fr}.comparison{font-size:.9rem}.comparison th,.comparison td{padding:.65rem}.article-hero{padding-top:3rem}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="../../" aria-label="Rafael Coimbra Pinto homepage">RCP<span>.</span></a>
+    <nav aria-label="Main navigation">
+      <a href="../../#sobre">About</a>
+      <a href="../../#publicacoes">Publications</a>
+      <a href="../../#contato">Contact</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    <header class="article-hero">
+      <div class="breadcrumbs"><a href="../../">Rafael C. Pinto</a> / Research explainer</div>
+      <div class="eyebrow">Visual reinforcement learning · Attention · Representation learning</div>
+      <h1>Proto-Objects vs. Image Patches for Visual Reinforcement Learning</h1>
+      <p class="deck">Fixed image patches are simple and general, but they can produce hundreds of visual tokens per frame. Proto-objects replace that regular grid with coherent image regions, creating a much smaller, higher-level representation for attention-based agents.</p>
+      <p class="byline">By <a href="../../">Rafael C. Pinto</a> · Based on the GECCO 2025 paper <a href="https://doi.org/10.1145/3712256.3726451"><em>Neuroevolution of Self-Attention Over Proto-Objects</em></a></p>
+    </header>
+
+    <article class="article-shell">
+      <aside class="answer-box" aria-label="Short answer">
+        <strong>Short answer</strong>
+        <p>In our tested Car Racing and Doom Take Cover setups, replacing fixed image patches with segmented proto-objects reduced the visual token count from 529 patches per frame to roughly 11–13 proto-objects on average. This supported a 62% reduction in model parameters while preserving competitive task performance. The result is promising for efficient visual reinforcement learning, but it is not a universal claim that proto-objects outperform patches in every environment.</p>
+      </aside>
+
+      <p class="lead">Visual reinforcement learning agents must turn high-dimensional images into compact information that a controller can use. One common strategy is to divide every frame into fixed-size patches and let an attention mechanism select the most relevant ones. Our NeuroProto work asks a different question: what if the visual tokens correspond to coherent regions in the scene instead of arbitrary rectangles?</p>
+
+      <div class="metric-grid" aria-label="Key comparison metrics">
+        <div class="metric"><strong>529 → ~11–13</strong><span>visual tokens per frame in the tested environments</span></div>
+        <div class="metric"><strong>62% fewer</strong><span>parameters in the compared proto-object architecture</span></div>
+        <div class="metric"><strong>2 tasks</strong><span>Car Racing and Doom Take Cover evaluated in the study</span></div>
+      </div>
+
+      <h2>What is the difference between image patches and proto-objects?</h2>
+      <p><strong>Image patches</strong> divide the visual field according to geometry. Each token corresponds to a fixed rectangular location, regardless of whether that rectangle contains one object, part of an object, or mostly background.</p>
+      <p><strong>Proto-objects</strong> are intermediate visual structures: coherent regions that share local visual properties before full semantic object recognition. In NeuroProto, image segmentation produces these regions and each region is encoded with a compact descriptor containing properties such as position, shape, size, and color.</p>
+
+      <table class="comparison">
+        <thead>
+          <tr><th>Property</th><th>Image patches</th><th>Proto-objects</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Token boundaries</td><td>Fixed rectangular grid</td><td>Data-dependent segmented regions</td></tr>
+          <tr><td>Relationship to scene structure</td><td>Indirect; boundaries are imposed by the grid</td><td>Regions follow locally coherent visual structure</td></tr>
+          <tr><td>Token count in our experiments</td><td>529 per frame</td><td>12.6 ± 0.26 in Car Racing; 10.7 ± 0.73 in Doom</td></tr>
+          <tr><td>Representation</td><td>Patch-derived visual input</td><td>Compact region descriptors</td></tr>
+          <tr><td>Main advantage</td><td>Simplicity and generality</td><td>Far fewer, higher-level visual tokens</td></tr>
+          <tr><td>Main dependency</td><td>Patch size and layout</td><td>Quality and suitability of the segmentation process</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Why can fewer visual tokens matter?</h2>
+      <p>Attention mechanisms spend computation deciding which pieces of visual information are relevant. When the input contains hundreds of small patches, the attention system must evaluate many candidate tokens even when large parts of the scene are visually uniform or irrelevant to the task.</p>
+      <p>A proto-object representation compresses the scene before attention is applied. In the tested environments, the difference was large: 529 patch tokens per frame versus about a dozen proto-object tokens. This changes the scale of the selection problem and allows the attention and controller networks to be smaller.</p>
+      <p>This reduction is especially relevant to neuroevolution, where every additional parameter expands the search space that evolution must optimize. NeuroProto used 1,406 parameters in the compared proto-object configuration versus 3,667 in the patch-based implementation, a reduction of about 62%.</p>
+
+      <h2>What happened in Car Racing and Doom Take Cover?</h2>
+      <p>The experiments compared proto-object attention with the patch-based approach that inspired the work. The main result is not that one representation wins every individual comparison; it is that the much more compact proto-object representation remained competitive while substantially reducing the input and model size.</p>
+
+      <table class="comparison">
+        <thead>
+          <tr><th>Environment</th><th>Patch-based result</th><th>Proto-object result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Car Racing</td><td>888.69 ± 5.84</td><td>910.39 ± 1.28</td></tr>
+          <tr><td>Doom Take Cover</td><td>959.27 ± 58.85</td><td>930.68 ± 57.19 with k=1; 1192.82 ± 75.26 with k=10</td></tr>
+        </tbody>
+      </table>
+
+      <p>In Car Racing, the reported proto-object configuration exceeded the patch-based score. In Doom, the k=1 proto-object configuration was slightly below the patch baseline, while k=10 was above it. This is why the strongest defensible conclusion is that proto-objects can <em>match or exceed</em> the patch-based approach in these experiments while using a substantially smaller representation.</p>
+
+      <h2>What about training time?</h2>
+      <p>The study also reported shorter wall-clock training times for the proto-object implementations in the tested setup: 36.5 hours for Car Racing compared with 97 hours for the patch-based implementation, and 33 hours (k=1) or 55 hours (k=10) for Doom compared with 85.5 hours for the patch baseline.</p>
+      <div class="note"><strong>Important limitation:</strong> the reported implementations were not run on identical hardware configurations—the patch baseline used GPU execution while the proto-object runs used CPU execution. These numbers demonstrate practical efficiency in the study setup, but they should not be interpreted as a hardware-controlled benchmark of the representations themselves.</div>
+
+      <h2>When are image patches still a good choice?</h2>
+      <p>Proto-objects introduce assumptions that patches do not. A patch grid is simple, deterministic, and does not require a segmentation stage. It can therefore be preferable when segmentation is unreliable, when relevant information does not align with coherent regions, or when a general-purpose representation is more important than aggressively reducing the number of tokens.</p>
+      <p>Patches are also deeply integrated into modern vision architectures, which makes them easy to reuse with established tooling and pretrained models. Proto-objects are better viewed as an alternative representation worth testing when scene structure can provide a useful information bottleneck.</p>
+
+      <h2>When are proto-objects especially attractive?</h2>
+      <ul>
+        <li>When the environment contains large coherent visual regions and many fixed patches would be redundant.</li>
+        <li>When reducing the number of visual tokens can simplify the attention mechanism or controller.</li>
+        <li>When interpretability matters and selected regions should correspond more closely to meaningful parts of the scene.</li>
+        <li>When neuroevolution or another expensive optimization procedure benefits from a smaller parameter space.</li>
+      </ul>
+
+      <h2>What does this result actually establish?</h2>
+      <p>NeuroProto provides evidence from two visual reinforcement learning environments that proto-object-based attention can be a compact alternative to fixed-patch attention. It does <strong>not</strong> establish that segmentation-based tokens are universally superior, nor does it test every class of reinforcement learning environment, segmentation method, or modern vision architecture.</p>
+      <p>The more general research question is therefore still open: <strong>when should an agent attend to fixed spatial units, and when should it attend to perceptually grouped regions?</strong> The NeuroProto experiments suggest that object-like intermediate representations deserve more attention as a way to build smaller and more interpretable visual agents.</p>
+
+      <section class="paper-cta" aria-labelledby="paper-title">
+        <p class="kicker">Primary source</p>
+        <h2 id="paper-title">Neuroevolution of Self-Attention Over Proto-Objects</h2>
+        <p>Rafael C. Pinto and Anderson R. Tavares · GECCO 2025 · Proceedings of the Genetic and Evolutionary Computation Conference, pages 1300–1308.</p>
+        <div class="actions">
+          <a class="button primary" href="../../neuroproto/">Read the paper page</a>
+          <a class="button" href="../../neuroproto/neuroproto-gecco.pdf">PDF</a>
+          <a class="button" href="https://doi.org/10.1145/3712256.3726451">DOI</a>
+          <a class="button" href="../../neuroproto/neuroproto-gecco.bib">BibTeX</a>
+        </div>
+      </section>
+
+      <h2>References</h2>
+      <ol class="references">
+        <li>R. C. Pinto and A. R. Tavares. <a href="https://doi.org/10.1145/3712256.3726451">Neuroevolution of Self-Attention Over Proto-Objects</a>. Proceedings of the Genetic and Evolutionary Computation Conference (GECCO 2025), 1300–1308.</li>
+        <li>Y. Tang, D. Nguyen, and D. Ha. <a href="https://doi.org/10.1145/3377930.3389847">Neuroevolution of Self-Interpretable Agents</a>. Proceedings of the Genetic and Evolutionary Computation Conference (GECCO 2020), 414–424.</li>
+      </ol>
+    </article>
+  </main>
+
+  <footer><p>© 2026 Rafael Coimbra Pinto</p><a href="../../">Academic homepage ↑</a></footer>
+</body>
+</html>
