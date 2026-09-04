@@ -150,6 +150,50 @@ class SeoTests(unittest.TestCase):
                 self.assertEqual(article["url"], page.url)
                 self.assertEqual(article["inLanguage"], page.language)
 
+    def test_publication_details_are_consistent_across_languages(self):
+        """Keep publication actions, identifiers and pagination synchronized."""
+        expected_orcids = {
+            "Rafael C. Pinto": "https://orcid.org/0000-0002-4512-5566",
+            "Anderson R. Tavares": "https://orcid.org/0000-0002-8530-6468",
+        }
+        expected_citation_metadata = {
+            "citation_isbn": "9798400714658",
+            "citation_firstpage": "1300",
+            "citation_lastpage": "1308",
+        }
+        for page in PAGES:
+            path = ROOT / page.filename
+            with self.subTest(page=page.filename):
+                parser = parse(path)
+                metas = [attrs for tag, attrs, _ in parser.tags if tag == "meta"]
+                citation_metadata = {
+                    item["name"]: item.get("content")
+                    for item in metas
+                    if item.get("name") in expected_citation_metadata
+                }
+                self.assertEqual(citation_metadata, expected_citation_metadata, f"{path}: incomplete citation metadata")
+
+                article = parser.json_ld[0]["@graph"][0]
+                self.assertEqual(article["pageStart"], "1300", f"{path}: incorrect JSON-LD pageStart")
+                self.assertEqual(article["pageEnd"], "1308", f"{path}: incorrect JSON-LD pageEnd")
+                self.assertEqual(article["pagination"], "1300-1308", f"{path}: incorrect JSON-LD pagination")
+                self.assertEqual(
+                    {author["name"]: author.get("sameAs") for author in article["author"]},
+                    expected_orcids,
+                    f"{path}: JSON-LD author ORCID identifiers differ",
+                )
+
+                links = [attrs.get("href") for tag, attrs, _ in parser.tags if tag == "a"]
+                for target in (
+                    "neuroproto-gecco.pdf",
+                    "#how-to-cite",
+                    "neuroproto-gecco.bib",
+                    "https://ifrs.edu.br/",
+                    "https://www.inf.ufrgs.br/site/",
+                    *expected_orcids.values(),
+                ):
+                    self.assertIn(target, links, f"{path}: missing publication or author link {target}")
+
     def test_local_assets_and_fragments_exist(self):
         for page in PAGES:
             path = ROOT / page.filename
