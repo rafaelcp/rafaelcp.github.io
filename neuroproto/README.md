@@ -19,7 +19,7 @@ Every in-text citation link includes a `title` containing the complete rendered 
 
 ## SEO inventory
 
-Every localized page provides a self-referencing canonical, reciprocal language alternates, social cards, Highwire/Google Scholar citation metadata, and schema.org `ScholarlyArticle` structured data. The repository-level `robots.txt` advertises the sitemap. The sitemap deliberately omits speculative `changefreq` and `priority` values.
+Every localized page provides a self-referencing canonical, reciprocal language alternates, social cards, Highwire/Google Scholar citation metadata, and schema.org `ScholarlyArticle` structured data. Publication facts—including ISBN, page range, author ORCID iDs, affiliation URLs, and PDF/BibTeX/citation actions—must be updated in every language together; `test_publication_details_are_consistent_across_languages` guards this contract. The repository-level `robots.txt` advertises the sitemap. The sitemap deliberately omits speculative `changefreq` and `priority` values.
 
 ## HTML validation
 
