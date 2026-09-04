@@ -81,6 +81,29 @@ def parse(page):
 
 
 class SeoTests(unittest.TestCase):
+    def test_localized_keywords_follow_each_abstract(self):
+        """Keep the scholarly keywords translated and consistently positioned."""
+        expected_keywords = {
+            "index.html": "Object-centric reinforcement learning · efficient visual RL · visual token reduction · adaptive token selection · visual attention",
+            "index-pt.html": "Aprendizado por reforço centrado em objetos · aprendizado por reforço visual eficiente · redução de tokens visuais · seleção adaptativa de tokens · atenção visual",
+            "index-es.html": "Aprendizaje por refuerzo centrado en objetos · aprendizaje por refuerzo visual eficiente · reducción de tokens visuales · selección adaptativa de tokens · atención visual",
+            "index-fr.html": "Apprentissage par renforcement centré sur les objets · apprentissage par renforcement visuel efficace · réduction des jetons visuels · sélection adaptative de jetons · attention visuelle",
+            "index-zh.html": "以物体为中心的强化学习 · 高效视觉强化学习 · 视觉词元缩减 · 自适应词元选择 · 视觉注意力",
+            "index-jp.html": "オブジェクト中心強化学習 · 効率的な視覚強化学習 · 視覚トークン削減 · 適応的トークン選択 · 視覚的注意",
+            "index-hi.html": "वस्तु-केंद्रित सुदृढीकरण अधिगम · कुशल दृश्य सुदृढीकरण अधिगम · दृश्य टोकन न्यूनीकरण · अनुकूली टोकन चयन · दृश्य अवधान",
+            "index-ar.html": "التعلم المعزز المتمحور حول الكائنات · التعلم المعزز البصري الفعال · تقليل الرموز البصرية · الاختيار التكيفي للرموز · الانتباه البصري",
+        }
+        block_pattern = re.compile(
+            r'<div class="abstract">.*?</div>\s*<aside class="keywords"[^>]*>\s*<p><strong>[^<]+</strong>\s*([^<]+)</p>\s*</aside>',
+            re.DOTALL,
+        )
+        for page in PAGES:
+            path = ROOT / page.filename
+            with self.subTest(page=page.filename):
+                match = block_pattern.search(path.read_text(encoding="utf-8"))
+                self.assertIsNotNone(match, f"{path}: localized keywords must immediately follow the abstract")
+                self.assertEqual(match.group(1).strip(), expected_keywords[page.filename], f"{path}: incorrect keywords")
+
     def test_citation_titles_match_bibliography_entries(self):
         for page in PAGES:
             path = ROOT / page.filename
