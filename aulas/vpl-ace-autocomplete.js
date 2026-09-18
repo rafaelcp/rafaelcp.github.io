@@ -187,7 +187,7 @@
     var cHeaderMap = {
         "printf": "stdio.h", "scanf": "stdio.h", "fopen": "stdio.h", "fclose": "stdio.h",
         "fprintf": "stdio.h", "fscanf": "stdio.h", "fgets": "stdio.h", "fputs": "stdio.h",
-        "fread": "stdio.h", "fwrite": "stdio.h", "FILE": "stdio.h",
+        "fread": "stdio.h", "fwrite": "stdio.h", "fseek": "stdio.h", "ftell": "stdio.h", "FILE": "stdio.h",
         "malloc": "stdlib.h", "calloc": "stdlib.h", "realloc": "stdlib.h", "free": "stdlib.h", "exit": "stdlib.h", "abs": "stdlib.h",
         "strlen": "string.h", "strcpy": "string.h", "strncpy": "string.h", "strcat": "string.h", "strncat": "string.h",
         "strcmp": "string.h", "strncmp": "string.h", "strchr": "string.h", "strrchr": "string.h", "strstr": "string.h",
@@ -220,6 +220,8 @@
         "fputs": { sig: "fputs(str, stream)", params: ["str", "stream"] },
         "fread": { sig: "fread(ptr, size, nmemb, stream)", params: ["ptr", "size", "nmemb", "stream"] },
         "fwrite": { sig: "fwrite(ptr, size, nmemb, stream)", params: ["ptr", "size", "nmemb", "stream"] },
+        "fseek": { sig: "fseek(stream, offset, whence)", params: ["stream", "offset", "whence"] },
+        "ftell": { sig: "ftell(stream)", params: ["stream"] },
 
         // C - Memória e Alocação
         "malloc": { sig: "malloc(size)", params: ["size"] },
@@ -334,6 +336,8 @@
         "fputs": "<b>int fputs(const char *str, FILE *stream)</b><br><small style='color:#66d9ef;'>Requer: <code>#include &lt;stdio.h&gt;</code></small><br><i>Escreve a string str no fluxo de arquivo stream (sem '\\n' automático).</i>",
         "fread": "<b>size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream)</b><br><small style='color:#66d9ef;'>Requer: <code>#include &lt;stdio.h&gt;</code></small><br><i>Lê dados binários do arquivo.</i>",
         "fwrite": "<b>size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream)</b><br><small style='color:#66d9ef;'>Requer: <code>#include &lt;stdio.h&gt;</code></small><br><i>Escreve dados binários no arquivo.</i>",
+        "fseek": "<b>int fseek(FILE *stream, long offset, int whence)</b><br><small style='color:#66d9ef;'>Requer: <code>#include &lt;stdio.h&gt;</code></small><br><i>Move o ponteiro de posição do arquivo para uma posição especificada (SEEK_SET, SEEK_CUR, SEEK_END).</i>",
+        "ftell": "<b>long ftell(FILE *stream)</b><br><small style='color:#66d9ef;'>Requer: <code>#include &lt;stdio.h&gt;</code></small><br><i>Retorna a posição atual do ponteiro do arquivo (em bytes).</i>",
         "FILE": "<b>Tipo: FILE</b><br><small style='color:#66d9ef;'>Requer: <code>#include &lt;stdio.h&gt;</code></small><br><i>Estrutura/tipo opaco para representação e manipulação de fluxos de arquivo.</i>",
         "sqrt": "<b>double sqrt(double x)</b><br><small style='color:#66d9ef;'>Requer: <code>#include &lt;math.h&gt;</code></small><br><i>Calcula a raiz quadrada de x.</i>",
         "pow": "<b>double pow(double base, double exp)</b><br><small style='color:#66d9ef;'>Requer: <code>#include &lt;math.h&gt;</code></small><br><i>Retorna base elevada ao expoente.</i>",
